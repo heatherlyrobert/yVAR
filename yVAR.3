@@ -1,0 +1,208 @@
+.TH yVAR 3 2008-Jul "linux" "heatherly custom tools manual"
+
+.SH NAME
+.BI yVAR
+\- simple, consistent, reusable variable testing services
+
+.SH SUMMARY
+.BI yVAR
+is a set of shared functions for variable existance, typing, and value
+testing services for use by the calling program.  it is designed to take
+a repetative, tedious, haphazard, neglected, and cracker vulnerable task 
+and make it systematic, shared, easy to maintain, and safer.
+
+.SH SYNOPSIS
+.nf
+.B #include  <yVAR.h>
+
+.R  ---general-------------------------------------
+.sp
+.BI "char    *yVAR_version (void);"
+
+.R  ---string--------------------------------------
+.sp
+.BI "int      yLOG_string  (cchar *" "a_test  " ", cchar *" "a_expect" ", cchar *" "a_actual" ");"
+.BI "int      yLOG_regex   (cchar *" "a_format" ", cchar *" "a_actual" ");"
+
+.R  ---numeric-------------------------------------
+.sp
+.BI "int      yLOG_integer (cchar *" "a_test  " ", long   " "a_expect" ", long   " "a_actual" ");"
+.BI "int      yLOG_real    (cchar *" "a_test  " ", double " "a_expect" ", double " "a_actual" ");"
+.BI "int      yLOG_pointer (cchar *" "a_test  " ", void  *" "a_expect" ", void  *" "a_actual" ");"
+
+.R  ---numeric in string---------------------------
+.sp
+.BI "int      yLOG_hex     (int    " "a_range " ", cchar *" "a_expect" ", cchar *" "a_actual" ");"
+.BI "int      yLOG_round   (cchar *" "a_test  " ", cchar *" "a_expect" ", cchar *" "a_actual" ");"
+.BI "int      yLOG_ustring (cchar *" "a_test  " ", cchar *" "a_expect" ", cchar *" "a_actual" ");"
+
+.R  ---unit testing--------------------------------
+.sp
+.BI "char    *yLOG_mod     (void);"
+.BI "char    *yLOG_expect  (void);"
+.BI "char    *yLOG_actual  (void);"
+
+.sp
+Must also link to either the yVAR.so (shared) or yVAR.a (static) library
+as this is not automatic.  Add "-lyVAR" to the object linking.
+
+.SH OVERVIEW
+this library will simplify the plugging of a top cracker
+backdoor, i.e., unchecked input variables.  unchecked input variables can be
+used to inject code, cause crashes, overrun buffers, etc.
+
+yVAR focuses on improving the defensive capabilities of programs...
+   -- test variable contents for type (strg, intg, real, etc)
+   -- test variable contents for format (range, size, length, regex, etc)
+   -- verify variable existance/definition
+this can not replace a program's own defensiveness, just supplement it
+
+many existing libraries and utilities have been built by better programmers
+that are likely superior in speed, size, capability, and reliability; BUT,
+i would not have learned nearly as much using them, so follow the adage...
+
+TO TRULY LEARN> do not seek to follow in the footsteps of the men of old;
+seek what they sought ~ Matsuo Basho
+
+.SH DESCRIPTION
+yVAR consists of
+.BI 12
+total functions separated into five categories --
+.BI 1
+overall,
+.BI 2
+string testing,
+.BI 3
+numeric testing,
+.BI 3
+numeric in string testing, and
+.BI 3
+unit testing specific functions.
+
+
+.B GENERAL ---------------------------------------------------------
+.sp
+.B yVAR_version,
+produces a formatted string of the number and description for the current 
+version of the yVAR library.  This is useful for debugging and is often
+saved to the log file.
+
+.B STRING TESTING --------------------------------------------------
+.sp
+.B yVAR_string,
+takes a test type and two values, expected and actual.   the test type
+indicates the nature of the comparision and must be one of the following...
+   1 ) s_equal        : actual string is equal to expected string
+   2 ) s_not          : actual string is not equal to expected string
+   3 ) s_sub          : expected string contained within actual string
+   4 ) s_entry        : actual string contained within expected string
+   5 ) s_regex        : do regex matching on expected using format in actual
+   6 ) s_length       : check for a certain number of characters
+   7 ) s_empty        : actual string is null/empty
+   8 ) s_exists       : actual string is not null/empty
+   9 ) s_greater      : actual string sorts greater than expected
+   10) s_lesser       : actual string sorts lesser  than expected
+.sp
+.B yVAR_regex,
+takes a test type and one values, actual.   the test type
+identifies the preprogrammed regex string and must be one of the following...
+   1 ) strg_alnum     : string must be only letters and numbers
+   2 ) strg_basic     : strg_alnum, plus dash, underscore, and space
+   3 ) strg_punct     : strg_basic, plus normal writing punctuation
+   4 ) strg_punct     : strg_basic, plus some descriptive punctuation
+   5 ) post_field     : valid cgi-post field name
+   6 ) post_string    : valid cgi_post full string input
+   7 ) intg_byte      : valid integer value (0 - 255)
+   8 ) intg_unsign    : valid unsigned integer
+   9 ) intg_sign      : valid signed integer
+   10) real_float     : valid floating point value
+   11) real_pct       : valid floating point percentage
+   12) addr_ip        : valid ip4 address
+   13) addr_email     : valid email address
+   14) addr_dir       : valid linux directory name
+   15) addr_file      : valid linux file name
+   16) addr_phone     : valid us phone number
+   17) addr_zip       : valid us zip code
+   18) arch_prefix    : valid heatherly document archive prefix
+   19) arch_index     : valid heatherly document archive index
+   20) arch_desc      : valid heatherly document archive description
+   21) prog_var       : valid c-style variable name
+   22) prog_myvar     : valid c-style variable name (my variation)
+   23) prog_myconst   : valid c-style constant name (my variation)
+   24) prog_func      : valid c-style function name
+   25) path_norm      : valid linux full path name
+   26) path_tight     : valid linux full path name (my variation)
+
+.B NUMERIC TESTING -------------------------------------------------
+.sp
+.B yVAR_integer,
+takes a test type and two values, expected and actual.   the test type
+indicates the nature of the comparision and must be one of the following...
+   1 ) i_equal        : actual value is equal to expected
+   2 ) i_not          : actual value is not equal to expected
+   3 ) i_greater      : actual value is greater than expected
+   4 ) i_lesser       : actual value is less than expected
+   5 ) i_digits       : actual contains expected number of digits
+   6 ) i_exists       : actual not null/empty/zero
+   7 ) i_1percent     : actual matches expected +/- 1%
+   8 ) i_5percent     : actual matches expected +/- 5%
+   9 ) i_PASS         : greater than or equal to zero
+   10) i_FAIL         : less than zero
+.sp
+.B yVAR_real,
+takes a test type and two values, expected and actual.   the test type
+indicates the nature of the comparision and must be one of the following...
+   1 ) r_equal        : actual value is equal to expected
+   2 ) r_not          : actual value is not equal to expected
+   3 ) r_greater      : actual value is greater than expected
+   4 ) r_lesser       : actual value is less than expected
+   4 ) r_norm93       : r_equal comparision, but using %9.3lf formats
+.sp
+.B yVAR_pointer,
+takes a test type and two values, expected and actual.   the test type
+indicates the nature of the comparision and must be one of the following...
+   1 ) p_equal        : actual value is equal to expected
+   2 ) p_not          : actual value is not equal to expected
+   3 ) p_greater      : actual value is greater than expected
+   4 ) p_lesser       : actual value is less than expected
+   5 ) p_null         : actual null/empty/zero
+   6 ) p_exists       : actual not null/empty/zero
+
+.B NUMERIC IN STRING TESTING ---------------------------------------
+.sp
+.B yVAR_hex,
+takes a range and two values, expected and actual.   the range indicates
+how far apart the two values may be an still match, i.e., +/- range
+.sp
+.B yVAR_round,
+takes a test type and two values, expected and actual.   the test type indicates
+how far apart any two values embedded in the strings may be an still match.
+this function can match all numbers in a string as long as they are in the same
+place and the same length.
+   1 ) u_roundz       : matches +/- zero values (useful with floats)
+   2 ) u_round1       : matches a range of +/-1 in the least sig digit
+   ...
+   10) u_round9       : matches a range of +/-9 in the least sig digit
+
+example from unit testing my hexapod robot for its tibia end point...
+   expected result   = tibia   -92.5x,  -160.2z,   331.0y
+   u_round1 (match)  = tibia   -92.4x,  -160.3z,   331.0y
+   u_round1 (FAIL)   = tibia   -92.7x,  -160.3z,   331.0y
+   u_round2 (match)  = tibia   -92.7x,  -160.3z,   330.8y
+   u_round9 (match)  = tibia   -93.2x,  -159.8z,   331.6y
+   u_round9 (FAIL)   = tibia   -93.5x,  -160.2z,   331.0y
+   
+
+
+
+.SH BUGS
+i have never allowed anyone else to use it, so maybe there will be many once
+it hits other setups.  in particular, my logging directories are custom.
+
+.SH AUTHOR
+rsheatherly can be reached at jelloshrike at gmail dot com
+
+.SH COLOPHON
+this page is part of a documentation package meant to make use of the
+heatherly tools easier and faster
+
