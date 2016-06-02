@@ -126,8 +126,8 @@
 
 /*===[[ VERSION ]]========================================*/
 /* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0b"
-#define YVAR_VER_TXT   "clean up documentation for git"
+#define YVAR_VER_NUM   "1.0c"
+#define YVAR_VER_TXT   "update makefile for _debug and _unit"
 
 
 char      yVAR_modded[500];
