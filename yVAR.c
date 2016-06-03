@@ -1,10 +1,11 @@
 /*===[[ START ]]==============================================================*/
-#define    _GNU_SOURCE          /* to allow asprintf()                        */
-#include <stdio.h>        /* printf(), snprintf()                             */
-#include <stdlib.h>
-#include <string.h>
-#include <regex.h>        /* regcomp(), regexec(), regfree()                  */
 #include "yVAR.h"
+#include "yVAR_priv.h"
+
+
+
+tLOCAL    its;
+
 
 
 char      yVAR_ver     [500];
@@ -235,8 +236,9 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
    int       rc        = 0;
    regex_t   x_comp;
    /*---(defenses)-----------------------*/
-   if (a_expect   == NULL) return x_code - 1;
-   if (a_actual   == NULL) return x_code - 1;
+   if (a_test     == NULL) return x_code - 1;
+   if (a_expect   == NULL) return x_code - 2;
+   if (a_actual   == NULL) return x_code - 3;
    /*---(normal tests)-------------------*/
    if    (strcmp(a_test, "s_equal")   == 0) {
       x_code   = -10;
@@ -252,7 +254,7 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
       if (strlen(a_actual) > 0 ) x_code = -(x_code);
    } else if (strcmp(a_test, "s_length")  == 0) {
       x_code   = -14;
-      if ((int) strlen(a_actual) != atoi(a_expect)) x_code = -(x_code);
+      if ((int) strlen(a_actual) == atoi(a_expect)) x_code = -(x_code);
    } else if (strcmp(a_test, "s_greater") == 0) {
       x_code   = -15;
       if (strcmp(a_actual, a_expect) > 0)    x_code = -(x_code);
@@ -612,6 +614,7 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
    return x_code;
 }
 
+/*  rc = 0 perfect match, neg = fail, pos = modified to match                 */
 int        /*----: strings that allow numbers to be rounded ------------------*/
 yVAR_round (
       const char *a_test,              /*  name of the test                   */
@@ -620,7 +623,7 @@ yVAR_round (
 {
    /*---(design notes)-------------------*/
    /*
-    * - numbers must have a leading space to insure they're not just imbedded
+    * - must have a lead space/neq to insure they're not just imbedded
     * - numbers are converted to floats so are limited in precision
     *
     */
@@ -650,17 +653,21 @@ yVAR_round (
    double    val_inc = 1.0;
    double    val_new = 0.0;
    char      x_top[100], x_zero[100], x_neg[100], x_fin[100];
-   /*> printf("\n");                                                                  <*/
-   /*> printf("yVAR_round begin with three arguments\n");                             <*/
-   /*> printf("a_test    = %s\n", a_test);                                            <*/
-   /*> printf("a_expect  = %s\n", a_expect);                                          <*/
-   /*> printf("a_actual  = %s\n", a_actual);                                          <*/
+   printf("\n");
+   printf("yVAR_round begin with three arguments\n");
+   printf("a_test    = %s\n", a_test);
+   printf("a_expect  = %s\n", a_expect);
+   printf("a_actual  = %s\n", a_actual);
+   /*---(basic defenses)-----------------*/
+   if (a_test     == NULL) return -590;
+   if (a_expect   == NULL) return -591;
+   if (a_actual   == NULL) return -592;
    /*---(defensive logic)---------------------------------*/
-   if (strlen(a_test) != 8)                 return -601;
+   if (strlen(a_test) != 9)                 return -601;
    if (strncmp(a_test, "u_round", 7) != 0)  return -602;
-   if (a_test[7] == 'z')  x_range = 0;
-   else                   x_range = a_test[7] - '0';
-   /*> printf("range is  = +/- %d\n", x_range);                                       <*/
+   if (a_test[8] == 'z')  x_range = 0;
+   else                   x_range = a_test[8] - '0';
+   printf("range is  = */- %d\n", x_range);
    if (x_range < 0 || x_range > 9)          return -603;
    /*---(make local copies)-------------------------------*/
    len_exp  = strlen(a_expect);
@@ -684,7 +691,8 @@ yVAR_round (
       return 0;
    }
    /*---(create the regex)-------------------*/
-   rc = regcomp(&x_comp, "[- ](0|[1-9][0-9]*)([.][0-9]+)?", REG_EXTENDED);
+   /*> rc = regcomp(&x_comp, "[- ](0|[1-9][0-9]*)([.][0-9]+)?", REG_EXTENDED);        <*/
+   rc = regcomp(&x_comp, "[ ]*[- ](0|[1-9][0-9]*)([.][0-9]+)?", REG_EXTENDED);
    if (rc != 0)                             return -609;
    /*---(initial RE run)---------------------*/
    rc = regexec(&x_comp, x_expect, 1, x_pmatch, 0);

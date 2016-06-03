@@ -126,8 +126,8 @@
 
 /*===[[ VERSION ]]========================================*/
 /* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0c"
-#define YVAR_VER_TXT   "update makefile for _debug and _unit"
+#define YVAR_VER_NUM   "1.0d"
+#define YVAR_VER_TXT   "add debugging toggle and private header"
 
 
 char      yVAR_modded[500];
