@@ -8,6 +8,12 @@ tLOCAL    its;
 
 
 
+
+/*====================------------------------------------====================*/
+/*===----                           utility                            ----===*/
+/*====================------------------------------------====================*/
+static void      o___UTILITY_________________o (void) {;}
+
 char      yVAR_ver     [500];
 
 char*      /* ---- : return library versioning information -------------------*/
@@ -19,13 +25,25 @@ yVAR_version       (void)
 #elif  __GNUC__  > 0
    strncpy (t, "[gnu gcc    ]", 15);
 #elif  __HEPH__  > 0
-   strncpy (t, "[hephaestus ]", 18);
+   strncpy (t, "[hephaestus ]", 15);
 #else
    strncpy (t, "[unknown    ]", 15);
 #endif
    snprintf (yVAR_ver, 100, "%s   %s : %s\n", t, YVAR_VER_NUM, YVAR_VER_TXT);
    return yVAR_ver;
 }
+
+char         /*--> set debugging mode --------------------[ ------ [ ------ ]-*/
+yVAR_debug         (char a_flag)
+{
+   /*---(set debug flag)-----------------*/
+   if   (a_flag == 'y')  its.debug   = 'y';
+   else                  its.debug   = '-';
+   /*---(complete)-----------------------*/
+   return 0;
+}
+
+
 
 /*====================------------------------------------====================*/
 /*===----                         regex testing                        ----===*/
@@ -236,9 +254,11 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
    int       rc        = 0;
    regex_t   x_comp;
    /*---(defenses)-----------------------*/
-   if (a_test     == NULL) return x_code - 1;
-   if (a_expect   == NULL) return x_code - 2;
-   if (a_actual   == NULL) return x_code - 3;
+   if (a_test     == NULL  ) return x_code - 1;
+   if (a_expect   == NULL  ) return x_code - 2;
+   if (a_actual   == NULL  ) return x_code - 3;
+   if (a_expect   <  0x1000) return x_code - 4;
+   if (a_actual   <  0x1000) return x_code - 5;
    /*---(normal tests)-------------------*/
    if    (strcmp(a_test, "s_equal")   == 0) {
       x_code   = -10;
@@ -312,6 +332,8 @@ yVAR_integer (     /*  PURPOSE = STANDARD INTEGER TESTING (for yUNIT+)        */
    /*---(locals)-------------------------*/
    int       x_code    = -666;
    char      x_temp[100] = "";
+   /*---(defenses)-----------------------*/
+   if (a_test     == NULL) return x_code - 1;
    /*---(normal tests)-------------------*/
    if        (strcmp(a_test, "i_equal")    == 0) {
       x_code   = -21;
@@ -331,7 +353,7 @@ yVAR_integer (     /*  PURPOSE = STANDARD INTEGER TESTING (for yUNIT+)        */
       x_code   = -27;
       snprintf(x_temp, 100, "%ld", a_actual);
       if ((int) strlen(x_temp) == a_expect)     x_code = -(x_code);
-   } else if (strcmp(a_test, "i_null")     == 0) {
+   } else if (strcmp(a_test, "i_zero"  )     == 0) {
       x_code   = -28;
       if (a_actual == 0)           x_code = -(x_code);
    } else if (strcmp(a_test, "i_exists")   == 0) {
@@ -339,20 +361,20 @@ yVAR_integer (     /*  PURPOSE = STANDARD INTEGER TESTING (for yUNIT+)        */
       if (a_actual != 0)           x_code = -(x_code);
    }
    /*---(poximity tests)-----------------*/
-   else if   (strcmp(a_test, "i_1percent") == 0) {
+   else if   (strcmp(a_test, "i_1pct" ) == 0) {
       x_code   = -30;
       if (a_actual >= a_expect * 0.99 &&
             a_actual <= a_expect * 1.01)  x_code = -(x_code);
-   } else if (strcmp(a_test, "i_5percent") == 0) {
+   } else if (strcmp(a_test, "i_5pct" ) == 0) {
       x_code   = -30;
       if (a_actual >= a_expect * 0.95 &&
             a_actual <= a_expect * 1.05)  x_code = -(x_code);
    }
    /*---(return code tests)--------------*/
-   else if   (strcmp(a_test, "i_PASS")     == 0) {
+   else if   (strcmp(a_test, "i_PASS" )     == 0) {
       x_code   = -25;
       if (a_actual >= 0)           x_code = -(x_code);
-   } else if (strcmp(a_test, "i_FAIL")     == 0) {
+   } else if (strcmp(a_test, "i_FAIL" )     == 0) {
       x_code   = -26;
       if (a_actual < 0)            x_code = -(x_code);
    }
@@ -428,9 +450,9 @@ yVAR_real (        /*  PURPOSE = STANDARD REAL NUM TESTING (for yUNIT+)       */
       if (a_actual != a_expect)    x_code = -(x_code);
    } else if (strcmp(a_test, "r_norm93")       == 0) {
       x_code   = -25;
-      snprintf (yVAR_one, 15, "%9.3lf", a_expect);
-      snprintf (yVAR_two, 15, "%9.3lf", a_actual);
-      if (strcmp(yVAR_one, yVAR_two) == 0)    x_code = -(x_code);
+      snprintf (yVAR_expstr, 15, "%9.3lf", a_expect);
+      snprintf (yVAR_actstr, 15, "%9.3lf", a_actual);
+      if (strcmp(yVAR_expstr, yVAR_actstr) == 0)    x_code = -(x_code);
    } else {
       x_code   = -999;
    }
@@ -441,9 +463,9 @@ yVAR_real (        /*  PURPOSE = STANDARD REAL NUM TESTING (for yUNIT+)       */
 
 
 /*====================------------------------------------====================*/
-/*===----                       specialty testing                      ----===*/
+/*===----                     numbers in strings                       ----===*/
 /*====================------------------------------------====================*/
-static void      o___SPECIAL_________________o (void) {;}
+static void      o___ROUNDING________________o (void) {;}
 
 int                /*  return  = pos=good, neg=bad, 0=unknown                 */
 yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
@@ -614,6 +636,206 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
    return x_code;
 }
 
+
+static   int   s_range            = 0;
+static   int   s_explen           = 0;
+static   int   s_actlen           = 0;
+static   int   s_nmods            = 0;
+
+static   regex_t     s_regex;                  /* REGEX structure                     */
+static   regmatch_t  s_match   [1];            /* REGEX match structure               */
+static   char        s_expsub  [100];
+static   char        s_actsub  [100];
+static   int         s_lensub  = 0;
+static   int         s_offset  = 0;
+static   s_beg       = 0;
+static   s_end       = 0;
+static   s_len       = 0;
+static   s_dec       = 0;
+
+
+char
+yVAR__save         (
+      const char *a_test,              /*  name of the test                   */
+      const char *a_expect,            /*  expected result                    */
+      const char *a_actual)            /*  actual result                      */
+{
+   /*---(locals)-----------+-----------+-*/
+   char        rce         = -10;           /* return code for errors         */
+   int         rc          = 0;             /* generic return code            */
+   int         i           = 0;             /* generic iterator               */
+   /*---(header)-------------------------*/
+   DEBUG_YVAR   printf ("\n");
+   DEBUG_YVAR   printf ("yVAR_round begin with three arguments\n");
+   DEBUG_YVAR   printf ("a_test      = <<%s>>\n" , a_test);
+   DEBUG_YVAR   printf ("a_expect    = <<%s>>\n" , a_expect);
+   DEBUG_YVAR   printf ("a_actual    = <<%s>>\n" , a_actual);
+   /*---(basic defenses)-----------------*/
+   --rce;  if (a_test     == NULL)                    return rce;
+   --rce;  if (a_expect   == NULL)                    return rce;
+   --rce;  if (a_actual   == NULL)                    return rce;
+   /*---(test type)----------------------*/
+   --rce;  if (strlen  (a_test) != 9)                 return rce;
+   --rce;  if (strncmp (a_test, "u_round/", 8) != 0)  return rce;
+   if (a_test [8] == 'z')  s_range = 0;
+   else                    s_range = a_test[8] - '0';
+   --rce;  if (s_range < 0 || s_range > 9)            return rce;
+   DEBUG_YVAR   printf ("range is    = */- %d\n", s_range);
+   /*---(make local copies)--------------*/
+   s_explen  = strlen (a_expect);
+   s_actlen  = strlen (a_actual);
+   --rce;  if (s_explen >= 500)                       return -604;
+   --rce;  if (s_actlen >= 500)                       return -605;
+   strncpy (yVAR_expstr, a_expect, 500);
+   strncpy (yVAR_actstr, a_actual, 500);
+   /*---(initialize)---------------------*/
+   s_nmods     = 0;
+   s_offset    = 0;
+   /*---(fix actual's new lines)---------*/
+   if (yVAR_actstr [s_actlen - 1] == '\n') {
+      yVAR_actstr [--s_actlen] = '\0';
+      ++s_nmods;
+   }
+   for (i = 0; i < s_actlen; ++i) {
+      if (yVAR_actstr [i] == '\n') {
+         yVAR_actstr [i] = ' ';
+         ++s_nmods; 
+      }
+   }
+   /*---(check lengths)------------------*/
+   --rce;  if (s_actlen == 0)                         return -606;
+   --rce;  if (s_explen == 0)                         return -607;
+   --rce;  if (s_explen != s_actlen)                  return -608;
+   /*---(initialize modded string)-------*/
+   for (i = 0; i < s_explen; ++i) {
+      yVAR_modstr [i] = ' ';
+   }
+   yVAR_modstr [s_explen] = '\0';
+   /*---(create the regex)-------------------*/
+   /*> rc = regcomp(&s_regex, "[- ](0|[1-9][0-9]*)([.][0-9]+)?", REG_EXTENDED);        <*/
+   rc = regcomp (&s_regex, "[ ]*[- ](0|[1-9][0-9]*)([.][0-9]+)?", REG_EXTENDED);
+   --rce;  if (rc != 0)                               return rce;
+   /*---(complete)-----------------------*/
+   return 0;
+}
+
+char
+yVAR__match        (void)
+{
+   /*---(locals)-----------+-----------+-*/
+   char        rce         = -10;           /* return code for errors         */
+   int         rc          = 0;             /* generic return code            */
+   int         i           = 0;             /* generic iterator               */
+   int         x_pos       = 0;
+   int         x_isdec     = '-';
+   char        ch          = ' ';
+   /*---(execute regex)------------------*/
+   /*  zero = successful match   */
+   rc = regexec(&s_regex, yVAR_expstr + s_offset, 1, s_match, 0);
+   --rce;  if (rc != 0)                               return rce;
+   /*---(get match information)-----------*/
+   s_beg   = s_match [0].rm_so;
+   s_end   = s_match [0].rm_eo;
+   s_len   = s_end - s_beg;
+   DEBUG_YVAR   printf ("   found match from %d to %d, len %d -----------------------\n", s_beg, s_end, s_len);
+   DEBUG_YVAR   printf ("   yVAR_expstr = <<%s>>\n" , yVAR_expstr);
+   DEBUG_YVAR   printf ("   yVAR_actstr = <<%s>>\n" , yVAR_actstr);
+   DEBUG_YVAR   printf ("                   ");
+   for (i = 0; i < s_beg + s_offset; ++i) { 
+      DEBUG_YVAR   printf (" ");
+   }
+   for (i = 0; i < s_len; ++i) { 
+      DEBUG_YVAR   printf ("-");
+   }
+   DEBUG_YVAR   printf ("\n");
+   /*---(process the match)---------------*/
+   strncpy (s_expsub, "", 100);
+   strncpy (s_actsub, "", 100);
+   s_dec = 0;
+   for (i = 0; i < s_len; ++i) {
+      x_pos = s_beg + s_offset + i;
+      ch = yVAR_expstr [x_pos];
+      if (x_isdec == 'y') ++s_dec;
+      if (ch == '.') {
+         x_isdec = 'y';
+         s_dec = 0;
+      }
+      /*> DEBUG_YVAR   printf("%c", yVAR_expstr[s_beg + x_off + i]);                  <*/
+      s_expsub [i] = yVAR_expstr [x_pos];
+      s_actsub [i] = yVAR_actstr [x_pos];
+   }
+   DEBUG_YVAR   printf ("   s_len = %d, decs = %d\n", s_len, s_dec);
+   strncat (s_expsub, "\0", 100);
+   strncat (s_actsub, "\0", 100);
+   DEBUG_YVAR   printf ("   expsub      = <<%s>>\n", s_expsub);
+   DEBUG_YVAR   printf ("   actsub      = <<%s>>\n", s_actsub);
+   /*---(complete)-----------------------*/
+   return 0;
+}
+
+char
+yVAR__check        (void)
+{
+   /*---(locals)-----------+-----------+-*/
+   char        rce         = -10;           /* return code for errors         */
+   int         rc          = 0;             /* generic return code            */
+   int         i           = 0;             /* generic iterator               */
+   int         j           = 0;             /* generic iterator               */
+   double      x_base      = 0.0;
+   double      x_inc       = 0.0;
+   double      x_new       = 0.0;
+   char        x_chksub    [100];
+   char        x_negsub    [100];
+   char        x_finsub    [100];
+   /*---(quick check)--------------------*/
+   if (strcmp (s_expsub, s_actsub) == 0) {
+      DEBUG_YVAR   printf ("   already matches, done\n");
+      return 0;
+   }
+   /*---(initialize)---------------------*/
+   x_base    = atof (s_expsub);
+   DEBUG_YVAR   printf ("   ranging   = %d to %d\n", -s_range, s_range);
+   /*---(check each in range)------------*/
+   for (i = -s_range; i <= s_range; ++i) {
+      float x_new = atof (s_expsub);
+      char  x_top[100], x_bot[100], x_neg[100], x_fin[100];
+      /*---(create options)---------------*/
+      x_inc = i;
+      for (j = 0; j < s_dec; ++j)  x_inc /= 10;
+      x_new = x_base + x_inc;
+      snprintf (x_chksub, 100, "%*.*f", s_len, s_dec, x_new);
+      snprintf (x_negsub, 100, "%*.*f", s_len, s_dec, x_new - 0.000001);
+      DEBUG_YVAR   printf ("   checking  = <<%s>>  :: ", x_chksub);
+      /*---(test the options)-------------*/
+      strncpy (x_finsub, "", 100);
+      if (strcmp (x_chksub, s_actsub) == 0) {
+         DEBUG_YVAR   printf ("match\n");
+         strncpy (x_finsub, x_chksub, 100);
+         break;
+      } else if (strcmp(x_negsub, s_actsub) == 0) {
+         DEBUG_YVAR   printf ("match neg zero\n");
+         strncpy (x_finsub, x_negsub, 100);
+         break;
+      } else {
+         DEBUG_YVAR   printf ("not a match\n");
+      }
+
+   }
+   --rce;  if (strcmp (x_finsub, "") == 0) {
+      DEBUG_YVAR   printf ("NO MATCH\n");
+      return rce;
+   }
+   /*---(update expect)------------------*/
+   for (i = 0; i < s_len; ++i) {
+      yVAR_expstr [s_beg + s_offset + i] = x_finsub [i];
+   }
+   DEBUG_YVAR   printf ("   MODDED    = <<%s>>\n", yVAR_expstr);
+   s_offset += s_end;
+   /*---(complete)-----------------------*/
+   return 0;
+}
+
+
 /*  rc = 0 perfect match, neg = fail, pos = modified to match                 */
 int        /*----: strings that allow numbers to be rounded ------------------*/
 yVAR_round (
@@ -621,198 +843,88 @@ yVAR_round (
       const char *a_expect,            /*  expected result                    */
       const char *a_actual)            /*  actual result                      */
 {
-   /*---(design notes)-------------------*/
-   /*
-    * - must have a lead space/neq to insure they're not just imbedded
-    * - numbers are converted to floats so are limited in precision
-    *
-    */
-   /*> printf("yVAR_round\n");                                                        <*/
-   /*---(local variables)---------------------------------*/
-   char      x_expect[500]  = "";      /* working version of expected string  */
-   char      x_actual[500]  = "";      /* working version of actual string    */
-   int       len_exp   = 0;            /* length of expected string           */
-   int       len_act   = 0;            /* length of actual string             */
-   int       x_range   = 1;            /* rounding value, i.e. +/-            */
+   /*---(locals)-----------+-----------+-*/
    int       i         = 0;            /* loop iterator -- characters         */
    int       j         = 0;            /* loop iterator -- decimals           */
    regex_t   x_comp;                   /* REGEX structure                     */
    regmatch_t  x_pmatch[1];            /* REGEX match structure               */
-   int       s, e, len;                /* REGEX position markers              */
+   int       x_beg;                    /* REGEX found begin marker            */
+   int       x_end;                    /* REGEX found end marker              */
+   int       x_len;                    /* REGEX found length                  */
    int       rc        = 0;            /* generic return code                 */
    int       x_off     = 0;
-   char      ch        = ' ';
-   int       is_dec    = 0;
    int       decs      = 0;
    int       nums      = 0;
-   int       pos;
+   int       x_pos;
    int       mods      = 0;
    char      mods_str[20] = "";
-   char      x_expsub[100], x_actsub[100];
-   double    val_bas = 0.0;
-   double    val_inc = 1.0;
+   double    x_value = 0.0;
+   double    x_inc   = 1.0;
    double    val_new = 0.0;
-   char      x_top[100], x_zero[100], x_neg[100], x_fin[100];
-   printf("\n");
-   printf("yVAR_round begin with three arguments\n");
-   printf("a_test    = %s\n", a_test);
-   printf("a_expect  = %s\n", a_expect);
-   printf("a_actual  = %s\n", a_actual);
-   /*---(basic defenses)-----------------*/
-   if (a_test     == NULL) return -590;
-   if (a_expect   == NULL) return -591;
-   if (a_actual   == NULL) return -592;
-   /*---(defensive logic)---------------------------------*/
-   if (strlen(a_test) != 9)                 return -601;
-   if (strncmp(a_test, "u_round", 7) != 0)  return -602;
-   if (a_test[8] == 'z')  x_range = 0;
-   else                   x_range = a_test[8] - '0';
-   printf("range is  = */- %d\n", x_range);
-   if (x_range < 0 || x_range > 9)          return -603;
-   /*---(make local copies)-------------------------------*/
-   len_exp  = strlen(a_expect);
-   len_act  = strlen(a_actual);
-   if (len_exp >= 500)                      return -604;
-   if (len_act >= 500)                      return -605;
-   strncpy(x_expect, a_expect, 500);
-   strncpy(x_actual, a_actual, 500);
-   /*---(fix actual's new lines)--------------------------*/
-   if (x_actual[len_act - 1] == '\n') { x_actual[--len_act] = '\0'; ++mods; }
-   for (i = 0; i < len_act; ++i) if (x_actual[i] == '\n') { x_actual[i] = ' '; ++mods; }
-   if (len_act == 0)                        return -606;
-   if (len_exp == 0)                        return -607;
-   if (len_exp != len_act)                  return -608;
-   /*---(initialize modded string)------------------------*/
-   for (i = 0; i < len_exp; ++i) yVAR_modded[i] = ' ';
-   yVAR_modded[len_exp] = '\0';
+   char      x_mod    [100];
+   char      x_neg    [100];
+   char      x_fin    [100];
+   /*---(locals)--------+--------------+-*/
+   char        rce      = -20;
+   /*---(header)-------------------------*/
+   rc = yVAR__save   (a_test, a_expect, a_actual);
+   if (rc < 0)                                        return rc;
    /*---(quick shortcut check)----------------------------*/
-   if (strcmp(x_actual, x_expect) == 0) {
-      /*> printf("   already equal, no mods required (shortcut)\n");                  <*/
+   if (strcmp (yVAR_actstr, yVAR_expstr) == 0) {
+      DEBUG_YVAR   printf ("   already equal, no mods required (shortcut)\n");
       return 0;
    }
-   /*---(create the regex)-------------------*/
-   /*> rc = regcomp(&x_comp, "[- ](0|[1-9][0-9]*)([.][0-9]+)?", REG_EXTENDED);        <*/
-   rc = regcomp(&x_comp, "[ ]*[- ](0|[1-9][0-9]*)([.][0-9]+)?", REG_EXTENDED);
-   if (rc != 0)                             return -609;
    /*---(initial RE run)---------------------*/
-   rc = regexec(&x_comp, x_expect, 1, x_pmatch, 0);
-   if (rc != 0)                             return -610;
+   rc = yVAR__match  ();
+   if (rc < 0)                                        return rc;
    /*---(process matches)--------------------*/
    while (rc == 0) {
-      /*> printf("identifying numbers in the string... \n");                          <*/
-      /*---(get match information)-----------*/
-      s   = x_pmatch[0].rm_so;
-      e   = x_pmatch[0].rm_eo;
-      len = e - s;
-      /*> printf("   found match from %d to %d, len %d-----------------------\n", s, e, len);   <*/
-      /*---(process the match)---------------*/
-      nums = decs = is_dec = 0;
-      strncpy(x_expsub, "", 100);
-      strncpy(x_actsub, "", 100);
-      for (i = 0; i < len; ++i) {
-         pos = s + x_off + i;
-         ch = x_expect[pos];
-         if (is_dec == 1) ++decs;
-         if (ch == '.')   is_dec = 1;
-         if (ch != ' ' && ch != '-')   ++nums;
-         /*> printf("%c", x_expect[s + x_off + i]);                                   <*/
-         x_expsub[i] = x_expect[pos];
-         x_actsub[i] = x_actual[pos];
-      }
-      /*> printf("   nums=%d, decs=%d\n", nums, decs);                                <*/
-      strncat(x_expsub, "\0", 100);
-      strncat(x_actsub, "\0", 100);
-      /*> printf("   expsub    = <<%s>>\n", x_expsub);                                <*/
-      /*> printf("   expact    = <<%s>>\n", x_actsub);                                <*/
-      val_bas   = atof(x_expsub);
-      snprintf(x_zero, 100, " %*.*f",  nums, decs, 0.0);
-      snprintf(x_neg , 100, "-%*.*f",  nums, decs, 0.0);
-      /*---(deal with differences)-----------*/
-      /*> printf("   ranging   = %d to %d\n", -x_range, x_range);                     <*/
-      for (i = -x_range; i <= x_range; ++i) {
-         /*---(prepare)-----------------------*/
-         val_inc   = i;
-         strncpy(x_fin, "", 100);
-         for (j = 0; j < decs; ++j) val_inc /= 10;
-         val_new = val_bas + val_inc;
-         /*> printf("   %d, val_bas=%11.7lf, val_inc=%11.7lf, val_new=%12.8lf\n", i, val_bas, val_inc, val_new);   <*/
-         /*---(generate)----------------------*/
-         if (val_new >= 0) snprintf(x_top, 100, " %*.*f", nums, decs, val_new);
-         else              snprintf(x_top, 100, "%*.*f",  nums, decs, val_new);
-         /*---(test)--------------------------*/
-         /*> printf("   test      = <<%s>> : ", x_top);                               <*/
-         if (strcmp(x_top, x_actsub) != 0) {
-            /*> printf("missed");                                                     <*/
-            if (strcmp(x_top, x_zero) == 0) {
-               /*> printf(", trying neg zero : ");                                    <*/
-               if (strcmp(x_neg , x_actsub) != 0) {
-                  /*> printf("nope\n");                                               <*/
-                  continue;
-               }
-               strcpy(x_top, x_neg );
-            } else if (strcmp(x_top, x_neg ) == 0) {
-               /*> printf(", trying pos zero : ");                                    <*/
-               if (strcmp(x_zero, x_actsub) != 0) { 
-                  /*> printf("nope\n");                                               <*/
-                  continue;
-               }
-               strcpy(x_top, x_zero);
-            } else {
-               /*> printf("\n");                                                      <*/
-               continue;
-            }
-         }
-         /*---(change expected)---------------*/
-         /*> printf("found\n");                                                       <*/
-         strncpy(x_fin, x_top, 100);
-         for (i = 0; i < (int) strlen(x_fin); ++i) x_expect[s + x_off + i] = x_fin[i];
-         break;
-      }
-      /*---(setup for next)------------------*/
-      x_off += e;
-      if (x_off >= len_exp) break;
-      rc = regexec(&x_comp, x_expect + x_off, 1, x_pmatch, 0);
+      yVAR__check ();
+      s_offset += s_end;
+      yVAR__match  ();
+      if (s_offset >= s_explen) break;
    }
-   regfree(&x_comp);
+   DEBUG_YVAR   printf ("done\n\n");
+   regfree (&s_regex);
    /*---(finish)---------------------------------------*/
-   for (i = 0; i < len_exp; ++i) {
-      if (x_expect[i] != a_expect[i]) {
-         ++mods;
-         yVAR_modded[i] = x_expect[i];
-         if (x_expect[i] <= ' ')  yVAR_modded[i] = '*';
-         if (x_expect[i] >  'z')  yVAR_modded[i] = '*';
+   for (i = 0; i < s_explen; ++i) {
+      if (yVAR_expstr[i] != a_expect[i]) {
+         ++s_nmods;
+         yVAR_modstr[i] = yVAR_expstr[i];
+         if (yVAR_expstr[i] <= ' ')  yVAR_modstr[i] = '*';
+         if (yVAR_expstr[i] >  'z')  yVAR_modstr[i] = '*';
       }
    }
-   snprintf(mods_str, 20, ">> (%1d) ", mods);
-   strncat(yVAR_modded, mods_str, 499);
+   /*> snprintf(mods_str, 20, ">> (%1d) ", s_nmods);                                  <* 
+    *> strncat(yVAR_modstr, mods_str, 499);                                           <*/
    /*---(complete)-------------------------------------*/
-   if (strcmp(x_actual, x_expect) == 0) return mods;
+   if (strcmp(yVAR_actstr, yVAR_expstr) == 0) return s_nmods;
    return -30;
 }
 
 
 
 /*====================------------------------------------====================*/
-/*===----                           utility                            ----===*/
+/*===----                           special                            ----===*/
 /*====================------------------------------------====================*/
-static void      o___UTILITY_________________o (void) {;}
+static void      o___SPECIAL_________________o (void) {;}
 
 char*      /*----: return the modified string mask ---------------------------*/
-yVAR_mod           (void)
+yVAR_modded        (void)
 {
-   return yVAR_modded;
+   return yVAR_modstr;
 }
 
 char*      /*----: return the modified expected ------------------------------*/
 yVAR_expect        (void)
 {
-   return yVAR_one;
+   return yVAR_expstr;
 }
 
 char*      /*----: return the modified actual --------------------------------*/
 yVAR_actual        (void)
 {
-   return yVAR_two;
+   return yVAR_actstr;
 }
 
 void

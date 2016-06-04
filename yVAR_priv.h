@@ -19,10 +19,6 @@ struct cLOCAL {
    /*---(overall)-----------*/
    char        debug;
    int         logger;
-   /*---(testing)-----------*/
-   char        strtest     [100];
-   int         argc;
-   char       *argv        [20];
 };
 extern  tLOCAL its;
 #define     DEBUG_YVAR     if (its.debug == 'y')

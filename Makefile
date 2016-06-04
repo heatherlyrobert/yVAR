@@ -30,7 +30,8 @@ STRIP   = @grep -v -e " DEBUG_" -e " yLOG_"
 
 
 #*---(executables)--------------------*#
-all                : ${BASE} ${DEBUG} ${UNIT}
+#  do DEBUG before BASE as it then shows compiler errors properly
+all                : ${DEBUG} ${BASE} ${UNIT}
 
 ${BASE}            : ${OBJS}
 	${LINK}  -shared -Wl,-soname,lib${BASE}.so.1    ${LIBS}  -o lib${BASE}.so.1.0       ${OBJS}

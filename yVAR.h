@@ -126,19 +126,22 @@
 
 /*===[[ VERSION ]]========================================*/
 /* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0d"
-#define YVAR_VER_TXT   "add debugging toggle and private header"
+#define YVAR_VER_NUM   "1.0e"
+#define YVAR_VER_TXT   "unit testing complete (again) on int, str, round"
 
 
-char      yVAR_modded[500];
-char      yVAR_one   [500];
-char      yVAR_two   [500];
+char      yVAR_expstr   [500];
+char      yVAR_actstr   [500];
+char      yVAR_modstr   [500];
 typedef   const char  cchar;
 
 /*===[[ FUNCTION PROTOTYPES ]]================================================*/
 
 char*      /* ---- : return library versioning information -------------------*/
 yVAR_version       (void);
+
+char
+yVAR_debug         (char a_flag);
 
 
 int        /*----: standard regex pattern testing ----------------------------*/
@@ -169,7 +172,7 @@ yVAR_round   (     /*  PURPOSE = complex string testing for yUNIT             */
 ;
 
 char*      /*----: return the modified expected string -----------------------*/
-yVAR_mod           (void);
+yVAR_modded        (void);
 
 char*      /*----: return the modified expected string -----------------------*/
 yVAR_actual        (void);
