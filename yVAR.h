@@ -126,8 +126,8 @@
 
 /*===[[ VERSION ]]========================================*/
 /* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0f"
-#define YVAR_VER_TXT   "horrible dumb issue with u_round is fixed (float/double)"
+#define YVAR_VER_NUM   "1.0g"
+#define YVAR_VER_TXT   "add unit testing for large sig digit floats in rounding"
 
 
 char      yVAR_expstr   [500];
