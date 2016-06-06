@@ -126,8 +126,8 @@
 
 /*===[[ VERSION ]]========================================*/
 /* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0e"
-#define YVAR_VER_TXT   "unit testing complete (again) on int, str, round"
+#define YVAR_VER_NUM   "1.0f"
+#define YVAR_VER_TXT   "horrible dumb issue with u_round is fixed (float/double)"
 
 
 char      yVAR_expstr   [500];

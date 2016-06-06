@@ -797,14 +797,14 @@ yVAR__check        (void)
    DEBUG_YVAR   printf ("   ranging   = %d to %d\n", -s_range, s_range);
    /*---(check each in range)------------*/
    for (i = -s_range; i <= s_range; ++i) {
-      float x_new = atof (s_expsub);
-      char  x_top[100], x_bot[100], x_neg[100], x_fin[100];
+      x_new = atof (s_expsub);
       /*---(create options)---------------*/
       x_inc = i;
       for (j = 0; j < s_dec; ++j)  x_inc /= 10;
       x_new = x_base + x_inc;
-      snprintf (x_chksub, 100, "%*.*f", s_len, s_dec, x_new);
-      snprintf (x_negsub, 100, "%*.*f", s_len, s_dec, x_new - 0.000001);
+      DEBUG_YVAR   printf ("   dec = %d, chg = %2d, base = %10lf, inc = %10lf, new = %10lf\n", s_dec, i, x_base, x_inc, x_new);
+      snprintf (x_chksub, 100, "%*.*lf", s_len, s_dec, x_new);
+      snprintf (x_negsub, 100, "%*.*lf", s_len, s_dec, x_new - 0.000000001);
       DEBUG_YVAR   printf ("   checking  = <<%s>>  :: ", x_chksub);
       /*---(test the options)-------------*/
       strncpy (x_finsub, "", 100);
@@ -845,25 +845,8 @@ yVAR_round (
 {
    /*---(locals)-----------+-----------+-*/
    int       i         = 0;            /* loop iterator -- characters         */
-   int       j         = 0;            /* loop iterator -- decimals           */
-   regex_t   x_comp;                   /* REGEX structure                     */
-   regmatch_t  x_pmatch[1];            /* REGEX match structure               */
-   int       x_beg;                    /* REGEX found begin marker            */
-   int       x_end;                    /* REGEX found end marker              */
-   int       x_len;                    /* REGEX found length                  */
    int       rc        = 0;            /* generic return code                 */
-   int       x_off     = 0;
-   int       decs      = 0;
-   int       nums      = 0;
-   int       x_pos;
-   int       mods      = 0;
    char      mods_str[20] = "";
-   double    x_value = 0.0;
-   double    x_inc   = 1.0;
-   double    val_new = 0.0;
-   char      x_mod    [100];
-   char      x_neg    [100];
-   char      x_fin    [100];
    /*---(locals)--------+--------------+-*/
    char        rce      = -20;
    /*---(header)-------------------------*/
@@ -895,8 +878,8 @@ yVAR_round (
          if (yVAR_expstr[i] >  'z')  yVAR_modstr[i] = '*';
       }
    }
-   /*> snprintf(mods_str, 20, ">> (%1d) ", s_nmods);                                  <* 
-    *> strncat(yVAR_modstr, mods_str, 499);                                           <*/
+   snprintf (mods_str, 20, ">> (%1d) ", s_nmods);
+   strncat  (yVAR_modstr, mods_str, 499);
    /*---(complete)-------------------------------------*/
    if (strcmp(yVAR_actstr, yVAR_expstr) == 0) return s_nmods;
    return -30;
