@@ -830,7 +830,8 @@ yVAR__check        (void)
       yVAR_expstr [s_beg + s_offset + i] = x_finsub [i];
    }
    DEBUG_YVAR   printf ("   MODDED    = <<%s>>\n", yVAR_expstr);
-   s_offset += s_end;
+   /*> s_offset += s_end;                                                             <*/
+   /*> DEBUG_YVAR   printf ("   s_offset now %d\n", s_offset);                        <*/
    /*---(complete)-----------------------*/
    return 0;
 }
@@ -862,9 +863,11 @@ yVAR_round (
    if (rc < 0)                                        return rc;
    /*---(process matches)--------------------*/
    while (rc == 0) {
-      yVAR__check ();
+      rc = yVAR__check ();
+      if (rc < 0)               return rc;
       s_offset += s_end;
-      yVAR__match  ();
+      rc = yVAR__match  ();
+      if (rc < 0)               break;
       if (s_offset >= s_explen) break;
    }
    DEBUG_YVAR   printf ("done\n\n");
