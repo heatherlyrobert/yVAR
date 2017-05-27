@@ -13,6 +13,12 @@
 #include    "yVAR.h"
 
 
+/*===[[ VERSION ]]========================================*/
+/* rapidly evolving version number to aid with visual change confirmation     */
+#define YVAR_VER_NUM   "1.0i"
+#define YVAR_VER_TXT   "moved to make_program makefile enhancement"
+
+
 
 typedef struct cLOCAL tLOCAL;
 struct cLOCAL {

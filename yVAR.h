@@ -124,12 +124,6 @@
 #define YVAR_HGUARD loaded
 
 
-/*===[[ VERSION ]]========================================*/
-/* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0h"
-#define YVAR_VER_TXT   "fixed a miss for multiple match/change in u_round logic"
-
-
 char      yVAR_expstr   [500];
 char      yVAR_actstr   [500];
 char      yVAR_modstr   [500];
