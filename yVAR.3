@@ -142,12 +142,14 @@ indicates the nature of the comparision and must be one of the following...
    2 ) i_not          : actual value is not equal to expected
    3 ) i_greater      : actual value is greater than expected
    4 ) i_lesser       : actual value is less than expected
-   5 ) i_digits       : actual contains expected number of digits
-   6 ) i_exists       : actual not null/empty/zero
-   7 ) i_1percent     : actual matches expected +/- 1%
-   8 ) i_5percent     : actual matches expected +/- 5%
-   9 ) i_PASS         : greater than or equal to zero
-   10) i_FAIL         : less than zero
+   5 ) i_greater      : actual value is greater than expected
+   6 ) i_lesser       : actual value is less than expected
+   7 ) i_digits       : actual contains expected number of digits
+   8 ) i_exists       : actual not null/empty/zero
+   9 ) i_1percent     : actual matches expected +/- 1%
+   10) i_5percent     : actual matches expected +/- 5%
+   11) i_pass         : greater than or equal to zero
+   12) i_fail         : less than zero
 .sp
 .B yVAR_real,
 takes a test type and two values, expected and actual.   the test type

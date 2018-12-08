@@ -249,53 +249,61 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
     * it is expected that 85% of calls will be s_equal, 10% s_not, then the rest
     * so, put them in that order to make as few strcmp as possible for speed
     */
-   /*---(locals)-------------------------*/
-   int       x_code    = -666;
-   int       rc        = 0;
-   regex_t   x_comp;
+   /*---(locals)-----------+-----+-----+-*/
+   int         x_code      = -666;
+   int         rc          =    0;
+   int         i           =    0;
+   regex_t     x_comp;
+   char        x_actual    [100];
    /*---(defenses)-----------------------*/
    if (a_test     == NULL  ) return x_code - 1;
    if (a_expect   == NULL  ) return x_code - 2;
    if (a_actual   == NULL  ) return x_code - 3;
    if (a_expect   <  0x1000) return x_code - 4;
    if (a_actual   <  0x1000) return x_code - 5;
+   /*---(block masked areas)-------------*/
+   strcpy (x_actual, a_actual);
+   for (i = 0; i < LEN_RECD; ++i) {
+      if (a_expect [i] == NULL || x_actual [i] == NULL)  break;
+      if (a_expect [i] == '¬')  x_actual [i] = '¬';
+   }
    /*---(normal tests)-------------------*/
    if    (strcmp(a_test, "s_equal")   == 0) {
       x_code   = -10;
-      if (strcmp(a_actual, a_expect) == 0)    x_code = -(x_code);
+      if (strcmp(x_actual, a_expect) == 0)    x_code = -(x_code);
    } else if (strcmp(a_test, "s_not")     == 0) {
       x_code   = -11;
-      if (strcmp(a_actual, a_expect) != 0)    x_code = -(x_code);
+      if (strcmp(x_actual, a_expect) != 0)    x_code = -(x_code);
    } else if (strcmp(a_test, "s_empty")   == 0) {
       x_code   = -12;
-      if (strlen(a_actual) == 0 ) x_code = -(x_code);
+      if (strlen(x_actual) == 0 ) x_code = -(x_code);
    } else if (strcmp(a_test, "s_exists")  == 0) {
       x_code   = -13;
-      if (strlen(a_actual) > 0 ) x_code = -(x_code);
+      if (strlen(x_actual) > 0 ) x_code = -(x_code);
    } else if (strcmp(a_test, "s_length")  == 0) {
       x_code   = -14;
-      if ((int) strlen(a_actual) == atoi(a_expect)) x_code = -(x_code);
+      if ((int) strlen(x_actual) == atoi(a_expect)) x_code = -(x_code);
    } else if (strcmp(a_test, "s_greater") == 0) {
       x_code   = -15;
-      if (strcmp(a_actual, a_expect) > 0)    x_code = -(x_code);
+      if (strcmp(x_actual, a_expect) > 0)    x_code = -(x_code);
    } else if (strcmp(a_test, "s_lesser")  == 0) {
       x_code   = -16;
-      if (strcmp(a_actual, a_expect) < 0)    x_code = -(x_code);
+      if (strcmp(x_actual, a_expect) < 0)    x_code = -(x_code);
    }
    /*---(search tests)-------------------*/
    else if   (strcmp(a_test, "s_sub")     == 0) {
       x_code   = -17;
-      if (strstr(a_actual, a_expect) != NULL) x_code = -(x_code);
+      if (strstr(x_actual, a_expect) != NULL) x_code = -(x_code);
    } else if (strcmp(a_test, "s_entry")     == 0) {
       x_code   = -18;
-      if (strstr(a_expect, a_actual) != NULL) x_code = -(x_code);
+      if (strstr(a_expect, x_actual) != NULL) x_code = -(x_code);
    }
    /*---(regex test)---------------------*/
    else if   (strcmp(a_test, "s_regex")    == 0) {
       x_code   = -19;
       rc    = regcomp(&x_comp, a_expect, REG_EXTENDED);
       if (rc == 0) {
-         rc    = regexec(&x_comp, a_actual, 0, NULL, 0);
+         rc    = regexec(&x_comp, x_actual, 0, NULL, 0);
          if (rc == 0) x_code = -(x_code);
       }
       regfree(&x_comp);
@@ -316,12 +324,14 @@ yVAR_integer (     /*  PURPOSE = STANDARD INTEGER TESTING (for yUNIT+)        */
     *    2) i_not          : actual   != expected
     *    3) i_greater      : actual   >  expected
     *    4) i_lesser       : actual   <  expected
-    *    5) i_digits       : actual contains expected number of digits
-    *    6) i_exists       : actual not null/empty/zero
-    *    7) i_1percent     : actual matches expected +/- 1%
-    *    8) i_5percent     : actual matches expected +/- 5%
-    *    9) i_PASS         : greater than or equal to zero
-    *   10) i_FAIL         : less than zero
+    *    5) i_gtequal      : actual   >= expected
+    *    6) i_ltequal      : actual   <= expected
+    *    7) i_digits       : actual contains expected number of digits
+    *    8) i_exists       : actual not null/empty/zero
+    *    9) i_1percent     : actual matches expected +/- 1%
+    *   10) i_5percent     : actual matches expected +/- 5%
+    *   11) i_PASS         : greater than or equal to zero
+    *   12) i_FAIL         : less than zero
     *
     * it is expected that 85% of calls will be s_equal, 10% s_not, then the rest
     */
@@ -347,6 +357,12 @@ yVAR_integer (     /*  PURPOSE = STANDARD INTEGER TESTING (for yUNIT+)        */
    } else if (strcmp(a_test, "i_lesser")   == 0) {
       x_code   = -23;
       if (a_actual < a_expect)     x_code = -(x_code);
+   } else if (strcmp(a_test, "i_gtequal")  == 0) {
+      x_code   = -24;
+      if (a_actual >= a_expect)     x_code = -(x_code);
+   } else if (strcmp(a_test, "i_ltequal")  == 0) {
+      x_code   = -25;
+      if (a_actual <= a_expect)     x_code = -(x_code);
    }
    /*---(specialty tests)----------------*/
    else if   (strcmp(a_test, "i_digits")   == 0) {
@@ -371,10 +387,10 @@ yVAR_integer (     /*  PURPOSE = STANDARD INTEGER TESTING (for yUNIT+)        */
             a_actual <= a_expect * 1.05)  x_code = -(x_code);
    }
    /*---(return code tests)--------------*/
-   else if   (strcmp(a_test, "i_PASS" )     == 0) {
+   else if   (strcmp(a_test, "i_pass" )     == 0) {
       x_code   = -25;
       if (a_actual >= 0)           x_code = -(x_code);
-   } else if (strcmp(a_test, "i_FAIL" )     == 0) {
+   } else if (strcmp(a_test, "i_fail" )     == 0) {
       x_code   = -26;
       if (a_actual < 0)            x_code = -(x_code);
    }

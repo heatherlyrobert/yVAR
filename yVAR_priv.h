@@ -15,8 +15,8 @@
 
 /*===[[ VERSION ]]========================================*/
 /* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0i"
-#define YVAR_VER_TXT   "moved to make_program makefile enhancement"
+#define YVAR_VER_NUM   "1.0j"
+#define YVAR_VER_TXT   "added masking char to string comparisons"
 
 
 
@@ -28,6 +28,8 @@ struct cLOCAL {
 };
 extern  tLOCAL its;
 #define     DEBUG_YVAR     if (its.debug == 'y')
+
+#define     LEN_RECD       2000
 
 
 char        yVAR_testquiet     (void);
