@@ -15,8 +15,8 @@
 
 /*===[[ VERSION ]]========================================*/
 /* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0j"
-#define YVAR_VER_TXT   "added masking char to string comparisons"
+#define YVAR_VER_NUM   "1.0k"
+#define YVAR_VER_TXT   "little standardizing of string lengths"
 
 
 

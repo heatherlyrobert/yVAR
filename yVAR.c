@@ -8,7 +8,6 @@ tLOCAL    its;
 
 
 
-
 /*====================------------------------------------====================*/
 /*===----                           utility                            ----===*/
 /*====================------------------------------------====================*/
@@ -254,7 +253,7 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
    int         rc          =    0;
    int         i           =    0;
    regex_t     x_comp;
-   char        x_actual    [100];
+   char        x_actual    [LEN_RECD];
    /*---(defenses)-----------------------*/
    if (a_test     == NULL  ) return x_code - 1;
    if (a_expect   == NULL  ) return x_code - 2;
@@ -341,7 +340,7 @@ yVAR_integer (     /*  PURPOSE = STANDARD INTEGER TESTING (for yUNIT+)        */
     */
    /*---(locals)-------------------------*/
    int       x_code    = -666;
-   char      x_temp[100] = "";
+   char      x_temp[LEN_RECD] = "";
    /*---(defenses)-----------------------*/
    if (a_test     == NULL) return x_code - 1;
    /*---(normal tests)-------------------*/
@@ -367,7 +366,7 @@ yVAR_integer (     /*  PURPOSE = STANDARD INTEGER TESTING (for yUNIT+)        */
    /*---(specialty tests)----------------*/
    else if   (strcmp(a_test, "i_digits")   == 0) {
       x_code   = -27;
-      snprintf(x_temp, 100, "%ld", a_actual);
+      snprintf(x_temp, LEN_RECD, "%ld", a_actual);
       if ((int) strlen(x_temp) == a_expect)     x_code = -(x_code);
    } else if (strcmp(a_test, "i_zero"  )     == 0) {
       x_code   = -28;
@@ -503,7 +502,7 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
    int       pos;
    int       mods      = 0;
    char      mods_str[20] = "";
-   char      x_expect[100], x_actual[100];
+   char      x_expect[LEN_RECD], x_actual[LEN_RECD];
    int       rc        = 0;
    int   x_code   = 0;
    int  x_range = 1;
@@ -559,8 +558,8 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
          len = e - s;
          /*---(prepare for substring)-----------*/
          nums = decs = is_dec = 0;
-         strncpy(x_expect, "", 100);
-         strncpy(x_actual, "", 100);
+         strncpy(x_expect, "", LEN_RECD);
+         strncpy(x_actual, "", LEN_RECD);
          /*---(process the substring)-----------*/
          for (i = 0; i < len; ++i) {
             pos = s + x_off + i;
@@ -573,8 +572,8 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
             x_actual[i] = a_actual[pos];
          }
          /*---(clean up the substring)----------*/
-         strncat(x_expect, "\0", 100);
-         strncat(x_actual, "\0", 100);
+         strncat(x_expect, "\0", LEN_RECD);
+         strncat(x_actual, "\0", LEN_RECD);
          /*---(deal with differences)-----------*/
          if (strcmp(x_expect, x_actual) != 0) {
             float val_one = atof(x_expect);
