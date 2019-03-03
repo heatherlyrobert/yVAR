@@ -1,22 +1,4 @@
 /*===[[ START HDOC ]]=========================================================*/
-/*===[[ HEADER ]]==================================================#
-
- *   focus         : (PS) programming support
- *   niche         : (de) defense
- *   application   : yVAR
- *   purpose       : provide simple, consistent variable testing services
- *
- *   base_system   : gnu/linux   (powerful, ubiquitous, technical, and hackable)
- *   lang_name     : gnu/ansi-c  (right, just, best, standard, and everlasting)
- *   dependencies  : none
- *   size goal     : small (less than 1,000 slocL)
- *
- *   author        : the_heatherlys
- *   created       : 2008-07 (from bash versions of 2007-05)
- *   priorities    : direct, simple, brief, vigorous, and lucid (h.w. fowler)
- *   end goal      : loosely coupled, strict interface, maintainable, portable
- *
- */
 /*===[[ SUMMARY ]]=================================================#
 
  *   yVAR is a set of shared functions for variable existance, typing, and value

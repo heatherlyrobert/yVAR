@@ -2,6 +2,31 @@
 #ifndef YVAR_priv_hguard
 #define YVAR_priv_hguard loaded
 
+
+
+#define     P_FOCUS     "PS (programming support)"
+#define     P_NICHE     "de (data defenses)"
+#define     P_PURPOSE   "provide simple, consistent variable testing services"
+
+#define     P_NAMESAKE  "keres-psychostasia (judgement)"
+#define     P_HERITAGE  "female spirits of violent and cruel death, choosing righteous"
+#define     P_IMAGERY   "fanged, taloned women in bloody garments, flying over the battlefield"
+
+#define     P_SYSTEM    "gnu/linux   (powerful, ubiquitous, technical, and hackable)"
+#define     P_LANGUAGE  "ansi-c      (wicked, limitless, universal, and everlasting)"
+#define     P_CODESIZE  "small       (appoximately 1,000 slocl)"
+
+#define     P_AUTHOR    "heatherlyrobert"
+#define     P_CREATED   "2008-07"
+#define     P_DEPENDS   "none"
+
+#define     P_VERNUM    "1.0j"
+#define     P_VERTXT    "made ¬ matching be able to handle past end of actual string"
+
+
+
+
+
 #define    _GNU_SOURCE          /* to allow asprintf()                        */
 #include <stdio.h>        /* printf(), snprintf()                             */
 #include <stdlib.h>
@@ -15,8 +40,8 @@
 
 /*===[[ VERSION ]]========================================*/
 /* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0k"
-#define YVAR_VER_TXT   "little standardizing of string lengths"
+#define YVAR_VER_NUM   "1.0j"
+#define YVAR_VER_TXT   "made ¬ matching be able to handle past end of actual string"
 
 
 

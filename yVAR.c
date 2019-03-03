@@ -3,7 +3,6 @@
 #include "yVAR_priv.h"
 
 
-
 tLOCAL    its;
 
 
@@ -28,7 +27,7 @@ yVAR_version       (void)
 #else
    strncpy (t, "[unknown    ]", 15);
 #endif
-   snprintf (yVAR_ver, 100, "%s   %s : %s\n", t, YVAR_VER_NUM, YVAR_VER_TXT);
+   snprintf (yVAR_ver, 100, "%s   %s : %s\n", t, P_VERNUM, P_VERTXT);
    return yVAR_ver;
 }
 
@@ -254,6 +253,8 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
    int         i           =    0;
    regex_t     x_comp;
    char        x_actual    [LEN_RECD];
+   char        x_expect    [LEN_RECD];
+   int         x_len       =    0;
    /*---(defenses)-----------------------*/
    if (a_test     == NULL  ) return x_code - 1;
    if (a_expect   == NULL  ) return x_code - 2;
@@ -262,17 +263,20 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
    if (a_actual   <  0x1000) return x_code - 5;
    /*---(block masked areas)-------------*/
    strcpy (x_actual, a_actual);
-   for (i = 0; i < LEN_RECD; ++i) {
-      if (a_expect [i] == NULL || x_actual [i] == NULL)  break;
-      if (a_expect [i] == '¬')  x_actual [i] = '¬';
+   strcpy (x_expect, a_expect);
+   x_len = strlen (a_actual);
+   x_expect [x_len] = '\0';
+   for (i = 0; i < x_len; ++i) {
+      if (x_expect [i] == NULL || x_actual [i] == NULL)  break;
+      if (x_expect [i] == '¬')  x_actual [i] = '¬';
    }
    /*---(normal tests)-------------------*/
    if    (strcmp(a_test, "s_equal")   == 0) {
       x_code   = -10;
-      if (strcmp(x_actual, a_expect) == 0)    x_code = -(x_code);
+      if (strcmp(x_actual, x_expect) == 0)    x_code = -(x_code);
    } else if (strcmp(a_test, "s_not")     == 0) {
       x_code   = -11;
-      if (strcmp(x_actual, a_expect) != 0)    x_code = -(x_code);
+      if (strcmp(x_actual, x_expect) != 0)    x_code = -(x_code);
    } else if (strcmp(a_test, "s_empty")   == 0) {
       x_code   = -12;
       if (strlen(x_actual) == 0 ) x_code = -(x_code);
@@ -281,26 +285,26 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
       if (strlen(x_actual) > 0 ) x_code = -(x_code);
    } else if (strcmp(a_test, "s_length")  == 0) {
       x_code   = -14;
-      if ((int) strlen(x_actual) == atoi(a_expect)) x_code = -(x_code);
+      if ((int) strlen(x_actual) == atoi(x_expect)) x_code = -(x_code);
    } else if (strcmp(a_test, "s_greater") == 0) {
       x_code   = -15;
-      if (strcmp(x_actual, a_expect) > 0)    x_code = -(x_code);
+      if (strcmp(x_actual, x_expect) > 0)    x_code = -(x_code);
    } else if (strcmp(a_test, "s_lesser")  == 0) {
       x_code   = -16;
-      if (strcmp(x_actual, a_expect) < 0)    x_code = -(x_code);
+      if (strcmp(x_actual, x_expect) < 0)    x_code = -(x_code);
    }
    /*---(search tests)-------------------*/
    else if   (strcmp(a_test, "s_sub")     == 0) {
       x_code   = -17;
-      if (strstr(x_actual, a_expect) != NULL) x_code = -(x_code);
+      if (strstr(x_actual, x_expect) != NULL) x_code = -(x_code);
    } else if (strcmp(a_test, "s_entry")     == 0) {
       x_code   = -18;
-      if (strstr(a_expect, x_actual) != NULL) x_code = -(x_code);
+      if (strstr(x_expect, x_actual) != NULL) x_code = -(x_code);
    }
    /*---(regex test)---------------------*/
    else if   (strcmp(a_test, "s_regex")    == 0) {
       x_code   = -19;
-      rc    = regcomp(&x_comp, a_expect, REG_EXTENDED);
+      rc    = regcomp(&x_comp, x_expect, REG_EXTENDED);
       if (rc == 0) {
          rc    = regexec(&x_comp, x_actual, 0, NULL, 0);
          if (rc == 0) x_code = -(x_code);
