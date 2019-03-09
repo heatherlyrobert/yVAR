@@ -264,12 +264,20 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
    /*---(block masked areas)-------------*/
    strcpy (x_actual, a_actual);
    strcpy (x_expect, a_expect);
+   /*> printf ("expect  %2d[%s]\n", strlen (x_expect), x_expect);                     <* 
+    *> printf ("actual  %2d[%s]\n", strlen (x_actual), x_actual);                     <*/
+   /*---(transfer masking)---------------*/
    x_len = strlen (a_actual);
-   x_expect [x_len] = '\0';
    for (i = 0; i < x_len; ++i) {
       if (x_expect [i] == NULL || x_actual [i] == NULL)  break;
       if (x_expect [i] == '¬')  x_actual [i] = '¬';
    }
+   /*---(truncate masking)---------------*/
+   for (i = strlen (x_expect) - 1; i >= x_len; --i) {
+      if (x_expect [i] == '¬')  x_expect [i] = '\0';
+   }
+   /*> printf ("  expect  %2d[%s]\n", strlen (x_expect), x_expect);                   <* 
+    *> printf ("  actual  %2d[%s]\n", strlen (x_actual), x_actual);                   <*/
    /*---(normal tests)-------------------*/
    if    (strcmp(a_test, "s_equal")   == 0) {
       x_code   = -10;

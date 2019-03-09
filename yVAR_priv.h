@@ -34,14 +34,15 @@
 #include <regex.h>        /* regcomp(), regexec(), regfree()                  */
 
 
+#include    <yURG.h>                    /* heatherly debugging filter          */
 #include    <yLOG.h>                    /* heatherly program logger            */
 #include    "yVAR.h"
 
 
 /*===[[ VERSION ]]========================================*/
 /* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0j"
-#define YVAR_VER_TXT   "made ¬ matching be able to handle past end of actual string"
+#define YVAR_VER_NUM   "1.0k"
+#define YVAR_VER_TXT   "added string testing with masking to unit test, fixed issue"
 
 
 
