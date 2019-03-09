@@ -20,8 +20,8 @@
 #define     P_CREATED   "2008-07"
 #define     P_DEPENDS   "none"
 
-#define     P_VERNUM    "1.0j"
-#define     P_VERTXT    "made ¬ matching be able to handle past end of actual string"
+#define     P_VERNUM    "1.0k"
+#define     P_VERTXT    "added string testing with masking to unit test, fixed issue"
 
 
 
@@ -38,11 +38,6 @@
 #include    <yLOG.h>                    /* heatherly program logger            */
 #include    "yVAR.h"
 
-
-/*===[[ VERSION ]]========================================*/
-/* rapidly evolving version number to aid with visual change confirmation     */
-#define YVAR_VER_NUM   "1.0k"
-#define YVAR_VER_TXT   "added string testing with masking to unit test, fixed issue"
 
 
 
