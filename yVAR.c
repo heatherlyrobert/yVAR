@@ -546,9 +546,11 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
    if   (strcmp(a_test, "u_round")     == 0 ||
          strcmp(a_test, "u_round2")    == 0 ||
          strcmp(a_test, "u_round5")    == 0 ||
+         strcmp(a_test, "u_round6")    == 0 ||
          strcmp(a_test, "u_round9")    == 0) {
       if      (strcmp(a_test, "u_round2")    == 0) x_range = 2;
       else if (strcmp(a_test, "u_round5")    == 0) x_range = 5;
+      else if (strcmp(a_test, "u_round6")    == 0) x_range = 6;
       else if (strcmp(a_test, "u_round9")    == 0) x_range = 9;
       x_code   = -30;
       /*---(check for agreement early)---------------*/
@@ -692,11 +694,11 @@ yVAR__save         (
    int         rc          = 0;             /* generic return code            */
    int         i           = 0;             /* generic iterator               */
    /*---(header)-------------------------*/
-   DEBUG_YVAR   printf ("\n");
-   DEBUG_YVAR   printf ("yVAR_round begin with three arguments\n");
-   DEBUG_YVAR   printf ("a_test      = <<%s>>\n" , a_test);
-   DEBUG_YVAR   printf ("a_expect    = <<%s>>\n" , a_expect);
-   DEBUG_YVAR   printf ("a_actual    = <<%s>>\n" , a_actual);
+   /*> DEBUG_YVAR   printf ("\n");                                                    <*/
+   /*> DEBUG_YVAR   printf ("yVAR_round begin with three arguments\n");               <*/
+   /*> DEBUG_YVAR   printf ("a_test      = <<%s>>\n" , a_test);                       <*/
+   /*> DEBUG_YVAR   printf ("a_expect    = <<%s>>\n" , a_expect);                     <*/
+   /*> DEBUG_YVAR   printf ("a_actual    = <<%s>>\n" , a_actual);                     <*/
    /*---(basic defenses)-----------------*/
    --rce;  if (a_test     == NULL)                    return rce;
    --rce;  if (a_expect   == NULL)                    return rce;
@@ -707,7 +709,7 @@ yVAR__save         (
    if (a_test [8] == 'z')  s_range = 0;
    else                    s_range = a_test[8] - '0';
    --rce;  if (s_range < 0 || s_range > 9)            return rce;
-   DEBUG_YVAR   printf ("range is    = */- %d\n", s_range);
+   /*> DEBUG_YVAR   printf ("range is    = +/- %d\n", s_range);                       <*/
    /*---(make local copies)--------------*/
    s_explen  = strlen (a_expect);
    s_actlen  = strlen (a_actual);
@@ -764,17 +766,17 @@ yVAR__match        (void)
    s_beg   = s_match [0].rm_so;
    s_end   = s_match [0].rm_eo;
    s_len   = s_end - s_beg;
-   DEBUG_YVAR   printf ("   found match from %d to %d, len %d -----------------------\n", s_beg, s_end, s_len);
-   DEBUG_YVAR   printf ("   yVAR_expstr = <<%s>>\n" , yVAR_expstr);
-   DEBUG_YVAR   printf ("   yVAR_actstr = <<%s>>\n" , yVAR_actstr);
-   DEBUG_YVAR   printf ("                   ");
+   /*> DEBUG_YVAR   printf ("   found match from %d to %d, len %d -----------------------\n", s_beg, s_end, s_len);   <*/
+   /*> DEBUG_YVAR   printf ("   yVAR_expstr = <<%s>>\n" , yVAR_expstr);               <*/
+   /*> DEBUG_YVAR   printf ("   yVAR_actstr = <<%s>>\n" , yVAR_actstr);               <*/
+   /*> DEBUG_YVAR   printf ("                   ");                                   <*/
    for (i = 0; i < s_beg + s_offset; ++i) { 
-      DEBUG_YVAR   printf (" ");
+      /*> DEBUG_YVAR   printf (" ");                                                  <*/
    }
    for (i = 0; i < s_len; ++i) { 
-      DEBUG_YVAR   printf ("-");
+      /*> DEBUG_YVAR   printf ("-");                                                  <*/
    }
-   DEBUG_YVAR   printf ("\n");
+   /*> DEBUG_YVAR   printf ("\n");                                                    <*/
    /*---(process the match)---------------*/
    strncpy (s_expsub, "", 100);
    strncpy (s_actsub, "", 100);
@@ -791,11 +793,11 @@ yVAR__match        (void)
       s_expsub [i] = yVAR_expstr [x_pos];
       s_actsub [i] = yVAR_actstr [x_pos];
    }
-   DEBUG_YVAR   printf ("   s_len = %d, decs = %d\n", s_len, s_dec);
+   /*> DEBUG_YVAR   printf ("   s_len = %d, decs = %d\n", s_len, s_dec);              <*/
    strncat (s_expsub, "\0", 100);
    strncat (s_actsub, "\0", 100);
-   DEBUG_YVAR   printf ("   expsub      = <<%s>>\n", s_expsub);
-   DEBUG_YVAR   printf ("   actsub      = <<%s>>\n", s_actsub);
+   /*> DEBUG_YVAR   printf ("   expsub      = <<%s>>\n", s_expsub);                   <*/
+   /*> DEBUG_YVAR   printf ("   actsub      = <<%s>>\n", s_actsub);                   <*/
    /*---(complete)-----------------------*/
    return 0;
 }
@@ -816,12 +818,12 @@ yVAR__check        (void)
    char        x_finsub    [100];
    /*---(quick check)--------------------*/
    if (strcmp (s_expsub, s_actsub) == 0) {
-      DEBUG_YVAR   printf ("   already matches, done\n");
+      /*> DEBUG_YVAR   printf ("   already matches, done\n");                         <*/
       return 0;
    }
    /*---(initialize)---------------------*/
    x_base    = atof (s_expsub);
-   DEBUG_YVAR   printf ("   ranging   = %d to %d\n", -s_range, s_range);
+   /*> DEBUG_YVAR   printf ("   ranging   = %d to %d\n", -s_range, s_range);          <*/
    /*---(check each in range)------------*/
    for (i = -s_range; i <= s_range; ++i) {
       x_new = atof (s_expsub);
@@ -829,34 +831,34 @@ yVAR__check        (void)
       x_inc = i;
       for (j = 0; j < s_dec; ++j)  x_inc /= 10;
       x_new = x_base + x_inc;
-      DEBUG_YVAR   printf ("   dec = %d, chg = %2d, base = %10lf, inc = %10lf, new = %10lf\n", s_dec, i, x_base, x_inc, x_new);
+      /*> DEBUG_YVAR   printf ("   dec = %d, chg = %2d, base = %10lf, inc = %10lf, new = %10lf\n", s_dec, i, x_base, x_inc, x_new);   <*/
       snprintf (x_chksub, 100, "%*.*lf", s_len, s_dec, x_new);
       snprintf (x_negsub, 100, "%*.*lf", s_len, s_dec, x_new - 0.000000001);
-      DEBUG_YVAR   printf ("   checking  = <<%s>>  :: ", x_chksub);
+      /*> DEBUG_YVAR   printf ("   checking  = <<%s>>  :: ", x_chksub);               <*/
       /*---(test the options)-------------*/
       strncpy (x_finsub, "", 100);
       if (strcmp (x_chksub, s_actsub) == 0) {
-         DEBUG_YVAR   printf ("match\n");
+         /*> DEBUG_YVAR   printf ("match\n");                                         <*/
          strncpy (x_finsub, x_chksub, 100);
          break;
       } else if (strcmp(x_negsub, s_actsub) == 0) {
-         DEBUG_YVAR   printf ("match neg zero\n");
+         /*> DEBUG_YVAR   printf ("match neg zero\n");                                <*/
          strncpy (x_finsub, x_negsub, 100);
          break;
       } else {
-         DEBUG_YVAR   printf ("not a match\n");
+         /*> DEBUG_YVAR   printf ("not a match\n");                                   <*/
       }
 
    }
    --rce;  if (strcmp (x_finsub, "") == 0) {
-      DEBUG_YVAR   printf ("NO MATCH\n");
+      /*> DEBUG_YVAR   printf ("NO MATCH\n");                                         <*/
       return rce;
    }
    /*---(update expect)------------------*/
    for (i = 0; i < s_len; ++i) {
       yVAR_expstr [s_beg + s_offset + i] = x_finsub [i];
    }
-   DEBUG_YVAR   printf ("   MODDED    = <<%s>>\n", yVAR_expstr);
+   /*> DEBUG_YVAR   printf ("   MODDED    = <<%s>>\n", yVAR_expstr);                  <*/
    /*> s_offset += s_end;                                                             <*/
    /*> DEBUG_YVAR   printf ("   s_offset now %d\n", s_offset);                        <*/
    /*---(complete)-----------------------*/
@@ -882,7 +884,7 @@ yVAR_round (
    if (rc < 0)                                        return rc;
    /*---(quick shortcut check)----------------------------*/
    if (strcmp (yVAR_actstr, yVAR_expstr) == 0) {
-      DEBUG_YVAR   printf ("   already equal, no mods required (shortcut)\n");
+      /*> DEBUG_YVAR   printf ("   already equal, no mods required (shortcut)\n");    <*/
       return 0;
    }
    /*---(initial RE run)---------------------*/
@@ -897,7 +899,7 @@ yVAR_round (
       if (rc < 0)               break;
       if (s_offset >= s_explen) break;
    }
-   DEBUG_YVAR   printf ("done\n\n");
+   /*> DEBUG_YVAR   printf ("done\n\n");                                              <*/
    regfree (&s_regex);
    /*---(finish)---------------------------------------*/
    for (i = 0; i < s_explen; ++i) {

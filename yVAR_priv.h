@@ -20,8 +20,8 @@
 #define     P_CREATED   "2008-07"
 #define     P_DEPENDS   "none"
 
-#define     P_VERNUM    "1.0k"
-#define     P_VERTXT    "added string testing with masking to unit test, fixed issue"
+#define     P_VERNUM    "1.0l"
+#define     P_VERTXT    "added u_round/6 to help with a unit test"
 
 
 
