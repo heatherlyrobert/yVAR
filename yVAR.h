@@ -135,9 +135,9 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
 
 int                /*  return  = pos=good, neg=bad, 0=unknown                 */
 yVAR_ustring (     /*  PURPOSE = complex string testing for yUNIT             */
-      char     *a_test,          /*  name of the test                         */
-      char     *a_expect,        /*  expected result                          */
-      char     *a_actual)        /*  actual result                            */
+      cchar    *a_test,          /*  name of the test                         */
+      cchar    *a_expect,        /*  expected result                          */
+      cchar    *a_actual)        /*  actual result                            */
 ;
 
 int                /*  return  = pos=good, neg=bad, 0=unknown                 */

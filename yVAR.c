@@ -496,9 +496,9 @@ static void      o___ROUNDING________________o (void) {;}
 
 int                /*  return  = pos=good, neg=bad, 0=unknown                 */
 yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
-      char     *a_test,          /*  name of the test                         */
-      char     *a_expect,        /*  expected result                          */
-      char     *a_actual)        /*  actual result                            */
+      cchar    *a_test,          /*  name of the test                         */
+      cchar    *a_expect,        /*  expected result                          */
+      cchar    *a_actual)        /*  actual result                            */
 {
    /*---(locals)------------------------------------------*/
    int nl = 0;
@@ -514,6 +514,7 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
    int       pos;
    int       mods      = 0;
    char      mods_str[20] = "";
+   char      m_expect[LEN_RECD], m_actual[LEN_RECD];
    char      x_expect[LEN_RECD], x_actual[LEN_RECD];
    int       rc        = 0;
    int   x_code   = 0;
@@ -521,21 +522,39 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
    regex_t     x_comp;
    regmatch_t  x_pmatch[1];
    char x_act[5];
+   int         x_len       =    0;
+   /*---(block masked areas)-------------*/
+   strcpy (m_actual, a_actual);
+   strcpy (m_expect, a_expect);
+   /*> printf ("expect  %2d[%s]\n", strlen (m_expect), m_expect);                     <* 
+    *> printf ("actual  %2d[%s]\n", strlen (m_actual), m_actual);                     <*/
    /*---(fix new lines)-----------------------------------*/
-   i = strlen(a_actual) - 1;
-   if (a_actual[i] == '\n') {
-      a_actual[i] = '\0';
+   i = strlen(m_actual) - 1;
+   if (m_actual[i] == '\n') {
+      m_actual[i] = '\0';
       ++nl;
    }
-   for (i = 0; i < (int) strlen(a_actual); ++i) {
-      if (a_actual[i] == '\n') {
-         a_actual[i] = ' ';
+   for (i = 0; i < (int) strlen(m_actual); ++i) {
+      if (m_actual[i] == '\n') {
+         m_actual[i] = ' ';
          ++nl;
       }
    }
+   /*---(transfer masking)---------------*/
+   x_len = strlen (m_actual);
+   for (i = 0; i < x_len; ++i) {
+      if (m_expect [i] == NULL || m_actual [i] == NULL)  break;
+      if (m_expect [i] == '¬')  m_actual [i] = '¬';
+   }
+   /*---(truncate masking)---------------*/
+   for (i = strlen (m_expect) - 1; i >= x_len; --i) {
+      if (m_expect [i] == '¬')  m_expect [i] = '\0';
+   }
+   printf ("  expect  %2d[%s]\n", strlen (m_expect), m_expect);
+   printf ("  actual  %2d[%s]\n", strlen (m_actual), m_actual);
    /*---(defensive logic)---------------------------------*/
-   len_exp  = strlen(a_expect);
-   len_act  = strlen(a_actual);
+   len_exp  = strlen(m_expect);
+   len_act  = strlen(m_actual);
    if (len_exp != len_act)   return -1;
    if (len_act == 0)         return -2;
    if (strlen(a_test) < 4)   return -3;
@@ -554,7 +573,7 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
       else if (strcmp(a_test, "u_round9")    == 0) x_range = 9;
       x_code   = -30;
       /*---(check for agreement early)---------------*/
-      if (strcmp(a_actual, a_expect) == 0) {
+      if (strcmp(m_actual, m_expect) == 0) {
          x_code = -(x_code);
          return x_code;
       }
@@ -563,7 +582,7 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
       rc = regcomp(&x_comp, " (-)?(0|[1-9][0-9]*)([.][0-9]+)?", REG_EXTENDED);
       if (rc != 0) return -7;
       /*---(initial RE run)---------------------*/
-      rc = regexec(&x_comp, a_expect, 1, x_pmatch, 0);
+      rc = regexec(&x_comp, m_expect, 1, x_pmatch, 0);
       /*---(process matches)--------------------*/
       while (rc == 0) {
          /*---(get match information)-----------*/
@@ -577,13 +596,13 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
          /*---(process the substring)-----------*/
          for (i = 0; i < len; ++i) {
             pos = s + x_off + i;
-            ch = a_expect[pos];
+            ch = m_expect[pos];
             if (is_dec == 1) ++decs;
             if (ch == '.')   is_dec = 1;
             if (ch != ' ')   ++nums;
-            /*> printf("%c", a_expect[s + x_off + i]);                                <*/
-            x_expect[i] = a_expect[pos];
-            x_actual[i] = a_actual[pos];
+            /*> printf("%c", m_expect[s + x_off + i]);                                <*/
+            x_expect[i] = m_expect[pos];
+            x_actual[i] = m_actual[pos];
          }
          /*---(clean up the substring)----------*/
          strncat(x_expect, "\0", LEN_RECD);
@@ -611,51 +630,51 @@ yVAR_ustring (     /*  PURPOSE = complex string tests for yUNIT               */
                strncpy(x_fin, x_neg, 100);
             }
             /*---(change expected)---------------*/
-            for (i = 0; i < (int) strlen(x_fin); ++i) a_expect[s + x_off + i] = x_fin[i];
+            for (i = 0; i < (int) strlen(x_fin); ++i) m_expect[s + x_off + i] = x_fin[i];
          }
          /*---(setup for next)------------------*/
          x_off += e;
          if (x_off >= len_exp) break;
-         rc = regexec(&x_comp, a_expect + x_off, 1, x_pmatch, 0);
+         rc = regexec(&x_comp, m_expect + x_off, 1, x_pmatch, 0);
       }
       regfree(&x_comp);
       /*---(mask off color hexs)--------------------------*/
       rc = regcomp(&x_comp, "#[0-9a-fA-F]{6}", REG_EXTENDED);
       if (rc != 0) return -7;
-      rc = regexec(&x_comp, a_expect, 1, x_pmatch, 0);
+      rc = regexec(&x_comp, m_expect, 1, x_pmatch, 0);
       x_off = 0;
       while (rc == 0) {
          s   = x_pmatch[0].rm_so + 1;   /* go over " #" */
          for (i = 0; i < 5; i += 2) {
             char x_exp[5];
-            x_exp[0] = a_expect[x_off + s + i];
-            x_exp[1] = a_expect[x_off + s + i + 1];
+            x_exp[0] = m_expect[x_off + s + i];
+            x_exp[1] = m_expect[x_off + s + i + 1];
             x_exp[2] = '\0';
-            x_act[0] = a_actual[x_off + s + i];
-            x_act[1] = a_actual[x_off + s + i + 1];
+            x_act[0] = m_actual[x_off + s + i];
+            x_act[1] = m_actual[x_off + s + i + 1];
             x_act[2] = '\0';
             if (strcmp(x_act, x_exp) == 0) continue;
             yVAR_hex(x_range, x_exp, x_act);
             if (strcmp(x_act, x_exp) != 0) continue;
-            a_expect[x_off + s + i]     = x_exp[0];
-            a_expect[x_off + s + i + 1] = x_exp[1];
+            m_expect[x_off + s + i]     = x_exp[0];
+            m_expect[x_off + s + i + 1] = x_exp[1];
             ++mods;
          }
          /*---(prepare for next)----------------------*/
          x_off += s + 2;
          if (x_off >= len_exp) break;
-         rc = regexec(&x_comp, a_expect + x_off, 1, x_pmatch, 0);
+         rc = regexec(&x_comp, m_expect + x_off, 1, x_pmatch, 0);
       }
       regfree(&x_comp);
       /*---(finish)---------------------------------------*/
-      if (strcmp(a_actual, a_expect) == 0) x_code = -(x_code);
+      if (strcmp(m_actual, m_expect) == 0) x_code = -(x_code);
       if (mods > 0) {
          snprintf(mods_str, 20, ">> FIX=%1d ", mods);
-         strncat(a_expect, mods_str, 499);
+         strncat(m_expect, mods_str, 499);
       }
       if (nl   > 0) {
          snprintf(mods_str, 20, ">> NL=%1d ", nl);
-         strncat(a_actual, mods_str, 499);
+         strncat(m_actual, mods_str, 499);
       }
       /*===============================================================================*/
    }
@@ -713,10 +732,19 @@ yVAR__save         (
    /*---(make local copies)--------------*/
    s_explen  = strlen (a_expect);
    s_actlen  = strlen (a_actual);
-   --rce;  if (s_explen >= 500)                       return -604;
-   --rce;  if (s_actlen >= 500)                       return -605;
+   --rce;  if (s_explen >= 500)                       return rce;
+   --rce;  if (s_actlen >= 500)                       return rce;
    strncpy (yVAR_expstr, a_expect, 500);
    strncpy (yVAR_actstr, a_actual, 500);
+   /*---(transfer masking)---------------*/
+   for (i = 0; i < s_actlen; ++i) {
+      if (yVAR_expstr [i] == NULL || yVAR_actstr [i] == NULL)  break;
+      if (yVAR_expstr [i] == '¬')  yVAR_actstr [i] = '¬';
+   }
+   /*---(truncate masking)---------------*/
+   for (i = strlen (yVAR_expstr) - 1; i >= s_actlen; --i) {
+      if (yVAR_expstr [i] == '¬')  yVAR_expstr [i] = '\0';
+   }
    /*---(initialize)---------------------*/
    s_nmods     = 0;
    s_offset    = 0;
@@ -732,9 +760,9 @@ yVAR__save         (
       }
    }
    /*---(check lengths)------------------*/
-   --rce;  if (s_actlen == 0)                         return -606;
-   --rce;  if (s_explen == 0)                         return -607;
-   --rce;  if (s_explen != s_actlen)                  return -608;
+   --rce;  if (s_actlen == 0)                         return rce;
+   --rce;  if (s_explen == 0)                         return rce;
+   --rce;  if (s_explen != s_actlen)                  return rce;
    /*---(initialize modded string)-------*/
    for (i = 0; i < s_explen; ++i) {
       yVAR_modstr [i] = ' ';
@@ -869,9 +897,9 @@ yVAR__check        (void)
 /*  rc = 0 perfect match, neg = fail, pos = modified to match                 */
 int        /*----: strings that allow numbers to be rounded ------------------*/
 yVAR_round (
-      const char *a_test,              /*  name of the test                   */
-      const char *a_expect,            /*  expected result                    */
-      const char *a_actual)            /*  actual result                      */
+      cchar *a_test,              /*  name of the test                   */
+      cchar *a_expect,            /*  expected result                    */
+      cchar *a_actual)            /*  actual result                      */
 {
    /*---(locals)-----------+-----------+-*/
    int       i         = 0;            /* loop iterator -- characters         */
