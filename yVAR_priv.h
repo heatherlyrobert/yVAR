@@ -20,8 +20,8 @@
 #define     P_CREATED   "2008-07"
 #define     P_DEPENDS   "none"
 
-#define     P_VERNUM    "1.0m"
-#define     P_VERTXT    "added masking to u_round for yKINE and arachne testing"
+#define     P_VERNUM    "1.0n"
+#define     P_VERTXT    "upgraded yVAR_integer to long long to handle gregg testing"
 
 
 

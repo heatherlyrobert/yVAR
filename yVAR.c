@@ -326,8 +326,8 @@ yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
 int                /*  return  = pos=good, neg=bad, 0=unknown                 */
 yVAR_integer (     /*  PURPOSE = STANDARD INTEGER TESTING (for yUNIT+)        */
       char     *a_test,          /*  name of the test                         */
-      long      a_expect,        /*  expected result                          */
-      long      a_actual)        /*  actual result                            */
+      long long a_expect,        /*  expected result                          */
+      long long a_actual)        /*  actual result                            */
 {
    /*
     * options are...
