@@ -8,7 +8,7 @@ NAME_BASE  = yVAR
 # additional standard and outside libraries
 LIB_STD    = 
 # all heatherly libraries used, debug versions whenever available
-LIB_MINE   = 
+LIB_MINE   = -lySTR_debug
 # directory for production code, no trailing slash
 INST_DIR   = 
 
@@ -18,7 +18,7 @@ INST_DIR   =
 # extra include directories required
 INC_MINE   = 
 # utilities generated, separate from main program
-NAME_UTIL  = 
+NAME_UTIL  = yvar_unit
 # libraries only for the utilities
 LIB_UTIL   = 
 

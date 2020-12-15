@@ -3,325 +3,6 @@
 #include "yVAR_priv.h"
 
 
-tLOCAL    its;
-
-
-
-/*====================------------------------------------====================*/
-/*===----                           utility                            ----===*/
-/*====================------------------------------------====================*/
-static void      o___UTILITY_________________o (void) {;}
-
-char      yVAR_ver     [500];
-
-char*      /* ---- : return library versioning information -------------------*/
-yVAR_version       (void)
-{
-   char    t [20] = "";
-#if    __TINYC__ > 0
-   strncpy (t, "[tcc built  ]", 15);
-#elif  __GNUC__  > 0
-   strncpy (t, "[gnu gcc    ]", 15);
-#elif  __HEPH__  > 0
-   strncpy (t, "[hephaestus ]", 15);
-#else
-   strncpy (t, "[unknown    ]", 15);
-#endif
-   snprintf (yVAR_ver, 100, "%s   %s : %s\n", t, P_VERNUM, P_VERTXT);
-   return yVAR_ver;
-}
-
-char         /*--> set debugging mode --------------------[ ------ [ ------ ]-*/
-yVAR_debug         (char a_flag)
-{
-   /*---(set debug flag)-----------------*/
-   if   (a_flag == 'y')  its.debug   = 'y';
-   else                  its.debug   = '-';
-   /*---(complete)-----------------------*/
-   return 0;
-}
-
-
-
-/*====================------------------------------------====================*/
-/*===----                         regex testing                        ----===*/
-/*====================------------------------------------====================*/
-static void      o___REGEX___________________o (void) {;}
-
-int        /*----: standard regex pattern testing ----------------------------*/
-yVAR_regex         (
-      char     *a_format,        /*  requested format for testing             */
-      char     *a_value)         /*  variable value to test                   */
-{
-   /*-----------------------------------------------functional-design-notes---#
-    * *> excellent way to get the best regex format testers in one place
-    * *> single point of testing and maintenance
-    * *> absolutely vital to increasing "cracker resistence" through easy use
-    * *> speeds up app-dev and reduces testing time and concerns
-    */
-   char       its_regex [100];                /* source regex                 */
-   int        its_code   = 0;                 /* failure identifier           */
-   /*===(string tests)============================================*/
-   /* big rule :: avoid the metacharacters `'\"|*?~<>^()[]{}$\n\r */
-   if      (strcmp(a_format, "strg_alnum")   == 0) {
-      /*-> letters and numbers only                               */
-      strcpy(its_regex, "^[a-zA-Z0-9]+$");
-      its_code   = 11;
-   }
-   else if (strcmp(a_format, "strg_basic")   == 0) {
-      /*-> str_alnum plus underscore, dash, and space             */
-      strcpy(its_regex, "^[A-Za-z0-9][a-zA-Z0-9_ -]*$");
-      its_code   = 12;
-   }
-   else if (strcmp(a_format, "strg_punct")   == 0) {
-      /*-> str_basic plus normal writing symbols (? is edgy)      */
-      strcpy(its_regex, "^[A-Za-z0-9][A-Za-z0-9_ .,:;!?-]*$");
-      its_code   = 13;
-   }
-   else if (strcmp(a_format, "strg_exten")   == 0) {
-      /*-> str_basic plus descriptive characters                  */
-      strcpy(its_regex, "^[A-Za-z0-9][A-Za-z0-9_ .,:;@()-]*$");
-      its_code   = 14;
-   }
-   /*===(cgi-post tests)=======================================*/
-   else if   (strcmp(a_format, "post_field")   == 0) {
-      /*-> cgi field name (and all lower case)                    */
-      strcpy(its_regex, "^[a-z][a-z0-9_]{0,10}[a-z0-9]$");
-      its_code   = 21;
-   }
-   else if (strcmp(a_format, "post_string")  == 0) {
-      /*-> tbd                                                    */
-      strcpy(its_regex, "^[A-Za-z0-9][A-Za-z0-9+=&%][A-Za-z0-9]*$");
-      its_code   = 22;
-   }
-   /*===(integers)=============================================*/
-   else if (strcmp(a_format, "intg_byte")    == 0) {
-      /*-> a byte number                                          */
-      strcpy(its_regex, "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$");
-      its_code   = 31;
-   }
-   else if (strcmp(a_format, "intg_unsign")  == 0) {
-      /*-> a signed integer                                       */
-      strcpy(its_regex, "^(0|[1-9][0-9]*)$");
-      its_code   = 32;
-   }
-   else if (strcmp(a_format, "intg_sign")    == 0) {
-      /*-> a signed integer                                       */
-      strcpy(its_regex, "^(-)?(0|[1-9][0-9]*)$");
-      its_code   = 33;
-   }
-   /*===(real numbers)=========================================*/
-   else if (strcmp(a_format, "real_float")   == 0) {
-      /*-> floating point                                         */
-      strcpy(its_regex, "^(-)?(0|[1-9][0-9]*)([.][0-9]+)?$");
-      its_code   = 34;
-   }
-   else if (strcmp(a_format, "real_pct")     == 0) {
-      /*-> 0-100 percentage with optional two decimal places      */
-      strcpy(its_regex, "^(-)?(100|[1-9]?[0-9]([.][0-9]{1,2})?)[%]?$");
-      its_code   = 35;
-   }
-   /*===(addresses of various sorts)===========================*/
-   else if (strcmp(a_format, "addr_ip")       == 0) {
-      /*-> ip4 address                                            */
-      strcpy(its_regex,
-            "^(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])"
-            ".(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])"
-            ".(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])"
-            ".(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$");
-      its_code   = 41;
-   }
-   else if (strcmp(a_format, "addr_email")   == 0) {
-      /*-> email address                                          */
-      strcpy(its_regex, "^[A-Za-z0-9_.-]+[@][A-Za-z0-9_.-]+.[A-Za-z]{2,4}$");
-      its_code   = 42;
-   }
-   else if (strcmp(a_format, "addr_dir")    == 0) {
-      /*-> directory name                                         */
-      strcpy(its_regex, "^[/]?[A-Za-z][A-Za-z0-9_./-]$");
-      its_code   = 43;
-   }
-   else if (strcmp(a_format, "addr_file")   == 0) {
-      /*-> file name                                              */
-      strcpy(its_regex, "^[.]?[A-Za-z][A-Za-z0-9_.-]{0,62}[A-Za-z0-9]$");
-      its_code   = 44;
-   }
-   else if (strcmp(a_format, "addr_phone")   == 0) {
-      /*-> US phone number                                        */
-      strcpy(its_regex, "^([(]?[2-9][0-9]{2}[)]?[-. ])?[0-9]{3}[-. ][0-9]{4}$");
-      its_code   = 45;
-   }
-   else if (strcmp(a_format, "addr_zip")    == 0) {
-      /*-> US zip code                                            */
-      strcpy(its_regex, "^[1-9][0-9]{4}([-][0-9]{4})?$");
-      its_code   = 46;
-   }
-   /*===(archive related)======================================*/
-   else if (strcmp(a_format, "arch_prefix")    == 0) {
-      /*-> role and goal                                          */
-      strcpy(its_regex, "^[1-9][a-z]$");
-      its_code   = 51;
-   }
-   else if (strcmp(a_format, "arch_index")    == 0) {
-      /*-> role and goal                                          */
-      strcpy(its_regex, "^[1-9][a-z][-][1-9][0-9][0-9]$");
-      its_code   = 52;
-   }
-   else if (strcmp(a_format, "arch_desc")    == 0) {
-      /*-> role and goal                                           */
-      strcpy(its_regex, "^[A-Za-z][A-Za-z0-9_-]*[A-Za-z0-9]$");
-      its_code   = 53;
-   }
-   /*===(program element naming)===============================*/
-   else if (strcmp(a_format, "prog_var")     == 0) {
-      /*-> c-style variable name                                  */
-      strcpy(its_regex, "^(_)*[a-zA-Z][a-zA-Z0-9_]*$");
-      its_code   = 61;
-   }
-   else if (strcmp(a_format, "prog_myvar")   == 0) {
-      /*-> c-style variable name                                  */
-      strcpy(its_regex, "^([a-z]|[a-z][a-z0-9_]*[a-z0-9])$");
-      its_code   = 62;
-   }
-   else if (strcmp(a_format, "prog_myconst")  == 0) {
-      strcpy(its_regex, "^[A-Z][A-Z0-9_]*$");
-      its_code   = 63;
-   }
-   else if (strcmp(a_format, "prog_func")     == 0) {
-      strcpy(its_regex, "^[a-z_][a-zA-Z0-9_]*[a-zA-Z0-9]$");
-      its_code   = 64;
-   }
-   /*===(linux specific)=======================================*/
-   else if (strcmp(a_format, "path_norm" )   == 0) {
-      strcpy (its_regex, "^[\/][\/a-zA-Z0-9_.-]*$");
-      its_code   = 65;
-   }
-   else if (strcmp(a_format, "path_tight")   == 0) {
-      strcpy (its_regex, "^[\/][\/a-zA-Z0-9_.]*$");
-      its_code   = 65;
-   }
-   /*===(run it)===========================================*/
-   if (its_code > 0) {
-      /*---(compile the regex)-----------------------------*/
-      int       x_rc = 0;
-      regex_t   x_comp;
-      x_rc    = regcomp(&x_comp, its_regex, REG_EXTENDED);
-      if (x_rc != 0) its_code = -2;  /* could not compile successfully  */
-      if (its_code > 0) {
-         /*---(conduct test)--------------------------------*/
-         x_rc    = regexec(&x_comp, a_value, 0, NULL, 0);
-         if (x_rc != 0) its_code = -(its_code);   /* identify the failure */
-      }
-      regfree(&x_comp);
-   }
-   /*---(complete)------------------------------*/
-   return its_code;                            /* identify success     */
-}
-
-
-
-/*====================------------------------------------====================*/
-/*===----                         normal testing                       ----===*/
-/*====================------------------------------------====================*/
-static void      o___NORMAL__________________o (void) {;}
-
-int                /*  return  = pos=good, neg=bad, 0=unknown                 */
-yVAR_string (      /*  PURPOSE = STANDARD STRING TESTING (for yUNIT+)         */
-      char     *a_test,          /*  name of the test                         */
-      char     *a_expect,        /*  expected result                          */
-      char     *a_actual)        /*  actual result                            */
-{
-   /*
-    * options are...
-    *    1) s_equal        : actual   == expected
-    *    2) s_not          : actual   != expected
-    *    3) s_sub          : expected contained in actual
-    *    4) s_entry        : actual string contained in a larger expected one
-    *    5) s_regex        : do regex matching on expected using actual
-    *    6) s_length       : check for a certain number of characters
-    *    7) s_empty        : actual string is null/empty
-    *    8) s_exists       : actual string is not null/empty
-    *    9) s_greater      : actual string sorts greater than expected
-    *   10) s_lesser       : actual string sorts lesser  than expected
-    *
-    * it is expected that 85% of calls will be s_equal, 10% s_not, then the rest
-    * so, put them in that order to make as few strcmp as possible for speed
-    */
-   /*---(locals)-----------+-----+-----+-*/
-   int         x_code      = -666;
-   int         rc          =    0;
-   int         i           =    0;
-   regex_t     x_comp;
-   char        x_actual    [LEN_RECD];
-   char        x_expect    [LEN_RECD];
-   int         x_len       =    0;
-   /*---(defenses)-----------------------*/
-   if (a_test     == NULL  ) return x_code - 1;
-   if (a_expect   == NULL  ) return x_code - 2;
-   if (a_actual   == NULL  ) return x_code - 3;
-   if (a_expect   <  0x1000) return x_code - 4;
-   if (a_actual   <  0x1000) return x_code - 5;
-   /*---(block masked areas)-------------*/
-   strcpy (x_actual, a_actual);
-   strcpy (x_expect, a_expect);
-   /*> printf ("expect  %2d[%s]\n", strlen (x_expect), x_expect);                     <* 
-    *> printf ("actual  %2d[%s]\n", strlen (x_actual), x_actual);                     <*/
-   /*---(transfer masking)---------------*/
-   x_len = strlen (a_actual);
-   for (i = 0; i < x_len; ++i) {
-      if (x_expect [i] == NULL || x_actual [i] == NULL)  break;
-      if (x_expect [i] == '¬')  x_actual [i] = '¬';
-   }
-   /*---(truncate masking)---------------*/
-   for (i = strlen (x_expect) - 1; i >= x_len; --i) {
-      if (x_expect [i] == '¬')  x_expect [i] = '\0';
-   }
-   /*> printf ("  expect  %2d[%s]\n", strlen (x_expect), x_expect);                   <* 
-    *> printf ("  actual  %2d[%s]\n", strlen (x_actual), x_actual);                   <*/
-   /*---(normal tests)-------------------*/
-   if    (strcmp(a_test, "s_equal")   == 0) {
-      x_code   = -10;
-      if (strcmp(x_actual, x_expect) == 0)    x_code = -(x_code);
-   } else if (strcmp(a_test, "s_not")     == 0) {
-      x_code   = -11;
-      if (strcmp(x_actual, x_expect) != 0)    x_code = -(x_code);
-   } else if (strcmp(a_test, "s_empty")   == 0) {
-      x_code   = -12;
-      if (strlen(x_actual) == 0 ) x_code = -(x_code);
-   } else if (strcmp(a_test, "s_exists")  == 0) {
-      x_code   = -13;
-      if (strlen(x_actual) > 0 ) x_code = -(x_code);
-   } else if (strcmp(a_test, "s_length")  == 0) {
-      x_code   = -14;
-      if ((int) strlen(x_actual) == atoi(x_expect)) x_code = -(x_code);
-   } else if (strcmp(a_test, "s_greater") == 0) {
-      x_code   = -15;
-      if (strcmp(x_actual, x_expect) > 0)    x_code = -(x_code);
-   } else if (strcmp(a_test, "s_lesser")  == 0) {
-      x_code   = -16;
-      if (strcmp(x_actual, x_expect) < 0)    x_code = -(x_code);
-   }
-   /*---(search tests)-------------------*/
-   else if   (strcmp(a_test, "s_sub")     == 0) {
-      x_code   = -17;
-      if (strstr(x_actual, x_expect) != NULL) x_code = -(x_code);
-   } else if (strcmp(a_test, "s_entry")     == 0) {
-      x_code   = -18;
-      if (strstr(x_expect, x_actual) != NULL) x_code = -(x_code);
-   }
-   /*---(regex test)---------------------*/
-   else if   (strcmp(a_test, "s_regex")    == 0) {
-      x_code   = -19;
-      rc    = regcomp(&x_comp, x_expect, REG_EXTENDED);
-      if (rc == 0) {
-         rc    = regexec(&x_comp, x_actual, 0, NULL, 0);
-         if (rc == 0) x_code = -(x_code);
-      }
-      regfree(&x_comp);
-   }
-   /*---(complete)-----------------------*/
-   return x_code;
-}
 
 int                /*  return  = pos=good, neg=bad, 0=unknown                 */
 yVAR_integer (     /*  PURPOSE = STANDARD INTEGER TESTING (for yUNIT+)        */
@@ -698,7 +379,7 @@ static   int         s_lensub  = 0;
 static   int         s_offset  = 0;
 static   s_beg       = 0;
 static   s_end       = 0;
-static   s_len       = 0;
+/*> static   s_len       = 0;                                                         <*/
 static   s_dec       = 0;
 
 
@@ -895,55 +576,55 @@ yVAR__check        (void)
 
 
 /*  rc = 0 perfect match, neg = fail, pos = modified to match                 */
-int        /*----: strings that allow numbers to be rounded ------------------*/
-yVAR_round (
-      cchar *a_test,              /*  name of the test                   */
-      cchar *a_expect,            /*  expected result                    */
-      cchar *a_actual)            /*  actual result                      */
-{
-   /*---(locals)-----------+-----------+-*/
-   int       i         = 0;            /* loop iterator -- characters         */
-   int       rc        = 0;            /* generic return code                 */
-   char      mods_str[20] = "";
-   /*---(locals)--------+--------------+-*/
-   char        rce      = -20;
-   /*---(header)-------------------------*/
-   rc = yVAR__save   (a_test, a_expect, a_actual);
-   if (rc < 0)                                        return rc;
-   /*---(quick shortcut check)----------------------------*/
-   if (strcmp (yVAR_actstr, yVAR_expstr) == 0) {
-      /*> DEBUG_YVAR   printf ("   already equal, no mods required (shortcut)\n");    <*/
-      return 0;
-   }
-   /*---(initial RE run)---------------------*/
-   rc = yVAR__match  ();
-   if (rc < 0)                                        return rc;
-   /*---(process matches)--------------------*/
-   while (rc == 0) {
-      rc = yVAR__check ();
-      if (rc < 0)               return rc;
-      s_offset += s_end;
-      rc = yVAR__match  ();
-      if (rc < 0)               break;
-      if (s_offset >= s_explen) break;
-   }
-   /*> DEBUG_YVAR   printf ("done\n\n");                                              <*/
-   regfree (&s_regex);
-   /*---(finish)---------------------------------------*/
-   for (i = 0; i < s_explen; ++i) {
-      if (yVAR_expstr[i] != a_expect[i]) {
-         ++s_nmods;
-         yVAR_modstr[i] = yVAR_expstr[i];
-         if (yVAR_expstr[i] <= ' ')  yVAR_modstr[i] = '*';
-         if (yVAR_expstr[i] >  'z')  yVAR_modstr[i] = '*';
-      }
-   }
-   snprintf (mods_str, 20, ">> (%1d) ", s_nmods);
-   strncat  (yVAR_modstr, mods_str, 499);
-   /*---(complete)-------------------------------------*/
-   if (strcmp(yVAR_actstr, yVAR_expstr) == 0) return s_nmods;
-   return -30;
-}
+/*> int        /+----: strings that allow numbers to be rounded ------------------+/            <* 
+ *> yVAR_round (                                                                                <* 
+ *>       cchar *a_test,              /+  name of the test                   +/                 <* 
+ *>       cchar *a_expect,            /+  expected result                    +/                 <* 
+ *>       cchar *a_actual)            /+  actual result                      +/                 <* 
+ *> {                                                                                           <* 
+ *>    /+---(locals)-----------+-----------+-+/                                                 <* 
+ *>    int       i         = 0;            /+ loop iterator -- characters         +/            <* 
+ *>    int       rc        = 0;            /+ generic return code                 +/            <* 
+ *>    char      mods_str[20] = "";                                                             <* 
+ *>    /+---(locals)--------+--------------+-+/                                                 <* 
+ *>    char        rce      = -20;                                                              <* 
+ *>    /+---(header)-------------------------+/                                                 <* 
+ *>    rc = yVAR__save   (a_test, a_expect, a_actual);                                          <* 
+ *>    if (rc < 0)                                        return rc;                            <* 
+ *>    /+---(quick shortcut check)----------------------------+/                                <* 
+ *>    if (strcmp (yVAR_actstr, yVAR_expstr) == 0) {                                            <* 
+ *>       /+> DEBUG_YVAR   printf ("   already equal, no mods required (shortcut)\n");    <+/   <* 
+ *>       return 0;                                                                             <* 
+ *>    }                                                                                        <* 
+ *>    /+---(initial RE run)---------------------+/                                             <* 
+ *>    rc = yVAR__match  ();                                                                    <* 
+ *>    if (rc < 0)                                        return rc;                            <* 
+ *>    /+---(process matches)--------------------+/                                             <* 
+ *>    while (rc == 0) {                                                                        <* 
+ *>       rc = yVAR__check ();                                                                  <* 
+ *>       if (rc < 0)               return rc;                                                  <* 
+ *>       s_offset += s_end;                                                                    <* 
+ *>       rc = yVAR__match  ();                                                                 <* 
+ *>       if (rc < 0)               break;                                                      <* 
+ *>       if (s_offset >= s_explen) break;                                                      <* 
+ *>    }                                                                                        <* 
+ *>    /+> DEBUG_YVAR   printf ("done\n\n");                                              <+/   <* 
+ *>    regfree (&s_regex);                                                                      <* 
+ *>    /+---(finish)---------------------------------------+/                                   <* 
+ *>    for (i = 0; i < s_explen; ++i) {                                                         <* 
+ *>       if (yVAR_expstr[i] != a_expect[i]) {                                                  <* 
+ *>          ++s_nmods;                                                                         <* 
+ *>          yVAR_modstr[i] = yVAR_expstr[i];                                                   <* 
+ *>          if (yVAR_expstr[i] <= ' ')  yVAR_modstr[i] = '*';                                  <* 
+ *>          if (yVAR_expstr[i] >  'z')  yVAR_modstr[i] = '*';                                  <* 
+ *>       }                                                                                     <* 
+ *>    }                                                                                        <* 
+ *>    snprintf (mods_str, 20, ">> (%1d) ", s_nmods);                                           <* 
+ *>    strncat  (yVAR_modstr, mods_str, 499);                                                   <* 
+ *>    /+---(complete)-------------------------------------+/                                   <* 
+ *>    if (strcmp(yVAR_actstr, yVAR_expstr) == 0) return s_nmods;                               <* 
+ *>    return -30;                                                                              <* 
+ *> }                                                                                           <*/
 
 
 
