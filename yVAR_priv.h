@@ -34,8 +34,8 @@
 
 #define     P_VERMAJOR  "1.--, production improvements"
 #define     P_VERMINOR  "1.1-, unit testing build out"
-#define     P_VERNUM    "1.1a"
-#define     P_VERTXT    "yVAR_string equal, yVAR_round unit testing and improvement"
+#define     P_VERNUM    "1.1b"
+#define     P_VERTXT    "updated string compare to show actual results in masked areas"
 
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -172,9 +172,9 @@
 #include    "yVAR.h"
 
 
-#define     LEN_LABEL        20
-#define     LEN_DESC         50
-#define     LEN_RECD       2000
+/*> #define     LEN_LABEL        20                                                   <* 
+ *> #define     LEN_DESC         50                                                   <* 
+ *> #define     LEN_RECD       2000                                                   <*/
 
 
 extern char        s_test      [LEN_LABEL];
@@ -183,7 +183,8 @@ extern char        u_exp       [LEN_RECD];
 extern char        s_act       [LEN_RECD];
 extern char        u_act       [LEN_RECD];
 extern char        s_mod       [LEN_RECD];
-extern char        s_fancy     [LEN_RECD];
+extern char        s_fact      [LEN_RECD];
+extern char        s_fexp      [LEN_RECD];
 extern int         s_len;
 
 

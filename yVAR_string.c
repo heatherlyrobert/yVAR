@@ -9,7 +9,8 @@ char        u_exp       [LEN_RECD]  = "";
 char        s_act       [LEN_RECD]  = "";
 char        u_act       [LEN_RECD]  = "";
 char        s_mod       [LEN_RECD]  = "";
-char        s_fancy     [LEN_RECD]  = "";
+char        s_fact      [LEN_RECD]  = "";
+char        s_fexp      [LEN_RECD]  = "";
 
 int         s_len       = 0;
 int         s_alen      = 0;
@@ -31,12 +32,14 @@ struct {
    { "s_not"        , "actual   != expected"                                },
    { "s_sub"        , "expected contained in actual"                        },
    { "s_entry"      , "actual string contained in a larger expected one"    },
-   { "s_regex"      , "do regex matching on expected using actual"          },
-   { "s_length"     , "check for a certain number of characters"            },
    { "s_empty"      , "actual string is null/empty"                         },
    { "s_exists"     , "actual string is not null/empty"                     },
+   { "s_length"     , "check for a certain number of characters"            },
    { "s_greater"    , "actual string sorts greater than expected"           },
+   { "s_gequal"     , "actual string sorts greater than or equal"           },
    { "s_lesser"     , "actual string sorts lesser  than expected"           },
+   { "s_lequal"     , "actual string sorts lesser  or equal"                },
+   { "s_regex"      , "do regex matching on expected using actual"          },
 };
 
 
@@ -54,11 +57,12 @@ yvar_string_prep        (cchar *a_test, cchar *a_expect, cchar *a_actual)
    char        rc          =    0;
    int         i           =    0;
    int         l           =    0;
-   char       *x_valid     = " s_equal s_not s_sub s_entry s_regex s_length s_empty s_exists s_greater s_lesser ";
+   char       *x_valid     = " s_equal s_not s_sub s_entry s_regex s_length s_empty s_exists s_greater s_gequal s_lesser s_lequal ";
    /*---(defaults)-----------------------*/
    s_alen    = s_elen    = s_len     = 0;
    s_nmod    = s_range   = s_off     = 0;
-   s_exp [0] = u_exp [0] = s_act [0] = u_act [0] = s_mod [0] = s_fancy [0] = '\0';
+   s_exp  [0] = u_exp  [0] = s_act  [0] = u_act  [0] = s_mod  [0] = '\0';
+   s_fact [0] = s_fexp [0] = '\0';
    /*---(defense)------------------------*/
    --rce;  if (a_test     == NULL  )             return rce;
    --rce;  if (a_expect   == NULL  )             return rce;
@@ -70,8 +74,8 @@ yvar_string_prep        (cchar *a_test, cchar *a_expect, cchar *a_actual)
    --rce;  if (l < 5)                            return rce;
    --rce;  if (l == 9 && strncmp (a_test, "u_round/", 8) == 0) {
       s_range = a_test [8] - '0';
-      if (s_range < 1 || s_range > 9)            return rce;
-   } else if (strstr (x_valid, a_test) == NULL)  return rce;
+      if (s_range < 1 || s_range > 9)            return ('¢');
+   } else if (strstr (x_valid, a_test) == NULL)  return ('¢');
    /*---(save values)--------------------*/
    strcpy (s_test, a_test);
    strcpy (s_exp , a_expect);
@@ -100,7 +104,7 @@ yvar_string_prep        (cchar *a_test, cchar *a_expect, cchar *a_actual)
    /*---(transfer masking)---------------*/
    for (i = 0; i < s_alen; ++i) {
       if (u_exp [i] == NULL || u_act [i] == NULL)  break;
-      if (u_exp [i] == '¬')  u_act [i] = '¬';
+      /*> if (u_exp [i] == '¬')  u_act [i] = '¬';                                     <*/
    }
    s_elen = strlen (u_exp);
    s_len  = s_alen;
@@ -113,6 +117,56 @@ yvar_string_prep        (cchar *a_test, cchar *a_expect, cchar *a_actual)
       rc = regcomp (&s_regex, "[-+ ](0|[1-9][0-9]*)([.][0-9]+)?", REG_EXTENDED);
       if (rc != 0)                               return rce;
    }
+   /*---(complete)-----------------------*/
+   return 0;
+}
+
+char
+yvar_string_fancify     (int a_len, char *a_orig, char *a_src, char *a_dst)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   int         i           =    0;
+   char        t           [LEN_TERSE] = "";
+   char        m           =  '-';
+   char        s           =  'ÿ';
+   int         l           =    0;
+   /*---(defense)------------------------*/
+   --rce;  if (a_orig == NULL)  return rce;
+   --rce;  if (a_src  == NULL)  return rce;
+   --rce;  if (a_dst  == NULL)  return rce;
+   /*---(initialize)---------------------*/
+   a_dst [0] = '\0';
+   s = ' ';
+   l = strlen (a_orig);
+   /*---(walk)---------------------------*/
+   for (i = 0; i < s_len; ++i) {
+      m = s_mod [i];
+      if      (i < l)      sprintf (t, "%c", a_orig [i]);
+      else if (i < a_len)  sprintf (t, "%c", a_src  [i]);
+      else                 sprintf (t, "%c", '£');
+      if (m != s) {
+         if (strchr ("x><", s) != NULL && strchr ("x><", m) != NULL) ; /* reduce duplicates */
+         else {
+            if (s != ' ')  strcat (a_dst, FORE_OFF);
+            switch (m) {
+            case 'x' : case '>' : case '<' :
+               strcat (a_dst, BOLD_RED);
+               break;
+            case 'r' :
+               strcat (a_dst, BOLD_YEL);
+               break;
+            case '¬' :
+               strcat (a_dst, BOLD_MAG);
+               break;
+            }
+         }
+      }
+      s = m;
+      strcat (a_dst, t);
+   }
+   /*---(finish off)---------------------*/
+   if (s != ' ')  strcat (a_dst, FORE_OFF);
    /*---(complete)-----------------------*/
    return 0;
 }
@@ -151,36 +205,41 @@ yvar_string_match       (void)
       rc = rce;
    }
    /*---(fancy version)------------------*/
-   s_fancy [0] = '\0';
-   s = ' ';
-   for (i = 0; i < s_len; ++i) {
-      m = s_mod [i];
-      if (i < s_alen)  sprintf (t, "%c", u_act [i]);
-      else             sprintf (t, "%c", '£');
-      if (m != s) {
-         if (strchr ("x><", s) != NULL && strchr ("x><", m) != NULL) ; /* reduce duplicates */
-         else {
-            if (s != ' ')  strcat (s_fancy, FORE_OFF);
-            switch (m) {
-            case 'x' : case '>' : case '<' :
-               strcat (s_fancy, BOLD_RED);
-               break;
-            case 'r' :
-               strcat (s_fancy, BOLD_YEL);
-               break;
-            case '¬' :
-               strcat (s_fancy, BOLD_MAG);
-               break;
-            }
-         }
-      }
-      s = m;
-      strcat (s_fancy, t);
-   }
-   if (s != ' ')  strcat (s_fancy, FORE_OFF);
-   /*> l = strlen (s_fancy);                                                          <*/
+   yvar_string_fancify (s_elen, s_exp, u_exp, s_fexp);
+   yvar_string_fancify (s_alen, u_act, u_act, s_fact);
+   /*> for (i = 0; i < s_alen; ++i) {                                                 <* 
+    *>    if (s_fact [i] == '¬')  s_fact [i] = u_act [i];                             <* 
+    *> }                                                                              <*/
+   /*> s_fact [0] = '\0';                                                                            <* 
+    *> s = ' ';                                                                                      <* 
+    *> for (i = 0; i < s_len; ++i) {                                                                 <* 
+    *>    m = s_mod [i];                                                                             <* 
+    *>    if (i < s_alen)  sprintf (t, "%c", u_act [i]);                                             <* 
+    *>    else             sprintf (t, "%c", '£');                                                   <* 
+    *>    if (m != s) {                                                                              <* 
+    *>       if (strchr ("x><", s) != NULL && strchr ("x><", m) != NULL) ; /+ reduce duplicates +/   <* 
+    *>       else {                                                                                  <* 
+    *>          if (s != ' ')  strcat (s_fact, FORE_OFF);                                            <* 
+    *>          switch (m) {                                                                         <* 
+    *>          case 'x' : case '>' : case '<' :                                                     <* 
+    *>             strcat (s_fact, BOLD_RED);                                                        <* 
+    *>             break;                                                                            <* 
+    *>          case 'r' :                                                                           <* 
+    *>             strcat (s_fact, BOLD_YEL);                                                        <* 
+    *>             break;                                                                            <* 
+    *>          case '¬' :                                                                           <* 
+    *>             strcat (s_fact, BOLD_MAG);                                                        <* 
+    *>             break;                                                                            <* 
+    *>          }                                                                                    <* 
+    *>       }                                                                                       <* 
+    *>    }                                                                                          <* 
+    *>    s = m;                                                                                     <* 
+    *>    strcat (s_fact, t);                                                                        <* 
+    *> }                                                                                             <* 
+    *> if (s != ' ')  strcat (s_fact, FORE_OFF);                                                     <*/
+   /*> l = strlen (s_fact);                                                          <*/
    /*> for (i = 0; i < l; ++i) {                                                      <* 
-    *>    if (s_fancy [i] == '\e')  s_fancy [i] = '¥';                                <* 
+    *>    if (s_fact [i] == '\e')  s_fact [i] = '¥';                                <* 
     *> }                                                                              <*/
    /*---(complete)-----------------------*/
    return rc;
@@ -314,42 +373,60 @@ yVAR_string             (cchar *a_test, cchar *a_expect, cchar *a_actual)
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
    char        rc          =    0;
-   char        x_code      =    1;
+   char        x_match     =    0;
    int         i           =    0;
    regex_t     x_comp;
    /*---(defenses)-----------------------*/
    rc = yvar_string_prep (a_test, a_expect, a_actual);
-   if (rc < 0)  return rc;
+   if (rc == '¢')  return rc;
+   if (rc <   0 )  return rc;
    /*---(normal tests)-------------------*/
-   if    (strcmp(s_test, "s_equal")   == 0) {
-      rc = yvar_string_match ();
-   } else if (strcmp(s_test, "s_not")     == 0) {
-      if (strcmp (u_act, u_exp) == 0)    rc = rce;
-   } else if (strcmp(s_test, "s_greater") == 0) {
-      if (strcmp (u_act, u_exp) <= 0)    rc = rce;
-   } else if (strcmp(s_test, "s_lesser")  == 0) {
-      if (strcmp(u_act, u_exp) >= 0)     rc = rce;
+   if        (strcmp (s_test, "s_equal")   == 0) {
+      rc = -('e');
+      x_match = yvar_string_match ();
+      if (x_match >= 0)                   rc *= -1;
+   } else if (strcmp (s_test, "s_not")     == 0) {
+      rc = -('n');
+      if (strcmp (u_act, u_exp) != 0)     rc *= -1;
+   } else if (strcmp (s_test, "s_greater") == 0) {
+      rc = -('g');
+      if (strcmp (u_act, u_exp) >  0)     rc *= -1;
+   } else if (strcmp (s_test, "s_gequal" ) == 0) {
+      rc = -('G');
+      if (strcmp (u_act, u_exp) >= 0)     rc *= -1;
+   } else if (strcmp (s_test, "s_lesser")  == 0) {
+      rc = -('l');
+      if (strcmp (u_act, u_exp) <  0)     rc *= -1;
+   } else if (strcmp (s_test, "s_lequal")  == 0) {
+      rc = -('L');
+      if (strcmp (u_act, u_exp) <= 0)     rc *= -1;
    }
    /*---(lengths)------------------------*/
-   else if   (strcmp(s_test, "s_empty")   == 0) {
-      if (strlen (u_act) != 0 ) rc = rce;
-   } else if (strcmp(s_test, "s_exists")  == 0) {
-      if (strlen (u_act) <= 0 ) rc = rce;
-   } else if (strcmp(s_test, "s_length")  == 0) {
-      if ((int) strlen (u_act) != atoi (u_exp)) rc = rce;
+   else if   (strcmp (s_test, "s_empty")   == 0) {
+      rc = -('z');
+      if (strlen (u_act) == 0 ) rc *= -1;
+   } else if (strcmp (s_test, "s_exists")  == 0) {
+      rc = -('x');
+      if (strlen (u_act) >  0 ) rc *= -1;
+   } else if (strcmp (s_test, "s_length")  == 0) {
+      rc = -('l');
+      if (strlen (u_act) == atoi (u_exp)) rc *= -1;
    }
    /*---(search tests)-------------------*/
    else if   (strcmp(s_test, "s_sub")     == 0) {
-      if (strstr (u_act, u_exp) == NULL) rc = rce;
+      rc = -('s');
+      if (strstr (u_act, u_exp) == NULL) rc *= -1;
    } else if (strcmp(s_test, "s_entry")     == 0) {
-      if (strstr (u_exp, u_act) == NULL) rc = rce;
+      rc = -('i');
+      if (strstr (u_exp, u_act) == NULL) rc *= -1;
    }
    /*---(regex test)---------------------*/
    else if   (strcmp (s_test, "s_regex")    == 0) {
+      rc = -('r');
       rc    = regcomp(&x_comp, u_exp, REG_EXTENDED);
       if (rc == 0) {
          rc    = regexec(&x_comp, u_act, 0, NULL, 0);
-         if (rc != 0) rc = rce;
+         if (rc != 0) rc *= -1;
       }
       regfree(&x_comp);
    }
@@ -367,7 +444,10 @@ yVAR_round              (cchar *a_test, cchar *a_expect, cchar *a_actual)
    char        mods_str    [LEN_LABEL] = "";
    /*---(defenses)-----------------------*/
    rc = yvar_string_prep (a_test, a_expect, a_actual);
-   --rce;  if (rc < 0)  return rc;
+   if (rc == '¢')  return rc;
+   if (rc <   0 )  return -66;
+   --rce;  if (s_range < 1)        return rce;
+   --rce;  if (a_test [0] != 'u')  return rce;
    /*---(process matches)--------------------*/
    while (rc == 0) {
       rc = yvar_string_adjust ();
@@ -375,8 +455,21 @@ yVAR_round              (cchar *a_test, cchar *a_expect, cchar *a_actual)
    regfree (&s_regex);
    /*---(finish)---------------------------------------*/
    rc = yvar_string_match ();
+   if (rc < 0)  rc = -('u');
+   else         rc = 'u';
    /*---(complete)-------------------------------------*/
    return rc;
+}
+
+char
+yVAR_results            (char *a_exp, char *a_act, char *a_mod, char *a_fexp, char *a_fact)
+{
+   if (a_exp  != NULL)  strcpy (a_exp , u_exp);
+   if (a_act  != NULL)  strcpy (a_act , u_act);
+   if (a_mod  != NULL)  strcpy (a_mod , s_mod);
+   if (a_fexp != NULL)  strcpy (a_fexp, s_fexp);
+   if (a_fact != NULL)  strcpy (a_fact, s_fact);
+   return 0;
 }
 
 
