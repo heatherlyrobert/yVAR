@@ -28,7 +28,7 @@ yVAR_version       (void)
 #else
    strncpy (t, "[unknown    ]", 15);
 #endif
-   snprintf (yVAR_ver, 100, "%s   %s : %s\n", t, P_VERNUM, P_VERTXT);
+   snprintf (yVAR_ver, 100, "%s   %s : %s", t, P_VERNUM, P_VERTXT);
    return yVAR_ver;
 }
 

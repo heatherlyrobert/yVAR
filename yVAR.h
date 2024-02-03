@@ -3,11 +3,12 @@
 #define YVAR_HGUARD loaded
 
 
-char      yVAR_expstr   [500];
-char      yVAR_actstr   [500];
-char      yVAR_modstr   [500];
-typedef   const char  cchar;
-typedef   long long   llong;
+extern    char      yVAR_expstr   [500];
+extern    char      yVAR_actstr   [500];
+extern    char      yVAR_modstr   [500];
+typedef   unsigned char  uchar;
+typedef   const char     cchar;
+typedef   long long      llong;
 
 /*===[[ FUNCTION PROTOTYPES ]]================================================*/
 
@@ -19,7 +20,7 @@ yVAR_debug         (char a_flag);
 
 
 int        /*----: standard regex pattern testing ----------------------------*/
-yVAR_regx (        /*  PURPOSE = STANDARD STRING REGEX PATTERN TESTING        */
+yVAR_regex (        /*  PURPOSE = STANDARD STRING REGEX PATTERN TESTING        */
       char     *a_format,        /*  requested format for testing             */
       char     *a_value)         /*  variable value to test                   */
 ;
@@ -32,6 +33,7 @@ char        yVAR_round              (cchar *a_test, cchar *a_expect, cchar *a_ac
 char        yVAR_results            (char *a_exp, char *a_act, char *a_mod, char *a_fexp, char *a_fact);
 
 /*345678901-12345678901-12345678901-12345678901-12345678901-12345678901-123456*/
+char        yVAR_char               (char *a_test, uchar a_expect, uchar a_actual);
 char        yVAR_integer            (char *a_test, llong a_expect, llong a_actual);
 char        yVAR_pointer            (char *a_test, void *a_expect, void *a_actual);
 char        yVAR_real               (char *a_test, double a_expect, double a_actual);

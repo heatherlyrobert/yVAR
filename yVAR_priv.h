@@ -34,8 +34,8 @@
 
 #define     P_VERMAJOR  "1.--, production improvements"
 #define     P_VERMINOR  "1.1-, unit testing build out"
-#define     P_VERNUM    "1.1b"
-#define     P_VERTXT    "updated string compare to show actual results in masked areas"
+#define     P_VERNUM    "1.1c"
+#define     P_VERTXT    "added character-specific tests to make koios more clear"
 
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -155,7 +155,7 @@
 
 
 #include    <ySTR_solo.h>
-#include    <yCOLOR_solo.h>
+#include    <yURG_solo.h>
 
 
 

@@ -16,7 +16,7 @@ PREP          v21  include the prototype headers                              
 SCRP          v21  integer comparisons                                          yVAR_integer                                                                                          ----------  ---------------------------------------------------------------------- 
 
    COND       v21  prepare for debugging                                        ----------------------------------------------------------------------------------------------------  ----------  ---------------------------------------------------------------------- 
-#    set      v21  turn on debugging                    yVAR_debug            'y'                                                                                                   i_equal     0                                                                      
+#    exec     v21  turn on debugging                    yVAR_debug            'y'                                                                                                   i_equal     0                                                                      
 
    COND       v21  run all the defenses first                                   ----------------------------------------------------------------------------------------------------  ----------  ---------------------------------------------------------------------- 
      exec     v21  verify a simple test                 yVAR_integer          "i_equal"   , 0                                         , 0                                           i_greater   0                                                                      
@@ -135,7 +135,7 @@ SCRP          v21  integer comparisons                                        
 SCRP          v21  appoximate string comparisons (basics)                       yVAR_round                                                                                            ----------  ---------------------------------------------------------------------- 
 
    COND       v21  prepare for debugging                                        ----------------------------------------------------------------------------------------------------  ----------  ---------------------------------------------------------------------- 
-#    set      v21  turn on debugging                    yVAR_debug            'y'                                                                                                   i_equal     0                                                                      
+#    exec     v21  turn on debugging                    yVAR_debug            'y'                                                                                                   i_equal     0                                                                      
 
    COND       v21  run all the defenses first                                   ----------------------------------------------------------------------------------------------------  ----------  ---------------------------------------------------------------------- 
      exec     v21  verify a simple test                 yVAR_round            "u_round/0" , "a"                                       , "a"                                         i_equal     0                                                                      
@@ -269,7 +269,7 @@ SCRP          v21  appoximate string comparisons (basics)                     
      exec     v21  prefix with equal, both neg          yVAR_round            "u_round/0" , "test =-1"                                , "test =-1"                                  i_equal     0                                                                      
 
    COND       v21  prepare for debugging                                        ----------------------------------------------------------------------------------------------------  ----------  ---------------------------------------------------------------------- 
-     set      v21  turn off debugging                   yVAR_debug            '-'                                                                                                   i_equal     0                                                                      
+     exec     v21  turn off debugging                   yVAR_debug            '-'                                                                                                   i_equal     0                                                                      
 
 
 
@@ -278,7 +278,7 @@ SCRP          v21  appoximate string comparisons (basics)                     
 SCRP          v21  appoximate string comparisons (full rounding)                yVAR_round                                                                                            ----------  ---------------------------------------------------------------------- 
 
    COND       v21  prepare for debugging                                        ----------------------------------------------------------------------------------------------------  ----------  ---------------------------------------------------------------------- 
-#    set      v21  turn on debugging                    yVAR_debug            'y'                                                                                                   i_equal     0                                                                      
+#    exec     v21  turn on debugging                    yVAR_debug            'y'                                                                                                   i_equal     0                                                                      
 
    COND       v21  simple complex sign test with zero ints                      ----------------------------------------------------------------------------------------------------  ----------  ---------------------------------------------------------------------- 
      exec     v21  zeros, no signs                      yVAR_round            "u_round/0" , "test =      0    , next =      0"        , "test =      0    , next =      0"          i_equal     0                                                                      
@@ -518,6 +518,6 @@ SCRP          v21  appoximate string comparisons (full rounding)              
      exec     v21  up by 10                             yVAR_round            "u_round/9" , "test =  12345.0300000"                   , "test =  12345.0300010"                     i_lesser    0                                                                      
 
    COND       v21  prepare for debugging                                        ----------------------------------------------------------------------------------------------------  ----------  ---------------------------------------------------------------------- 
-     set      v21  turn off debugging                   yVAR_debug            '-'                                                                                                   i_equal     0                                                                      
+     exec     v21  turn off debugging                   yVAR_debug            '-'                                                                                                   i_equal     0                                                                      
 
 
