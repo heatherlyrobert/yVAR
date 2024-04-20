@@ -34,8 +34,8 @@
 
 #define     P_VERMAJOR  "1.--, production improvements"
 #define     P_VERMINOR  "1.1-, unit testing build out"
-#define     P_VERNUM    "1.1c"
-#define     P_VERTXT    "added character-specific tests to make koios more clear"
+#define     P_VERNUM    "1.1d"
+#define     P_VERTXT    "cleaned up mistaken deceptive #includes"
 
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -156,6 +156,7 @@
 
 #include    <ySTR_solo.h>
 #include    <yURG_solo.h>
+#include    <yUNIT_solo.h>
 
 
 
@@ -167,8 +168,6 @@
 #include <regex.h>        /* regcomp(), regexec(), regfree()                  */
 
 
-#include    <yLOG.h>                    /* heatherly program logger            */
-#include    <yURG.h>                    /* heatherly debugging filter          */
 #include    "yVAR.h"
 
 

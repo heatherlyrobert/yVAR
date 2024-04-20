@@ -44,6 +44,7 @@ yVAR_char               (char *a_test, uchar a_expect, uchar a_actual)
    if        (strcmp(a_test, "c_equal")    == 0) {
       rc = -('e');
       if (a_actual == a_expect)    rc *= -1;
+      /*> printf ("%c =? %c   (%4d)\n", a_expect, a_actual, rc);                      <*/
    } else if (strcmp(a_test, "c_not")      == 0) {
       rc = -('n');
       if (a_actual != a_expect)    rc *= -1;
