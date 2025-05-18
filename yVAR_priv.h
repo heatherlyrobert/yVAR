@@ -34,8 +34,8 @@
 
 #define     P_VERMAJOR  "1.--, production improvements"
 #define     P_VERMINOR  "1.1-, unit testing build out"
-#define     P_VERNUM    "1.1e"
-#define     P_VERTXT    "removed false yURG_solo.h dependency"
+#define     P_VERNUM    "1.1f"
+#define     P_VERTXT    "huge jump in numeric testing (and additions) using yUNIT_uver"
 
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -165,6 +165,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <regex.h>        /* regcomp(), regexec(), regfree()                  */
+#include <math.h>         /* round                                            */
 
 
 #include    "yVAR.h"

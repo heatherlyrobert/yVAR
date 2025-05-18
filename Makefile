@@ -6,7 +6,7 @@
 # basename of executable, header, and all code files
 NAME_BASE  = yVAR
 # additional standard and outside libraries
-LIB_STD    = 
+LIB_STD    = -lm
 # all heatherly libraries used, debug versions whenever available
 LIB_MINE   = 
 # directory for production code, no trailing slash
@@ -18,7 +18,7 @@ INST_DIR   =
 # extra include directories required
 INC_MINE   = 
 # utilities generated, separate from main program
-NAME_UTIL  = yvar_unit
+NAME_UTIL  = 
 # libraries only for the utilities
 LIB_UTIL   = 
 
@@ -32,7 +32,7 @@ LIB_UTIL   =
 
 
 #===(master template)======================================#
-include /usr/local/sbin/make_program
+include /usr/local/sbin/zeno_make
 
 
 
