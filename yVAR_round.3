@@ -1,0 +1,128 @@
+.TH yVAR_round· 3 2008-jul "linux" "interfacing with full library version"
+
+.SH NAME
+yVAR \- simple, consistent, reusable variable testing services
+
+.SH PATRON
+keres-psychostasia (judgement) spirits of violent death, choosing righteous
+
+.SH IMAGERY
+fanged, taloned women in bloody garments, flying over the battlefield
+
+.SH SUMMARY (see yVAR (7) for more information)
+yVAR is a set of shared functions for variable existance, typing, and value
+testing services for use by the calling program, making a tedious and neglected
+task into a systematic, shared, easy to maintain, and safer one.
+
+.SH SERIOUS FOREWARNING
+i am a crazy, selfish, dog-fooding c-programmer.  my code tends to be
+experimental and constantly evolving.  my point is NOT to be the best, it is
+to challenge myself, build from scratch, and allow fast problem solving.
+
+.SH DOCUMENTATION
+.nf
+yVAR (3)           interfacing with yVAR in general
+yVAR_char (3)      character value testing
+yVAR_int (3)       integer value testing
+yVAR_real (3)      floating point value testing
+yVAR_point (3)     void pointer value testing
+yVAR_string (3)    character string testing
+.B yVAR_round (3)´´´´´specialized rounding inside strings
+yVAR_regex (3)     compares string to regular expressions
+yVAR (7)           decision rationale, scope, and objectives
+
+.SH TABLE OF CONTENTS
+.nf  
+a) overview        quick summary
+b) synopsis        function overview
+c) tests           specific tests provided
+d) results         return codes
+
+.SH A) OVERVIEW
+yVAR_round follows the same general guidelines as all others, except it is
+very focused on unit-testing and by far the most complex.  it rounds numbers
+within strings to allow descriptive lines to show details and still be tested.
+
+.SH B) SYNOPSIS
+char     yVAR_round   (char* <test>, char* <expect>, char* <actual>)
+
+.SH C) TESTS
+tests are requested by their name (not number) being passed in the <test>
+arguement.   in this case, there in only one test.
+
+expected strings can include a mask character (¬) to not compare a specific
+character location, or perhaps many.
+
+.SS legend (at far left)
+.nf
+Ï very common
+· not in every program
+> available in two-argument style also (yVAR_chars)
+
+.SS common
+.nf
+---·--···---name---···---description---------------------------------
+Ï   1    u_round/n    numbers are extracted and rounded in last digit
+
+the helpful part here is that it is a string match until a number is
+spotted.  then numbers are extracted and compared mathmatically.
+the test type indicates how far apart any two values embedded in the strings
+may be an still match.  this function can match all numbers in a string as
+long as they are in the same place and the same length.
+
+this allows me to do more complex testing of context and data together
+without many smaller, individual tests being done outside context.
+
+example from unit testing my hexapod robot for its tibia end point...
+   expected     åtibia   -92.5x,  -160.2z,   331.0yæ
+
+using u_round/1 the smallest digit can vary by +/- 1.
+
+first example (PASS)...
+   expect       åtibia   -92.5x,  -160.2z,   331.0yæ
+   actual       åtibia   -92.4x,  -160.3z,   331.0yæ
+   mod string   å············r·········r···········æ
+this indicates that then actual's all passed, and two where rounded.
+
+second example (FAIL)...
+   expect       åtibia   -92.5x,  -160.2z,   331.0yæ
+   actual       åtibia   -92.7x,  -160.3z,   331.0yæ
+   mod string   å············°·········r···········æ
+this indicates that one could be rounded, and one could not.
+
+using u_round/2 the smallest digit can vary by +/- 2.
+
+first example (PASS)...
+   expect       åtibia   -92.5x,  -160.2z,   331.0yæ
+   actual       åtibia   -92.7x,  -160.3z,   330.8yæ
+   mod string   å············r·········r·······r·r·æ
+this indicates a complex pass in the final number.
+
+using u_round/z means that a 0 can be positive or negative.
+
+example (PASS)...
+   expect       åtibia   -92.4x,  -160.2z,     0.0yæ
+   actual       åtibia   -92.4x,  -160.2z,    -0.0yæ
+   mod string   å·····························r····æ
+this indicates that a zero on floats can be matched.
+
+example (FAIL)...
+   expect       åtibia   -92.4x,  -160.2z,  -331.0yæ
+   actual       åtibia   -92.4x,  -160.2z,   331.0yæ
+   mod string   å···························°······æ
+this indicates that sign changes only allowed on zeros.
+
+.SH D) RESULTS
+the return code is a little intelligent to help with testing the yVAR_int
+function itself.  but, there are three meaningful returns...
+   pos    matches requested test
+   neg    fails requested test
+   ?      means unknown test
+
+.SH BUGS
+yENV is incredibly stable for me, but if anyone else used it it might explode
+and take the universe with it.
+
+.SH COLOPHON
+this page is part of a documentation package meant to make the use of the
+heatherly tools easier and faster

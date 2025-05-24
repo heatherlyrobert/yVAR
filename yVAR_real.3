@@ -1,0 +1,91 @@
+.TH yVAR_real· 3 2008-jul "linux" "interfacing with full library version"
+
+.SH NAME
+yVAR \- simple, consistent, reusable variable testing services
+
+.SH PATRON
+keres-psychostasia (judgement) spirits of violent death, choosing righteous
+
+.SH IMAGERY
+fanged, taloned women in bloody garments, flying over the battlefield
+
+.SH SUMMARY (see yVAR (7) for more information)
+yVAR is a set of shared functions for variable existance, typing, and value
+testing services for use by the calling program, making a tedious and neglected
+task into a systematic, shared, easy to maintain, and safer one.
+
+.SH SERIOUS FOREWARNING
+i am a crazy, selfish, dog-fooding c-programmer.  my code tends to be
+experimental and constantly evolving.  my point is NOT to be the best, it is
+to challenge myself, build from scratch, and allow fast problem solving.
+
+.SH DOCUMENTATION
+.nf
+yVAR (3)           interfacing with yVAR in general
+yVAR_char (3)      character value testing
+yVAR_int (3)       integer value testing
+.B yVAR_real (3)´´´´´´floating point value testing
+yVAR_point (3)     void pointer value testing
+yVAR_string (3)    character string testing
+yVAR_round (3)     specialized rounding inside strings
+yVAR_regex (3)     compares string to regular expressions
+yVAR (7)           decision rationale, scope, and objectives
+
+.SH TABLE OF CONTENTS
+.nf  
+a) overview        quick summary
+b) synopsis        function overview
+c) tests           specific tests provided
+d) results         return codes
+
+.SH A) OVERVIEW
+yVAR_real follows the same general guidelines as all others, except it is
+focused on all floating point types.  yVAR_real works specifically
+with signed long-doubles to give maximum flexibility.
+
+.SH B) SYNOPSIS
+char     yVAR_real    (char* <test>, ldouble <expect>, ldouble <actual>)
+char     yVAR_reals   (char* <test>, ldouble <actual>)
+
+.SH C) TESTS
+tests are requested by their name (not number) being passed in the <test>
+arguement.  they all being with "r_" to make using them in koios (unit testing)
+more clear.  in testing, r_equal, r_greater, and r_lesser are +95% of the usage.
+
+.SS legend (at far left)
+.nf
+Ï very common
+· not in every program
+> available in two-argument style also (yVAR_chars)
+
+.SS common
+.nf
+---·--···---name---···---description---------------------------------
+Ï   1    r_equal      expected and actual match
+·   2    r_not        expected and actual are not the same
+Ï   3    r_greater    actual sorts greater than expected
+·   4    r_gequal     actual sorts greater than (or equal to) expected
+Ï   5    r_lesser     actual sorts lesser than expected
+·   6    r_lequal     actual sorts lesser than (or equal to) expected
+
+.SS specialized
+.nf
+---·--···---name---···---description---------------------------------
+·   7    r_norm93     values compared after making them %9.3llf
+·   8    r_norm97     values compared after making them %9.7llf
+·   9    r_pct/n      actual +/- (n) percent of expected
+
+.SH D) RESULTS
+the return code is a little intelligent to help with testing the yVAR_int
+function itself.  but, there are three meaningful returns...
+   pos    matches requested test
+   neg    fails requested test
+   ?      means unknown test
+
+.SH BUGS
+yENV is incredibly stable for me, but if anyone else used it it might explode
+and take the universe with it.
+
+.SH COLOPHON
+this page is part of a documentation package meant to make the use of the
+heatherly tools easier and faster

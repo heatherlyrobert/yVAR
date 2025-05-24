@@ -1,0 +1,111 @@
+#include "master.munit"
+
+
+
+/*====================------------------------------------====================*/
+/*===----                       unit test scripts                      ----===*/
+/*====================------------------------------------====================*/
+static void      o___SCRIPTS_________________o (void) {;}
+
+char
+yvar__regex_simple      (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_regex"    , "(REGEX) verify simple strings (yVAR_regexs)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify lower case (x_lower)"); 
+   yUNIT_minval ("lower case"                         , yVAR_regexs      ("x_lower"   , "testing"                                 ),  999);
+   yUNIT_minval ("upper case"                         , yVAR_regexs      ("x_lower"   , "CHUPACABRA"                              ), -999);
+   yUNIT_minval ("mixed case"                         , yVAR_regexs      ("x_lower"   , "THEforest"                               ), -999);
+   yUNIT_minval ("digits"                             , yVAR_regexs      ("x_lower"   , "12345"                                   ), -999);
+   yUNIT_minval ("greek"                              , yVAR_regexs      ("x_lower"   , "ийклмн"                                  ), -999);
+   yUNIT_minval ("alpha numeric"                      , yVAR_regexs      ("x_lower"   , "test123ING"                              ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify upper case (x_upper)"); 
+   yUNIT_minval ("lower case"                         , yVAR_regexs      ("x_upper"   , "testing"                                 ), -999);
+   yUNIT_minval ("upper case"                         , yVAR_regexs      ("x_upper"   , "CHUPACABRA"                              ),  999);
+   yUNIT_minval ("mixed case"                         , yVAR_regexs      ("x_upper"   , "THEforest"                               ), -999);
+   yUNIT_minval ("digits"                             , yVAR_regexs      ("x_upper"   , "12345"                                   ), -999);
+   yUNIT_minval ("greek"                              , yVAR_regexs      ("x_upper"   , "ийклмн"                                  ), -999);
+   yUNIT_minval ("alpha numeric"                      , yVAR_regexs      ("x_upper"   , "test123ING"                              ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify digit case (x_digit)"); 
+   yUNIT_minval ("lower case"                         , yVAR_regexs      ("x_digit"   , "testing"                                 ), -999);
+   yUNIT_minval ("upper case"                         , yVAR_regexs      ("x_digit"   , "CHUPACABRA"                              ), -999);
+   yUNIT_minval ("mixed case"                         , yVAR_regexs      ("x_digit"   , "THEforest"                               ), -999);
+   yUNIT_minval ("digits"                             , yVAR_regexs      ("x_digit"   , "12345"                                   ),  999);
+   yUNIT_minval ("greek"                              , yVAR_regexs      ("x_digit"   , "ийклмн"                                  ), -999);
+   yUNIT_minval ("alpha numeric"                      , yVAR_regexs      ("x_digit"   , "test123ING"                              ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify greek case (x_greek)"); 
+   yUNIT_minval ("lower case"                         , yVAR_regexs      ("x_greek"   , "testing"                                 ), -999);
+   yUNIT_minval ("upper case"                         , yVAR_regexs      ("x_greek"   , "CHUPACABRA"                              ), -999);
+   yUNIT_minval ("mixed case"                         , yVAR_regexs      ("x_greek"   , "THEforest"                               ), -999);
+   yUNIT_minval ("digits"                             , yVAR_regexs      ("x_greek"   , "12345"                                   ), -999);
+   yUNIT_minval ("greek"                              , yVAR_regexs      ("x_greek"   , "ийклмн"                                  ),  999);
+   yUNIT_minval ("alpha numeric"                      , yVAR_regexs      ("x_greek"   , "test123ING"                              ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify alpha case (x_alpha)"); 
+   yUNIT_minval ("lower case"                         , yVAR_regexs      ("x_alpha"   , "testing"                                 ),  999);
+   yUNIT_minval ("upper case"                         , yVAR_regexs      ("x_alpha"   , "CHUPACABRA"                              ),  999);
+   yUNIT_minval ("mixed case"                         , yVAR_regexs      ("x_alpha"   , "THEforest"                               ),  999);
+   yUNIT_minval ("digits"                             , yVAR_regexs      ("x_alpha"   , "12345"                                   ), -999);
+   yUNIT_minval ("greek"                              , yVAR_regexs      ("x_alpha"   , "ийклмн"                                  ), -999);
+   yUNIT_minval ("alpha numeric"                      , yVAR_regexs      ("x_alpha"   , "test123ING"                              ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify alpha-numeric case (x_alnum)"); 
+   yUNIT_minval ("lower case"                         , yVAR_regexs      ("x_alnum"   , "testing"                                 ),  999);
+   yUNIT_minval ("upper case"                         , yVAR_regexs      ("x_alnum"   , "CHUPACABRA"                              ),  999);
+   yUNIT_minval ("mixed case"                         , yVAR_regexs      ("x_alnum"   , "THEforest"                               ),  999);
+   yUNIT_minval ("digits"                             , yVAR_regexs      ("x_alnum"   , "12345"                                   ),  999);
+   yUNIT_minval ("greek"                              , yVAR_regexs      ("x_alnum"   , "ийклмн"                                  ), -999);
+   yUNIT_minval ("alpha numeric"                      , yVAR_regexs      ("x_alnum"   , "test123ING"                              ),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+
+
+/*====================------------------------------------====================*/
+/*===----                            driver                            ----===*/
+/*====================------------------------------------====================*/
+static void      o___DRIVER__________________o (void) {;}
+
+char
+main                    (int a_argc, char *a_argv [])
+{
+   /*---(locals)-----------+-----+-----+-*/
+   int         x_unit      =    0;
+   int         n           =    0;
+   char        x_list      =    0;
+   /*---(arguments)----------------------*/
+   printf ("## %s\n", P_ONELINE);
+   printf ("## pre-yUNIT unit testing : %s\n", a_argv [0]);
+   if (a_argc >= 2) {
+      if (strcmp (a_argv [1], "--list") == 0)       x_list = 'y';
+      else if (strcmp (a_argv [1], "--inst") == 0)  x_list = '!';
+      else                                          x_unit = atoi (a_argv [1]);
+   }
+   /*---(display)------------------------*/
+   if (x_unit  >  0 )         printf ("## selected single script (%2d)\n", x_unit);
+   else                       printf ("## selected all scripts\n");
+   if (x_list == 'y')         printf ("## list script(s) only\n");
+   else if (x_list == '!')    printf ("## generate initial wave file\n");
+   else                       printf ("## execute conditions and steps\n");
+   printf ("\n");
+   /*---(scripts)------------------------*/
+   yvar__regex_simple        (++n, x_list, x_unit);
+   /*---(wrapup)-------------------------*/
+   yUNIT_mintinu    ();
+   /*---(complete)-----------------------*/
+   return 0;
+}

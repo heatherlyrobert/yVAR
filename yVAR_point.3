@@ -1,0 +1,85 @@
+.TH yVAR_point· 3 2008-jul "linux" "interfacing with full library version"
+
+.SH NAME
+yVAR \- simple, consistent, reusable variable testing services
+
+.SH PATRON
+keres-psychostasia (judgement) spirits of violent death, choosing righteous
+
+.SH IMAGERY
+fanged, taloned women in bloody garments, flying over the battlefield
+
+.SH SUMMARY (see yVAR (7) for more information)
+yVAR is a set of shared functions for variable existance, typing, and value
+testing services for use by the calling program, making a tedious and neglected
+task into a systematic, shared, easy to maintain, and safer one.
+
+.SH SERIOUS FOREWARNING
+i am a crazy, selfish, dog-fooding c-programmer.  my code tends to be
+experimental and constantly evolving.  my point is NOT to be the best, it is
+to challenge myself, build from scratch, and allow fast problem solving.
+
+.SH DOCUMENTATION
+.nf
+yVAR (3)           interfacing with yVAR in general
+yVAR_char (3)      character value testing
+yVAR_int (3)       integer value testing
+yVAR_real (3)      floating point value testing
+.B yVAR_point (3)´´´´´void pointer value testing
+yVAR_string (3)    character string testing
+yVAR_round (3)     specialized rounding inside strings
+yVAR_regex (3)     compares string to regular expressions
+yVAR (7)           decision rationale, scope, and objectives
+
+.SH TABLE OF CONTENTS
+.nf  
+a) overview        quick summary
+b) synopsis        function overview
+c) tests           specific tests provided
+d) results         return codes
+
+.SH A) OVERVIEW
+yVAR_point follows the same general guidelines as all others, except it is
+focused on pointer types.  yVAR_point works specifically a void pointer to
+avoid any context.
+
+.SH B) SYNOPSIS
+char     yVAR_point   (char* <test>, void* <expect>, void* <actual>)
+char     yVAR_ptrs    (char* <test>, void* <actual>)
+
+.SH C) TESTS
+tests are requested by their name (not number) being passed in the <test>
+arguement.  they all being with "p_" to make using them in koios (unit testing)
+more clear.  in testing, p_null and p_exist are +95% of the usage.
+
+.SS legend (at far left)
+.nf
+Ï very common
+· not in every program
+> available in two-argument style also (yVAR_chars)
+
+.SS common
+.nf
+---·--···---name---···---description---------------------------------
+·   1    p_equal      expected and actual match
+·   2    p_not        expected and actual are not the same (and not null)
+·   3    p_greater    actual sorts greater than expected
+·   4    p_lesser     actual sorts lesser than expected
+Ï>  5    p_null       actual is grounded/zero
+Ï>  6    p_exists     actual has a non-zero value
+·>  7    p_any        any value null or otherwise
+
+.SH D) RESULTS
+the return code is a little intelligent to help with testing the yVAR_int
+function itself.  but, there are three meaningful returns...
+   pos    matches requested test
+   neg    fails requested test
+   ?      means unknown test
+
+.SH BUGS
+yENV is incredibly stable for me, but if anyone else used it it might explode
+and take the universe with it.
+
+.SH COLOPHON
+this page is part of a documentation package meant to make the use of the
+heatherly tools easier and faster

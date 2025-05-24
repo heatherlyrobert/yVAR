@@ -205,8 +205,10 @@ char*       yVAR_getter        (char *a_question, int a_num);
 
 
 /*345678901-12345678901-12345678901-12345678901-12345678901-12345678901-123456*/
-char        yvar_string_prep        (cchar *a_test, cchar *a_expect, cchar *a_actual);
+char        yvar_string_prep        (char a_test [LEN_TERSE], char a_expect [LEN_RECD], char a_actual [LEN_RECD]);
 char*       yvar_string__unit       (char *a_question);
+char        yvar_string_match       (char a_exp [LEN_RECD], char a_act [LEN_RECD], char r_mod [LEN_RECD]);
+char        yvar_string_fancy       (char a_act [LEN_RECD], char a_mod [LEN_RECD], char r_fancy [LEN_RECD]);
 
 
 

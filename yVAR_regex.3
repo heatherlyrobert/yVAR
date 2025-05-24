@@ -1,0 +1,138 @@
+.TH yVAR_regex· 3 2008-jul "linux" "interfacing with full library version"
+
+.SH NAME
+yVAR \- simple, consistent, reusable variable testing services
+
+.SH PATRON
+keres-psychostasia (judgement) spirits of violent death, choosing righteous
+
+.SH IMAGERY
+fanged, taloned women in bloody garments, flying over the battlefield
+
+.SH SUMMARY (see yVAR (7) for more information)
+yVAR is a set of shared functions for variable existance, typing, and value
+testing services for use by the calling program, making a tedious and neglected
+task into a systematic, shared, easy to maintain, and safer one.
+
+.SH SERIOUS FOREWARNING
+i am a crazy, selfish, dog-fooding c-programmer.  my code tends to be
+experimental and constantly evolving.  my point is NOT to be the best, it is
+to challenge myself, build from scratch, and allow fast problem solving.
+
+.SH DOCUMENTATION
+.nf
+yVAR (3)           interfacing with yVAR in general
+yVAR_char (3)      character value testing
+yVAR_int (3)       integer value testing
+yVAR_real (3)      floating point value testing
+yVAR_point (3)     void pointer value testing
+yVAR_string (3)    character string testing
+yVAR_round (3)     specialized rounding inside strings
+yVAR_regex (3)´´´´´compares string to regular expressions
+yVAR (7)           decision rationale, scope, and objectives
+
+.SH TABLE OF CONTENTS
+.nf  
+a) overview        quick summary
+b) synopsis        function overview
+c) tests           specific tests provided
+d) results         return codes
+
+.SH A) OVERVIEW
+yVAR_regex follows the same general guidelines as all others, except it is
+focused on character strings and comparing the to standard or custom regular
+expressions.
+
+.SH B) SYNOPSIS
+char     yVAR_regex   (char* <test>, char* <expect>, char* <actual>)
+char     yVAR_regexs  (char* <test>, char* <actual>)
+
+.SH C) TESTS
+tests are requested by their name (not number) being passed in the <test>
+arguement.  they all being with "s_" to make using them in koios (unit testing)
+more clear.  in testing, s_equal is +95% of the usage.
+
+expected strings can include a mask character (¬) to not compare a specific
+character location, or perhaps many.
+
+additionally, in koios (unit-testing) usage, the "s_" prefix can be replaced by
+"w_" and the strings will be shown with å...æ wrappers to confirm length.
+
+.SS legend (at far left)
+.nf
+Ï very common
+· not in every program
+> available in two-argument style also (yVAR_chars)
+
+.SS basic sub-sets
+.nf
+---·--···---name---···---description---------------------------------
+·>  1    x_lower      all characters are lower case
+·>  2    x_upper      all characters are upper case
+·>  3    x_digit      all characters are numbers
+·>  4    x_greek      all characters are greek letters
+·>  5    x_alpha      all characters letters
+·>  6    x_alnum      all characters letters or numbers
+
+.SS general text
+.nf
+---·--···---name---···---description---------------------------------
+·>  7    x_basic      very plain english language
+·>  8    x_write      general writing characters
+·>  9    x_exten      extended writing characters
+
+.SS internet
+.nf
+---·--···---name---···---description---------------------------------
+·>  10   x_pfield     brower post fields
+·>  11   x_pstring    brower post content strings
+·>  12   x_ip         IP address
+·>  13   x_ip6        IP-6 address
+·>  14   x_email      email address
+
+.SS numbers
+.nf
+---·--···---name---···---description---------------------------------
+·>  15   x_byte       0-255
+·>  16   x_unit       unsigned interger
+·>  17   x_snit       signed interger
+·>  18   x_bin        binary number
+·>  19   x_binplus    binary number (with specialty (-Ï'+) also
+·>  20   x_octal      octal number (with optional prefixes)
+·>  21   x_hex        hex number (with optional prefixes)
+·>  22   x_float      real/floating point number
+·>  23   x_pct        percentage number
+
+.SS filesys
+.nf
+---·--···---name---···---description---------------------------------
+·>  24   x_dir        normal linux directory reference
+·>  25   x_file       normal linux pathless file reference
+·>  26   x_path       full path (dir and file)
+·>  27   x_mypath     my tighter full path (dir and file)
+
+.SS general
+.nf
+---·--···---name---···---description---------------------------------
+·>  28   x_phone      united states telephone number
+·>  29   x_zip        united states zip-code
+
+.SS custom
+.nf
+---·--···---name---···---description---------------------------------
+·   30   x_custom     include the regex in the a_expect field
+
+.SH D) RESULTS
+the return code is a little intelligent to help with testing the yVAR_int
+function itself.  but, there are three meaningful returns...
+   pos    matches requested test
+   neg    fails requested test
+   ?      means unknown test
+
+.SH BUGS
+yENV is incredibly stable for me, but if anyone else used it it might explode
+and take the universe with it.
+
+.SH COLOPHON
+this page is part of a documentation package meant to make the use of the
+heatherly tools easier and faster

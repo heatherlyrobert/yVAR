@@ -274,6 +274,8 @@ yVAR_pointer       (char a_test [LEN_TERSE], void *a_expect, void *a_actual)
    return rc;
 }
 
+char yVAR_ptrs    (char a_test [LEN_TERSE], void *a_actual) { return yVAR_pointer (a_test, NULL, a_actual); }
+
 char
 yVAR_real               (char a_test [LEN_TERSE], ldouble a_expect, ldouble a_actual)
 {

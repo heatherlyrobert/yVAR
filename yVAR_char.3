@@ -9,7 +9,7 @@ keres-psychostasia (judgement) spirits of violent death, choosing righteous
 .SH IMAGERY
 fanged, taloned women in bloody garments, flying over the battlefield
 
-.SH SUMMARY (see yLOG (7) for more information)
+.SH SUMMARY (see yVAR (7) for more information)
 yVAR is a set of shared functions for variable existance, typing, and value
 testing services for use by the calling program, making a tedious and neglected
 task into a systematic, shared, easy to maintain, and safer one.
@@ -21,8 +21,14 @@ to challenge myself, build from scratch, and allow fast problem solving.
 
 .SH DOCUMENTATION
 .nf
-yVAR (3)           interfacing with yLOG in general
-.B yVAR_char (3)´´´´´´character testing
+yVAR (3)           interfacing with yVAR in general
+.B yVAR_char (3)´´´´´´character value testing
+yVAR_int (3)       integer value testing
+yVAR_real (3)      floating point value testing
+yVAR_point (3)     void pointer value testing
+yVAR_string (3)    character string testing
+yVAR_round (3)     specialized rounding inside strings
+yVAR_regex (3)     compares string to regular expressions
 yVAR (7)           decision rationale, scope, and objectives
 
 .SH TABLE OF CONTENTS
@@ -33,53 +39,61 @@ c) tests           specific tests provided
 d) results         return codes
 
 .SH A) OVERVIEW
-yVAR char follows the same general guidelines as all others, except solely
+yVAR_char follows the same general guidelines as all others, except solely
 focused on 8-bit characters, mostly for unit testing purposes.
 
 .SH B) SYNOPSIS
-int      yLOG_char    (char* <test>, char <expect>, char <actual>)
+.nf
+char     yVAR_char    (char* <test>, uchar <expect>, uchar <actual>)
+char     yVAR_chars   (char* <test>, uchar <actual>)
 
 .SH C) TESTS
 tests are requested by their name (not number) being passed in the <test>
 arguement.  they all being with "c_" to make using them in koios (unit testing)
 more clear.  in testing, c_equal is +95% of the usage.
 
-.SS majority
+.SS legend (at far left)
 .nf
----···--name---·······---description---------------------------------
-1     c_equal         expected and actual match
-2     c_not           expected and actual are not the same
-3     c_greater       actual sorts greater than expected
-4     c_gequal        actual sorts greater than (or equal to) expected
-5     c_lesser        actual sorts lesser than expected
-6     c_lequal        actual sorts lesser than (or equal to) expected
+Ï very common
+· not in every program
+> available in two-argument style also (yVAR_chars)
+
+.SS common
+.nf
+---·--···---name---···---description---------------------------------
+Ï   1    c_equal      expected and actual match
+·   2    c_not        expected and actual are not the same
+·   3    c_greater    actual sorts greater than expected
+·   4    c_gequal     actual sorts greater than (or equal to) expected
+·   5    c_lesser     actual sorts lesser than expected
+·   6    c_lequal     actual sorts lesser than (or equal to) expected
 
 .SS common sub-sets
 .nf
----···--name---·······---description---------------------------------
-7     c_number        actual is digit (0-9)
-8     c_lower         actual is lower case letter
-9     c_upper         actual is upper case letter
-10    c_greek         actual is greek letter
+---·--···---name---···---description---------------------------------
+·>  7    c_number     actual is digit (0-9)
+·>  8    c_lower      actual is lower case letter
+·>  9    c_upper      actual is upper case letter
+·>  10   c_greek      actual is greek letter
 
 .SS less common sub-sets
 .nf
----···--name---·······---description---------------------------------
-11    c_alpha         actual is alpha or numeric
-12    c_alnum         actual is alpha or numeric
-13    c_write         actual is normal english writing character
-14    c_extend        actual is extended english writing
-15    c_files         actual is legal file name character
-16    c_control       actual is control character
-18    c_core          actual is 7-bit, non-control (32-126)
-17    c_print         actual is printable character (32-126,161-255)
+---·--···---name---···---description---------------------------------
+·>  11   c_alpha      actual is alpha or numeric
+·>  12   c_alnum      actual is alpha or numeric
+·>  13   c_write      actual is normal english writing character
+·>  14   c_extend     actual is extended english writing
+·>  15   c_files      actual is legal file name character
+·>  16   c_control    actual is control character
+·>  18   c_core       actual is 7-bit, non-control (32-126)
+·>  17   c_print      actual is printable character (32-126,161-255)
 
 .SS encoding
 .nf
----···--name---·······---description---------------------------------
-19    c_binary        actual is binary number (01-Ï'+)
-20    c_octal         actual is octal number (0-7)
-21    c_hex           actual is hex number (0-9A-Fa-f)
+---·--···---name---···---description---------------------------------
+·>  19   c_binary     actual is binary number (01-Ï'+)
+·>  20   c_octal      actual is octal number (0-7)
+·>  21   c_hex        actual is hex number (0-9A-Fa-f)
 
 .SH D) RESULTS
 the return code is a little intelligent to help with testing the yVAR_char

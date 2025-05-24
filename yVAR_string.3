@@ -1,4 +1,4 @@
-.TH yVAR_int· 3 2008-jul "linux" "interfacing with full library version"
+.TH yVAR_string· 3 2008-jul "linux" "interfacing with full library version"
 
 .SH NAME
 yVAR \- simple, consistent, reusable variable testing services
@@ -23,10 +23,10 @@ to challenge myself, build from scratch, and allow fast problem solving.
 .nf
 yVAR (3)           interfacing with yVAR in general
 yVAR_char (3)      character value testing
-.B yVAR_int (3)´´´´´´´integer value testing
+yVAR_int (3)       integer value testing
 yVAR_real (3)      floating point value testing
 yVAR_point (3)     void pointer value testing
-yVAR_string (3)    character string testing
+.B yVAR_string (3)´´´´character string testing
 yVAR_round (3)     specialized rounding inside strings
 yVAR_regex (3)     compares string to regular expressions
 yVAR (7)           decision rationale, scope, and objectives
@@ -39,18 +39,23 @@ c) tests           specific tests provided
 d) results         return codes
 
 .SH A) OVERVIEW
-yVAR_int follows the same general guidelines as all others, except it is
-focused on all integer types, except char.  yVAR_int works specifically
-with signed long-longs to give maximum flexibility.
+yVAR_string follows the same general guidelines as all others, except it is
+focused on character strings.
 
 .SH B) SYNOPSIS
-char     yVAR_integer (char* <test>, llong <expect>, llong <actual>)
-char     yVAR_ints    (char* <test>, llong <actual>)
+char     yVAR_string  (char* <test>, char* <expect>, char* <actual>)
+char     yVAR_strs    (char* <test>, char* <actual>)
 
 .SH C) TESTS
 tests are requested by their name (not number) being passed in the <test>
-arguement.  they all being with "i_" to make using them in koios (unit testing)
-more clear.  in testing, i_equal, i_greater, and i_lesser are +95% of the usage.
+arguement.  they all being with "s_" to make using them in koios (unit testing)
+more clear.  in testing, s_equal is +95% of the usage.
+
+expected strings can include a mask character (¬) to not compare a specific
+character location, or perhaps many.
+
+additionally, in koios (unit-testing) usage, the "s_" prefix can be replaced by
+"w_" and the strings will be shown with å...æ wrappers to confirm length.
 
 .SS legend (at far left)
 .nf
@@ -61,28 +66,26 @@ more clear.  in testing, i_equal, i_greater, and i_lesser are +95% of the usage.
 .SS common
 .nf
 ---·--···---name---···---description---------------------------------
-Ï   1    i_equal      expected and actual match
-·   2    i_not        expected and actual are not the same
-Ï   3    i_greater    actual sorts greater than expected
-·   4    i_gequal     actual sorts greater than (or equal to) expected
-Ï   5    i_lesser     actual sorts lesser than expected
-·   6    i_lequal     actual sorts lesser than (or equal to) expected
-
-.SS lesser used
-.nf
----···--name---·······---description---------------------------------
-·   7    i_digits     actual as a specific length in digits
-·>  8    i_zero       actual has zero value
-·>  9    i_exists     actual has a non-zero vlaue
-·>  10   i_pass       actual has a zero or positive value
-·>  11   i_fail       actual has a negative value
+Ï   1    s_equal      expected and actual match
+·   2    s_not        expected and actual are not the same
+·   3    s_greater    actual sorts greater than expected
+·   4    s_gequal     actual sorts greater than (or equal to) expected
+·   5    s_lesser     actual sorts lesser than expected
+·   6    s_lequal     actual sorts lesser than (or equal to) expected
 
 .SS specialized
 .nf
----···--name---·······---description---------------------------------
-·   12   i_round/n    actual is within (1) of expected's lowest digit
-·   13   i_sig/n      actual and expected share (n) significant digits
-·   14   i_pct/n      actual +/- (n) percent of expected
+-···--···--name---····---description---------------------------------
+·>  7    s_empty      actual is an empty string
+·>  8    s_exists     actual is not empty
+·   9    s_length     actual is a specific length
+
+.SS sub-set
+.nf
+-···--···--name---····---description---------------------------------
+·   10   s_sub        expected is a substr of actual
+·   11   s_super      actual is a substr of expected
+·   12   s_entry      expected is in comma delimited actual string
 
 .SH D) RESULTS
 the return code is a little intelligent to help with testing the yVAR_int

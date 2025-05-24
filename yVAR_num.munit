@@ -1,0 +1,1149 @@
+#include "master.munit"
+
+
+
+/*====================------------------------------------====================*/
+/*===----                       unit test scripts                      ----===*/
+/*====================------------------------------------====================*/
+static void      o___SCRIPTS_________________o (void) {;}
+
+char
+yunit__num_char_big     (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify major character compparisions (yVAR_char)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify c_equal");
+   yUNIT_minval  ("... call success  (a == a)"         , yVAR_char    ("c_equal"  ,  'a',  'a'),  999);
+   yUNIT_minval  ("... call failure  (a != b)"         , yVAR_char    ("c_equal"  ,  'a',  'b'), -999);
+   yUNIT_minval  ("... call failure  (a != A)"         , yVAR_char    ("c_equal"  ,  'a',  'A'), -999);
+   yUNIT_minval  ("... call failure  (NULL)"           , yVAR_char    ("c_equal"  ,  'a',   0 ), -999);
+   yUNIT_minval  ("... call failure  (NULL)"           , yVAR_char    ("c_equal"  ,   0 ,  'a'), -999);
+   yUNIT_minval  ("... call success  (greek)"          , yVAR_char    ("c_equal"  ,  'ò',  'ò'),  999);
+   yUNIT_minval  ("... call failure  (greek)"          , yVAR_char    ("c_equal"  ,  'ò',  'é'), -999);
+   yUNIT_minval  ("... call success  (line)"           , yVAR_char    ("c_equal"  ,  '‡',  '‡'),  999);
+   yUNIT_minval  ("... call failure  (line)"           , yVAR_char    ("c_equal"  ,  '‡',  '‰'), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_not");
+   yUNIT_minval  ("... call failure  (a == a)"         , yVAR_char    ("c_not"    ,  'a',  'a'), -999);
+   yUNIT_minval  ("... call success  (a != b)"         , yVAR_char    ("c_not"    ,  'a',  'b'),  999);
+   yUNIT_minval  ("... call success  (a != A)"         , yVAR_char    ("c_not"    ,  'a',  'A'),  999);
+   yUNIT_minval  ("... call success  (NULL)"           , yVAR_char    ("c_not"    ,  'a',   0 ),  999);
+   yUNIT_minval  ("... call success  (NULL)"           , yVAR_char    ("c_not"    ,   0 ,  'a'),  999);
+   yUNIT_minval  ("... call failure  (greek)"          , yVAR_char    ("c_not"    ,  'ò',  'ò'), -999);
+   yUNIT_minval  ("... call success  (greek)"          , yVAR_char    ("c_not"    ,  'ò',  'é'),  999);
+   yUNIT_minval  ("... call failure  (line)"           , yVAR_char    ("c_not"    ,  '‡',  '‡'), -999);
+   yUNIT_minval  ("... call success  (line)"           , yVAR_char    ("c_not"    ,  '‡',  '‰'),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_greater");
+   yUNIT_minval  ("... call failure  (a == a)"         , yVAR_char    ("c_greater",  'a',  'a'), -999);
+   yUNIT_minval  ("... call success  (a <  b)"         , yVAR_char    ("c_greater",  'a',  'b'),  999);
+   yUNIT_minval  ("... call failure  (b >  a)"         , yVAR_char    ("c_greater",  'b',  'a'), -999);
+   yUNIT_minval  ("... call failure  (a >  A)"         , yVAR_char    ("c_greater",  'a',  'A'), -999);
+   yUNIT_minval  ("... call success  (A <  a)"         , yVAR_char    ("c_greater",  'A',  'a'),  999);
+   yUNIT_minval  ("... call failure  (NULL)"           , yVAR_char    ("c_greater",  'A',   0 ), -999);
+   yUNIT_minval  ("... call success  (NULL)"           , yVAR_char    ("c_greater",   0 ,  'a'),  999);
+   yUNIT_minval  ("... call failure  (greek)"          , yVAR_char    ("c_greater",  'ò',  'è'), -999);
+   yUNIT_minval  ("... call success  (greek)"          , yVAR_char    ("c_greater",  'é',  'ÿ'),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_gequal");
+   yUNIT_minval  ("... call success  (a == a)"         , yVAR_char    ("c_gequal" ,  'a',  'a'),  999);
+   yUNIT_minval  ("... call success  (a <  b)"         , yVAR_char    ("c_gequal" ,  'a',  'b'),  999);
+   yUNIT_minval  ("... call failure  (b >  a)"         , yVAR_char    ("c_gequal" ,  'b',  'a'), -999);
+   yUNIT_minval  ("... call failure  (a >  A)"         , yVAR_char    ("c_gequal" ,  'a',  'A'), -999);
+   yUNIT_minval  ("... call success  (A <  a)"         , yVAR_char    ("c_gequal" ,  'A',  'a'),  999);
+   yUNIT_minval  ("... call failure  (NULL)"           , yVAR_char    ("c_gequal" ,  'A',   0 ), -999);
+   yUNIT_minval  ("... call success  (NULL)"           , yVAR_char    ("c_gequal" ,   0 ,  'a'),  999);
+   yUNIT_minval  ("... call failure  (greek)"          , yVAR_char    ("c_gequal" ,  'ò',  'è'), -999);
+   yUNIT_minval  ("... call success  (greek)"          , yVAR_char    ("c_gequal" ,  'é',  'ÿ'),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_lesser");
+   yUNIT_minval  ("... call failure  (a == a)"         , yVAR_char    ("c_lesser" ,  'a',  'a'), -999);
+   yUNIT_minval  ("... call failure  (a <  b)"         , yVAR_char    ("c_lesser" ,  'a',  'b'), -999);
+   yUNIT_minval  ("... call success  (b >  a)"         , yVAR_char    ("c_lesser" ,  'b',  'a'),  999);
+   yUNIT_minval  ("... call success  (a >  A)"         , yVAR_char    ("c_lesser" ,  'a',  'A'),  999);
+   yUNIT_minval  ("... call failure  (A <  a)"         , yVAR_char    ("c_lesser" ,  'A',  'a'), -999);
+   yUNIT_minval  ("... call success  (NULL)"           , yVAR_char    ("c_lesser" ,  'A',   0 ),  999);
+   yUNIT_minval  ("... call failure  (NULL)"           , yVAR_char    ("c_lesser" ,   0 ,  'a'), -999);
+   yUNIT_minval  ("... call success  (greek)"          , yVAR_char    ("c_lesser" ,  'ò',  'è'),  999);
+   yUNIT_minval  ("... call failure  (greek)"          , yVAR_char    ("c_lesser" ,  'é',  'ÿ'), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_lequal");
+   yUNIT_minval  ("... call success  (a == a)"         , yVAR_char    ("c_lequal" ,  'a',  'a'),  999);
+   yUNIT_minval  ("... call failure  (a <  b)"         , yVAR_char    ("c_lequal" ,  'a',  'b'), -999);
+   yUNIT_minval  ("... call success  (b >  a)"         , yVAR_char    ("c_lequal" ,  'b',  'a'),  999);
+   yUNIT_minval  ("... call success  (a >  A)"         , yVAR_char    ("c_lequal" ,  'a',  'A'),  999);
+   yUNIT_minval  ("... call failure  (A <  a)"         , yVAR_char    ("c_lequal" ,  'A',  'a'), -999);
+   yUNIT_minval  ("... call success  (NULL)"           , yVAR_char    ("c_lequal" ,  'A',   0 ),  999);
+   yUNIT_minval  ("... call failure  (NULL)"           , yVAR_char    ("c_lequal" ,   0 ,  'a'), -999);
+   yUNIT_minval  ("... call success  (greek)"          , yVAR_char    ("c_lequal" ,  'ò',  'è'),  999);
+   yUNIT_minval  ("... call failure  (greek)"          , yVAR_char    ("c_lequal" ,  'é',  'ÿ'), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_any");
+   yUNIT_minval  ("... call success  (a == a)"         , yVAR_char    ("c_any"    ,  'a',  'a'),  999);
+   yUNIT_minval  ("... call failure  (a <  b)"         , yVAR_char    ("c_any"    ,  'a',  'b'),  999);
+   yUNIT_minval  ("... call success  (b >  a)"         , yVAR_char    ("c_any"    ,  'b',  'a'),  999);
+   yUNIT_minval  ("... call success  (a >  A)"         , yVAR_char    ("c_any"    ,  'a',  'A'),  999);
+   yUNIT_minval  ("... call failure  (A <  a)"         , yVAR_char    ("c_any"    ,  'A',  'a'),  999);
+   yUNIT_minval  ("... call success  (NULL)"           , yVAR_char    ("c_any"    ,  'A',   0 ),  999);
+   yUNIT_minval  ("... call failure  (NULL)"           , yVAR_char    ("c_any"    ,   0 ,  'a'),  999);
+   yUNIT_minval  ("... call success  (greek)"          , yVAR_char    ("c_any"    ,  'ò',  'è'),  999);
+   yUNIT_minval  ("... call failure  (greek)"          , yVAR_char    ("c_any"    ,  'é',  'ÿ'),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify defenses");
+   yUNIT_minval  ("... call"                  , yVAR_char    (NULL       , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_char    ("c_eq"     , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_char    ("s_equal"  , 123456789012345,  123456789012345), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
+yunit__num_char_set     (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify inclusion character compparisions (yVAR_char)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify c_number");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_number" ,   0 ,  '1'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_number" ,   0 ,  'z'), -999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_number" ,   0 ,  'B'), -999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_number" ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_number" ,   0 ,  '.'), -999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_number" ,   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_number" ,   0 ,  '-'), -999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_number" ,   0 ,  '_'), -999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_number" ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_number" ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_number" ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_number" ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_number" ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_lower");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_lower"  ,   0 ,  '1'), -999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_lower"  ,   0 ,  'z'),  999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_lower"  ,   0 ,  'B'), -999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_lower"  ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_lower"  ,   0 ,  '.'), -999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_lower"  ,   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_lower"  ,   0 ,  '-'), -999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_lower"  ,   0 ,  '_'), -999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_lower"  ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_lower"  ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_lower"  ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_lower"  ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_lower"  ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_upper");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_upper"  ,   0 ,  '1'), -999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_upper"  ,   0 ,  'z'), -999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_upper"  ,   0 ,  'B'),  999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_upper"  ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_upper"  ,   0 ,  '.'), -999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_upper"  ,   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_upper"  ,   0 ,  '-'), -999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_upper"  ,   0 ,  '_'), -999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_upper"  ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_upper"  ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_upper"  ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_upper"  ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_upper"  ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_upper"  ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_greek");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_greek"  ,   0 ,  '1'), -999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_greek"  ,   0 ,  'z'), -999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_greek"  ,   0 ,  'B'), -999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_greek"  ,   0 ,  'ò'),  999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_greek"  ,   0 ,  '.'), -999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_greek"  ,   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_greek"  ,   0 ,  '-'), -999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_greek"  ,   0 ,  '_'), -999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_greek"  ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_greek"  ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_greek"  ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_greek"  ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_greek"  ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_alpha");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_alpha"  ,   0 ,  '1'), -999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_alpha"  ,   0 ,  'z'),  999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_alpha"  ,   0 ,  'B'),  999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_alpha"  ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_alpha"  ,   0 ,  '.'), -999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_alpha"  ,   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_alpha"  ,   0 ,  '-'), -999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_alpha"  ,   0 ,  '_'),  999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_alpha"  ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_alpha"  ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_alpha"  ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_alpha"  ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_alpha"  ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_alnum");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_alnum"  ,   0 ,  '1'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_alnum"  ,   0 ,  'z'),  999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_alnum"  ,   0 ,  'B'),  999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_alnum"  ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_alnum"  ,   0 ,  '.'), -999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_alnum"  ,   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_alnum"  ,   0 ,  '-'), -999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_alnum"  ,   0 ,  '_'),  999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_alnum"  ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_alnum"  ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_alnum"  ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_alnum"  ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_alnum"  ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_write");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_write"  ,   0 ,  '1'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_write"  ,   0 ,  'z'),  999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_write"  ,   0 ,  'B'),  999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_write"  ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_write"  ,   0 ,  '.'),  999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_write"  ,   0 ,  ')'),  999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_write"  ,   0 ,  '-'),  999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_write"  ,   0 ,  '_'),  999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_write"  ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_write"  ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_write"  ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_write"  ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_write"  ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_extend");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_extend" ,   0 ,  '1'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_extend" ,   0 ,  'z'),  999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_extend" ,   0 ,  'B'),  999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_extend" ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_extend" ,   0 ,  '.'),  999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_extend" ,   0 ,  ')'),  999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_extend" ,   0 ,  '-'),  999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_extend" ,   0 ,  '_'),  999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_extend" ,   0 ,  '}'),  999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_extend" ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_extend" ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_extend" ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_extend" ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_files");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_files"  ,   0 ,  '1'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_files"  ,   0 ,  'z'),  999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_files"  ,   0 ,  'B'),  999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_files"  ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_files"  ,   0 ,  '.'),  999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_files"  ,   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_files"  ,   0 ,  '-'), -999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_files"  ,   0 ,  '_'),  999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_files"  ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_files"  ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_files"  ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_files"  ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_files"  ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_control");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_control",   0 ,  '1'), -999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_control",   0 ,  'z'), -999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_control",   0 ,  'B'), -999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_control",   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_control",   0 ,  '.'), -999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_control",   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_control",   0 ,  '-'), -999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_control",   0 ,  '_'), -999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_control",   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_control",   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_control",   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_control",   0 , '\n'),  999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_control",   0 ,   0 ),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_core");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_core"   ,   0 ,  '1'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_core"   ,   0 ,  'z'),  999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_core"   ,   0 ,  'B'),  999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_core"   ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_core"   ,   0 ,  '.'),  999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_core"   ,   0 ,  ')'),  999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_core"   ,   0 ,  '-'),  999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_core"   ,   0 ,  '_'),  999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_core"   ,   0 ,  '}'),  999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_core"   ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_core"   ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_core"   ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_core"   ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_print");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_print"  ,   0 ,  '1'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_print"  ,   0 ,  'z'),  999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_print"  ,   0 ,  'B'),  999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_print"  ,   0 ,  'ò'),  999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_print"  ,   0 ,  '.'),  999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_print"  ,   0 ,  ')'),  999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_print"  ,   0 ,  '-'),  999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_print"  ,   0 ,  '_'),  999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_print"  ,   0 ,  '}'),  999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_print"  ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_print"  ,   0 ,  '¥'),  999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_print"  ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_print"  ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
+yunit__num_char_num     (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify numeric character compparisions (yVAR_char)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify c_binary");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_binary" ,   0 ,  '1'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_binary" ,   0 ,  'c'), -999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_binary" ,   0 ,  'z'), -999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_binary" ,   0 ,  'B'), -999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_binary" ,   0 ,  'M'), -999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_binary" ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_binary" ,   0 ,  '0'),  999);
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_binary" ,   0 ,  '5'), -999);
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_binary" ,   0 ,  '8'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_binary" ,   0 ,  '.'), -999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_binary" ,   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_binary" ,   0 ,  '-'),  999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_binary" ,   0 ,  '_'), -999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_binary" ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_binary" ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_binary" ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_binary" ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on big dot"                , yVAR_char    ("c_binary" ,   0 ,  'Ï'),  999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_binary" ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_hex");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_hex"    ,   0 ,  '1'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_hex"    ,   0 ,  'c'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_hex"    ,   0 ,  'z'), -999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_hex"    ,   0 ,  'B'),  999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_hex"    ,   0 ,  'M'), -999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_hex"    ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_hex"    ,   0 ,  '0'),  999);
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_hex"    ,   0 ,  '5'),  999);
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_hex"    ,   0 ,  '8'),  999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_hex"    ,   0 ,  '.'), -999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_hex"    ,   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_hex"    ,   0 ,  '-'), -999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_hex"    ,   0 ,  '_'), -999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_hex"    ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_hex"    ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_hex"    ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_hex"    ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on big dot"                , yVAR_char    ("c_hex"    ,   0 ,  'Ï'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_hex"    ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify c_octal");
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_octal"  ,   0 ,  '1'),  999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_octal"  ,   0 ,  'c'), -999);
+   yUNIT_minval  ("... call on lower case"             , yVAR_char    ("c_octal"  ,   0 ,  'z'), -999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_octal"  ,   0 ,  'B'), -999);
+   yUNIT_minval  ("... call on upper case"             , yVAR_char    ("c_octal"  ,   0 ,  'M'), -999);
+   yUNIT_minval  ("... call on greek"                  , yVAR_char    ("c_octal"  ,   0 ,  'ò'), -999);
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_octal"  ,   0 ,  '0'),  999);
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_octal"  ,   0 ,  '5'),  999);
+   yUNIT_minval  ("... call on digit"                  , yVAR_char    ("c_octal"  ,   0 ,  '8'), -999);
+   yUNIT_minval  ("... call on period"                 , yVAR_char    ("c_octal"  ,   0 ,  '.'), -999);
+   yUNIT_minval  ("... call on paren"                  , yVAR_char    ("c_octal"  ,   0 ,  ')'), -999);
+   yUNIT_minval  ("... call on dash"                   , yVAR_char    ("c_octal"  ,   0 ,  '-'), -999);
+   yUNIT_minval  ("... call on underline"              , yVAR_char    ("c_octal"  ,   0 ,  '_'), -999);
+   yUNIT_minval  ("... call on curly brace"            , yVAR_char    ("c_octal"  ,   0 ,  '}'), -999);
+   yUNIT_minval  ("... call on line draw"              , yVAR_char    ("c_octal"  ,   0 ,  'Š'), -999);
+   yUNIT_minval  ("... call on symbol"                 , yVAR_char    ("c_octal"  ,   0 ,  '¥'), -999);
+   yUNIT_minval  ("... call on control"                , yVAR_char    ("c_octal"  ,   0 , '\n'), -999);
+   yUNIT_minval  ("... call on big dot"                , yVAR_char    ("c_octal"  ,   0 ,  'Ï'), -999);
+   yUNIT_minval  ("... call on null"                   , yVAR_char    ("c_octal"  ,   0 ,   0 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
+yunit__num_int_big      (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify integer/long compparisions (yVAR_integer)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify i_equal");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_integer ("i_equal"  ,               3,                3),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_integer ("i_equal"  ,               3,                2), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_integer ("i_equal"  ,               3,                4), -999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_equal"  ,               3,               -3), -999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_equal"  ,              -3,                3), -999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_integer ("i_equal"  , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_integer ("i_equal"  , 123456789012345,  123456789012344), -999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_integer ("i_equal"  , 123456789012345,  123456789012346), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_greater");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_integer ("i_greater",               3,                3), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_integer ("i_greater",               3,                2), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_integer ("i_greater",               3,                4),  999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_greater",               3,               -3), -999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_greater",              -3,                3),  999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_integer ("i_greater", 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_integer ("i_greater", 123456789012345,  123456789012344), -999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_integer ("i_greater", 123456789012345,  123456789012346),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_gequal");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_integer ("i_gequal" ,               3,                3),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_integer ("i_gequal" ,               3,                2), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_integer ("i_gequal" ,               3,                4),  999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_gequal" ,               3,               -3), -999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_gequal" ,              -3,                3),  999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_integer ("i_gequal" , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_integer ("i_gequal" , 123456789012345,  123456789012344), -999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_integer ("i_gequal" , 123456789012345,  123456789012346),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_lesser");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_integer ("i_lesser" ,               3,                3), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_integer ("i_lesser" ,               3,                2),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_integer ("i_lesser" ,               3,                4), -999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_lesser" ,               3,               -3),  999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_lesser" ,              -3,                3), -999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_integer ("i_lesser" , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_integer ("i_lesser" , 123456789012345,  123456789012344),  999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_integer ("i_lesser" , 123456789012345,  123456789012346), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_lequal");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_integer ("i_lequal" ,               3,                3),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_integer ("i_lequal" ,               3,                2),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_integer ("i_lequal" ,               3,                4), -999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_lequal" ,               3,               -3),  999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_lequal" ,              -3,                3), -999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_integer ("i_lequal" , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_integer ("i_lequal" , 123456789012345,  123456789012344),  999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_integer ("i_lequal" , 123456789012345,  123456789012346), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_any");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_integer ("i_any"    ,               3,                3),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_integer ("i_any"    ,               3,                2),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_integer ("i_any"    ,               3,                4),  999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_any"    ,               3,               -3),  999);
+   yUNIT_minval  ("... call (sign switch)"    , yVAR_integer ("i_any"    ,              -3,                3),  999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_integer ("i_any"    , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_integer ("i_any"    , 123456789012345,  123456789012344),  999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_integer ("i_any"    , 123456789012345,  123456789012346),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_digits");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_integer ("i_digits" ,               1,                3),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_integer ("i_digits" ,               0,                3), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_integer ("i_digits" ,               2,                3), -999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_integer ("i_digits" ,              15,  123456789012345),  999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_integer ("i_digits" ,              14,  123456789012345), -999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_integer ("i_digits" ,              16,  123456789012345), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_pass");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pass"   ,               0,                3),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pass"   ,               0,        -12345678), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pass"   ,               0,                2),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pass"   ,               0,                4),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pass"   ,               0,               -3), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pass"   ,               0,               -0),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_fail");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_fail"   ,               0,                3), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_fail"   ,               0,        -12345678),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_fail"   ,               0,                2), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_fail"   ,               0,                4), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_fail"   ,               0,               -3),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_fail"   ,               0,               -0), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
+yunit__num_int_round    (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify integer/long close compparisions (yVAR_integer)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify i_round/0");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12335), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12336), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12340), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12341), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12342), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12343), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12344), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12346), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12347), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12348), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12349), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12350), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12354), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/0",           12345,            12356), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_round/1");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12335), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12336), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12340), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12341), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12342), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12343), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12344),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12346),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12347), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12348), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12349), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12350), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12354), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/1",           12345,            12356), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_round/3");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12335), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12336), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12340), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12341), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12342),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12343),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12344),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12346),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12347),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12348),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12349), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12350), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12354), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/3",           12345,            12356), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_round/5");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12335), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12336), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12340),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12341),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12342),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12343),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12344),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12346),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12347),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12348),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12349),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12350),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12354), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/5",           12345,            12356), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_round/9");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12335), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12336),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12340),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12341),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12342),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12343),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12344),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12346),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12347),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12348),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12349),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12350),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12354),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/9",           12345,            12356), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify defenses");
+   yUNIT_minval  ("... call"                  , yVAR_integer (NULL       , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer (""         , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/" , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/s", 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/-", 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_round/?", 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("s_equal"  , 123456789012345,  123456789012345), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
+yunit__num_int_sig      (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify significant digit compparisions (yVAR_integer)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify i_sig/1");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  123456789000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  123456780000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  123456700000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  123456000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  123450000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  123400000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  123000000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  120000000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  100000000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345,  200000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , 123456789012345, -123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  ,-123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , -23456789012345,  -23456789012345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/1"  , -23456789012345,  -33456789012345), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_sig/2");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  123456789000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  123456780000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  123456700000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  123456000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  123450000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  123400000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  123000000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  120000000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  110000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345,  100000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , 123456789012345, -123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  ,-123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , -23456789012345,  -23456789012345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/2"  , -23456789012345,  -33456789012345), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_sig/3");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  123456789000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  123456780000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  123456700000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  123456000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  123450000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  123400000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  123000000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  124000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  120000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345,  100000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , 123456789012345, -123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  ,-123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , -23456789012345,  -23456789012345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/3"  , -23456789012345,  -33456789012345), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_sig/5");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  123456789000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  123456780000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  123456700000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  123456000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  123450000000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  123440000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  123400000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  123000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  120000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345,  100000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , 123456789012345, -123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  ,-123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , -23456789012345,  -23456789012345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/5"  , -23456789012345,  -33456789012345), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_sig/9");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  123456789000000),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  123456781000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  123456780000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  123456700000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  123456000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  123450000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  123400000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  123000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  120000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345,  100000000000000), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , 123456789012345, -123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  ,-123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , -23456789012345,  -23456789012345),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/9"  , -23456789012345,  -33456789012345), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify defenses");
+   yUNIT_minval  ("... call"                  , yVAR_integer (NULL       , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/"   , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/0"  , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/s"  , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/-"  , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_sig/?"  , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("s_equal"  , 123456789012345,  123456789012345), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
+yunit__num_int_pct      (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify percentage range compparisions (yVAR_integer)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify i_pct/0");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,               90), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,               91), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,               95), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,               96), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,               97), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,               98), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,               99), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,              100),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,              101), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,              102), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,              102), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,              103), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,              104), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,              105), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,              109), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/0"  ,             100,              110), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_pct/1");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,               90), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,               91), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,               95), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,               96), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,               97), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,               98), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,               99),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,              100),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,              101),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,              102), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,              102), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,              103), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,              104), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,              105), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,              109), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/1"  ,             100,              110), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_pct/5");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,               90), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,               91), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,               95),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,               96),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,               97),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,               98),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,               99),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,              100),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,              101),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,              102),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,              102),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,              103),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,              104),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,              105),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,              109), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/5"  ,             100,              110), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify i_pct/9");
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,               90), -999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,               91),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,               95),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,               96),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,               97),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,               98),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,               99),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,              100),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,              101),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,              102),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,              102),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,              103),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,              104),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,              105),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,              109),  999);
+   yUNIT_minval  ("... call"                  , yVAR_integer ("i_pct/9"  ,             100,              110), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
+yunit__num_pointer      (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify pointer compparisions (yVAR_pointer)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify p_equal");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_pointer ("p_equal"  , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_pointer ("p_equal"  , 123456789012345,  123456789012344), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_pointer ("p_equal"  , 123456789012345,  123456789012346), -999);
+   yUNIT_minval  ("... call (no e)"           , yVAR_pointer ("p_equal"  ,               0,  123456789012346), -999);
+   yUNIT_minval  ("... call (no a)"           , yVAR_pointer ("p_equal"  , 123456789012345,                0), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify p_not");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_pointer ("p_not"    , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_pointer ("p_not"    , 123456789012345,  123456789012344),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_pointer ("p_not"    , 123456789012345,  123456789012346),  999);
+   yUNIT_minval  ("... call (no e)"           , yVAR_pointer ("p_not"    ,               0,  123456789012346), -999);
+   yUNIT_minval  ("... call (no a)"           , yVAR_pointer ("p_not"    , 123456789012345,                0), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify p_greater");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_pointer ("p_greater", 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_pointer ("p_greater", 123456789012345,  123456789012344), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_pointer ("p_greater", 123456789012345,  123456789012346),  999);
+   yUNIT_minval  ("... call (no e)"           , yVAR_pointer ("p_greater",               0,  123456789012346),  999);
+   yUNIT_minval  ("... call (no a)"           , yVAR_pointer ("p_greater", 123456789012345,                0), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify p_lesser");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_pointer ("p_lesser" , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_pointer ("p_lesser" , 123456789012345,  123456789012344),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_pointer ("p_lesser" , 123456789012345,  123456789012346), -999);
+   yUNIT_minval  ("... call (no e)"           , yVAR_pointer ("p_lesser" ,               0,  123456789012345), -999);
+   yUNIT_minval  ("... call (no a)"           , yVAR_pointer ("p_lesser" , 123456789012345,                0),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify p_null");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_pointer ("p_null"   , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_pointer ("p_null"   , 123456789012345,  123456789012344), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_pointer ("p_null"   , 123456789012345,  123456789012346), -999);
+   yUNIT_minval  ("... call (no e)"           , yVAR_pointer ("p_null"   ,               0,  123456789012346), -999);
+   yUNIT_minval  ("... call (no a)"           , yVAR_pointer ("p_null"   , 123456789012345,                0),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify p_exists");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_pointer ("p_exists" , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_pointer ("p_exists" , 123456789012345,  123456789012344),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_pointer ("p_exists" , 123456789012345,  123456789012346),  999);
+   yUNIT_minval  ("... call (no e)"           , yVAR_pointer ("p_exists" ,               0,  123456789012346),  999);
+   yUNIT_minval  ("... call (no a)"           , yVAR_pointer ("p_exists" , 123456789012345,                0), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify p_any");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_pointer ("p_any"    , 123456789012345,  123456789012345),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_pointer ("p_any"    , 123456789012345,  123456789012344),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_pointer ("p_any"    , 123456789012345,  123456789012346),  999);
+   yUNIT_minval  ("... call (no e)"           , yVAR_pointer ("p_any"    ,               0,  123456789012346),  999);
+   yUNIT_minval  ("... call (no a)"           , yVAR_pointer ("p_any"    , 123456789012345,                0),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify defenses");
+   yUNIT_minval  ("... call"                  , yVAR_pointer (NULL       , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_pointer (""         , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_pointer ("p_exist"  , 123456789012345,  123456789012345), -999);
+   yUNIT_minval  ("... call"                  , yVAR_pointer ("s_equal"  , 123456789012345,  123456789012345), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
+yunit__num_real_big     (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify major real/float compparisions (yVAR_real)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify r_equal");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_equal"  ,            3.14,             3.14),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_equal"  ,            3.14,             3.15), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_equal"  ,            3.14,             3.13), -999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_equal"  , 123.14159265359,  123.14159265359),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_equal"  , 123.14159265359,  123.14159265360), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_equal"  , 123.14159265359,  123.14159265358), -999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_equal"  , 1234567.1415927,  1234567.1415927),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_equal"  , 1234567.1415927,  1234567.1415928), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_equal"  , 1234567.1415927,  1234567.1415926), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_not");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_not"    ,            3.14,             3.14), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_not"    ,            3.14,             3.15),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_not"    ,            3.14,             3.13),  999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_not"    , 123.14159265359,  123.14159265359), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_not"    , 123.14159265359,  123.14159265360),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_not"    , 123.14159265359,  123.14159265358),  999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_not"    , 1234567.1415927,  1234567.1415927), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_not"    , 1234567.1415927,  1234567.1415928),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_not"    , 1234567.1415927,  1234567.1415926),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_greater");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_greater",            3.14,             3.14), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_greater",            3.14,             3.15),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_greater",            3.14,             3.13), -999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_greater", 123.14159265359,  123.14159265359), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_greater", 123.14159265359,  123.14159265360),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_greater", 123.14159265359,  123.14159265358), -999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_greater", 1234567.1415927,  1234567.1415927), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_greater", 1234567.1415927,  1234567.1415928),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_greater", 1234567.1415927,  1234567.1415926), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_gequal");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_gequal" ,            3.14,             3.14),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_gequal" ,            3.14,             3.15),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_gequal" ,            3.14,             3.13), -999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_gequal" , 123.14159265359,  123.14159265359),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_gequal" , 123.14159265359,  123.14159265360),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_gequal" , 123.14159265359,  123.14159265358), -999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_gequal" , 1234567.1415927,  1234567.1415927),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_gequal" , 1234567.1415927,  1234567.1415928),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_gequal" , 1234567.1415927,  1234567.1415926), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_lesser");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_lesser" ,            3.14,             3.14), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_lesser" ,            3.14,             3.15), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_lesser" ,            3.14,             3.13),  999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_lesser" , 123.14159265359,  123.14159265359), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_lesser" , 123.14159265359,  123.14159265360), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_lesser" , 123.14159265359,  123.14159265358),  999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_lesser" , 1234567.1415927,  1234567.1415927), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_lesser" , 1234567.1415927,  1234567.1415928), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_lesser" , 1234567.1415927,  1234567.1415926),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_lequal");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_lequal" ,            3.14,             3.14),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_lequal" ,            3.14,             3.15), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_lequal" ,            3.14,             3.13),  999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_lequal" , 123.14159265359,  123.14159265359),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_lequal" , 123.14159265359,  123.14159265360), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_lequal" , 123.14159265359,  123.14159265358),  999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_lequal" , 1234567.1415927,  1234567.1415927),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_lequal" , 1234567.1415927,  1234567.1415928), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_lequal" , 1234567.1415927,  1234567.1415926),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_norm93");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_norm93" ,            3.14,             3.14),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_norm93" ,            3.14,             3.15), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_norm93" ,            3.14,             3.13), -999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_norm93" , 123.14159265359,  123.14159265359),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_norm93" , 123.14159265359,  123.14159265360),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_norm93" , 123.14159265359,  123.14159265358),  999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_norm93" , 1234567.1415927,  1234567.1415927),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_norm93" , 1234567.1415927,  1234567.1415928),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_norm93" , 1234567.1415927,  1234567.1415926),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_norm97");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_norm97" ,            3.14,             3.14),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_norm97" ,            3.14,             3.15), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_norm97" ,            3.14,             3.13), -999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_norm97" , 123.14159265359,  123.14159265359),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_norm97" , 123.14159265359,  123.14159265360),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_norm97" , 123.14159265359,  123.14159265358),  999);
+   yUNIT_minval  ("... call (a == e)"         , yVAR_real    ("r_norm97" , 1234567.1415927,  1234567.1415927),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_real    ("r_norm97" , 1234567.1415927,  1234567.1415928), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_real    ("r_norm97" , 1234567.1415927,  1234567.1415926), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
+yunit__num_real_round   (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify real/float proximity compparisions (yVAR_real)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify r_pct/0");
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             0.90), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             0.91), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             0.95), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             0.96), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             0.97), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             0.98), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             0.99), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             1.00),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             1.01), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             1.02), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             1.03), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             1.04), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             1.05), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             1.09), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/0"  ,            1.00,             1.10), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_pct/1");
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             0.90), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             0.91), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             0.95), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             0.96), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             0.97), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             0.98), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             0.99),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             1.00),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             1.01),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             1.02), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             1.03), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             1.04), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             1.05), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             1.09), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/1"  ,            1.00,             1.10), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_pct/3");
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             0.90), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             0.91), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             0.95), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             0.96), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             0.97),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             0.98),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             0.99),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             1.00),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             1.01),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             1.02),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             1.03),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             1.04), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             1.05), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             1.09), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/3"  ,            1.00,             1.10), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_pct/5");
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             0.90), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             0.91), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             0.95),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             0.96),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             0.97),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             0.98),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             0.99),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             1.00),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             1.01),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             1.02),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             1.03),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             1.04),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             1.05),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             1.09), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/5"  ,            1.00,             1.10), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify r_pct/9");
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             0.90), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             0.91),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             0.95),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             0.96),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             0.97),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             0.98),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             0.99),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             1.00),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             1.01),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             1.02),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             1.03),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             1.04),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             1.05),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             1.09),  999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_pct/9"  ,            1.00,             1.10), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify defenses");
+   yUNIT_minval  ("... call"                  , yVAR_real    (NULL       ,            3.14,             3.14), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    (""         ,            3.14,             3.14), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("r_run"    ,            3.14,             3.14), -999);
+   yUNIT_minval  ("... call"                  , yVAR_real    ("s_eqaul"  ,            3.14,             3.14), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+
+
+/*====================------------------------------------====================*/
+/*===----                            driver                            ----===*/
+/*====================------------------------------------====================*/
+static void      o___DRIVER__________________o (void) {;}
+
+char
+main                    (int a_argc, char *a_argv [])
+{
+   /*---(locals)-----------+-----+-----+-*/
+   int         x_unit      =    0;
+   int         n           =    0;
+   char        x_list      =    0;
+   /*---(arguments)----------------------*/
+   printf ("## %s\n", P_ONELINE);
+   printf ("## pre-yUNIT unit testing : %s\n", a_argv [0]);
+   if (a_argc >= 2) {
+      if (strcmp (a_argv [1], "--list") == 0)       x_list = 'y';
+      else if (strcmp (a_argv [1], "--inst") == 0)  x_list = '!';
+      else                                          x_unit = atoi (a_argv [1]);
+   }
+   if (x_unit  >  0 )         printf ("## selected single script (%2d)\n", x_unit);
+   else                       printf ("## selected all scripts\n");
+   if (x_list == 'y')         printf ("## list script(s) only\n");
+   else if (x_list == '!')    printf ("## generate initial wave file\n");
+   else                       printf ("## execute conditions and steps\n");
+   printf ("\n");
+   /*---(scripts)------------------------*/
+   yunit__num_char_big       (++n, x_list, x_unit);
+   yunit__num_char_set       (++n, x_list, x_unit);
+   yunit__num_char_num       (++n, x_list, x_unit);
+   yunit__num_int_big        (++n, x_list, x_unit);
+   yunit__num_int_round      (++n, x_list, x_unit);
+   yunit__num_int_sig        (++n, x_list, x_unit);
+   yunit__num_int_pct        (++n, x_list, x_unit);
+   yunit__num_pointer        (++n, x_list, x_unit);
+   yunit__num_real_big       (++n, x_list, x_unit);
+   yunit__num_real_round     (++n, x_list, x_unit);
+   /*---(wrapup)-------------------------*/
+   yUNIT_mintinu    ();
+   /*---(complete)-----------------------*/
+   return 0;
+}
+
+
