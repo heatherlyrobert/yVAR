@@ -8,6 +8,81 @@
 static void      o___SCRIPTS_________________o (void) {;}
 
 char
+yunit__num_rc           (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify return code compparisions (yVAR_rc)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify z_equal");
+   yUNIT_minval  ("... call success  (both 0)"         , yVAR_rc      ("z_equal"  ,   0 ,   0 ),  999);
+   yUNIT_minval  ("... call success  (e  ==  a)"       , yVAR_rc      ("z_equal"  ,  10 ,  10 ),  999);
+   yUNIT_minval  ("... call success  (e  >   a)"       , yVAR_rc      ("z_equal"  ,  10 ,   5 ), -999);
+   yUNIT_minval  ("... call success  (e  <   a)"       , yVAR_rc      ("z_equal"  ,  10 ,  15 ), -999);
+   yUNIT_minval  ("... call success  (e  >  -a)"       , yVAR_rc      ("z_equal"  ,  10 ,  -5 ), -999);
+   yUNIT_minval  ("... call success  (-e <   a)"       , yVAR_rc      ("z_equal"  , -10 ,   5 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify z_lesser");
+   yUNIT_minval  ("... call success  (both 0)"         , yVAR_rc      ("z_lesser" ,   0 ,   0 ), -999);
+   yUNIT_minval  ("... call success  (e  ==  a)"       , yVAR_rc      ("z_lesser" ,  10 ,  10 ), -999);
+   yUNIT_minval  ("... call success  (e  >   a)"       , yVAR_rc      ("z_lesser" ,  10 ,   5 ),  999);
+   yUNIT_minval  ("... call success  (e  <   a)"       , yVAR_rc      ("z_lesser" ,  10 ,  15 ), -999);
+   yUNIT_minval  ("... call success  (e  >  -a)"       , yVAR_rc      ("z_lesser" ,  10 ,  -5 ),  999);
+   yUNIT_minval  ("... call success  (-e <   a)"       , yVAR_rc      ("z_lesser" , -10 ,   5 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify z_lequal");
+   yUNIT_minval  ("... call success  (both 0)"         , yVAR_rc      ("z_lequal" ,   0 ,   0 ),  999);
+   yUNIT_minval  ("... call success  (e  ==  a)"       , yVAR_rc      ("z_lequal" ,  10 ,  10 ),  999);
+   yUNIT_minval  ("... call success  (e  >   a)"       , yVAR_rc      ("z_lequal" ,  10 ,   5 ),  999);
+   yUNIT_minval  ("... call success  (e  <   a)"       , yVAR_rc      ("z_lequal" ,  10 ,  15 ), -999);
+   yUNIT_minval  ("... call success  (e  >  -a)"       , yVAR_rc      ("z_lequal" ,  10 ,  -5 ),  999);
+   yUNIT_minval  ("... call success  (-e <   a)"       , yVAR_rc      ("z_lequal" , -10 ,   5 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify z_greater");
+   yUNIT_minval  ("... call success  (both 0)"         , yVAR_rc      ("z_greater",   0 ,   0 ), -999);
+   yUNIT_minval  ("... call success  (e  ==  a)"       , yVAR_rc      ("z_greater",  10 ,  10 ), -999);
+   yUNIT_minval  ("... call success  (e  >   a)"       , yVAR_rc      ("z_greater",  10 ,   5 ), -999);
+   yUNIT_minval  ("... call success  (e  <   a)"       , yVAR_rc      ("z_greater",  10 ,  15 ),  999);
+   yUNIT_minval  ("... call success  (e  >  -a)"       , yVAR_rc      ("z_greater",  10 ,  -5 ), -999);
+   yUNIT_minval  ("... call success  (-e <   a)"       , yVAR_rc      ("z_greater", -10 ,   5 ),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify z_gequal");
+   yUNIT_minval  ("... call success  (both 0)"         , yVAR_rc      ("z_gequal" ,   0 ,   0 ),  999);
+   yUNIT_minval  ("... call success  (e  ==  a)"       , yVAR_rc      ("z_gequal" ,  10 ,  10 ),  999);
+   yUNIT_minval  ("... call success  (e  >   a)"       , yVAR_rc      ("z_gequal" ,  10 ,   5 ), -999);
+   yUNIT_minval  ("... call success  (e  <   a)"       , yVAR_rc      ("z_gequal" ,  10 ,  15 ),  999);
+   yUNIT_minval  ("... call success  (e  >  -a)"       , yVAR_rc      ("z_gequal" ,  10 ,  -5 ), -999);
+   yUNIT_minval  ("... call success  (-e <   a)"       , yVAR_rc      ("z_gequal" , -10 ,   5 ),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify z_pass");
+   yUNIT_minval  ("... call success  (both 0)"         , yVAR_rc      ("z_pass"   ,   0 ,   0 ),  999);
+   yUNIT_minval  ("... call success  (e  ==  a)"       , yVAR_rc      ("z_pass"   ,   0 ,  10 ),  999);
+   yUNIT_minval  ("... call success  (e  >   a)"       , yVAR_rc      ("z_pass"   ,   0 ,   5 ),  999);
+   yUNIT_minval  ("... call success  (e  <   a)"       , yVAR_rc      ("z_pass"   ,   0 ,  15 ),  999);
+   yUNIT_minval  ("... call success  (e  >  -a)"       , yVAR_rc      ("z_pass"   ,   0 ,  -5 ), -999);
+   yUNIT_minval  ("... call success  (-e <   a)"       , yVAR_rc      ("z_pass"   ,   0 ,   5 ),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify z_fail");
+   yUNIT_minval  ("... call success  (both 0)"         , yVAR_rc      ("z_fail"   ,   0 ,   0 ), -999);
+   yUNIT_minval  ("... call success  (e  ==  a)"       , yVAR_rc      ("z_fail"   ,   0 ,  10 ), -999);
+   yUNIT_minval  ("... call success  (e  >   a)"       , yVAR_rc      ("z_fail"   ,   0 ,   5 ), -999);
+   yUNIT_minval  ("... call success  (e  <   a)"       , yVAR_rc      ("z_fail"   ,   0 ,  15 ), -999);
+   yUNIT_minval  ("... call success  (e  >  -a)"       , yVAR_rc      ("z_fail"   ,   0 ,  -5 ),  999);
+   yUNIT_minval  ("... call success  (-e <   a)"       , yVAR_rc      ("z_fail"   ,   0 ,   5 ), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
 yunit__num_char_big     (char a_scrp, char a_list, char a_unit)
 {
    yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify major character compparisions (yVAR_char)");
@@ -1130,6 +1205,7 @@ main                    (int a_argc, char *a_argv [])
    else                       printf ("## execute conditions and steps\n");
    printf ("\n");
    /*---(scripts)------------------------*/
+   yunit__num_rc             (++n, x_list, x_unit);
    yunit__num_char_big       (++n, x_list, x_unit);
    yunit__num_char_set       (++n, x_list, x_unit);
    yunit__num_char_num       (++n, x_list, x_unit);

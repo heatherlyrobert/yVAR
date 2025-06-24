@@ -263,7 +263,7 @@ yvar__string_fancy      (char a_scrp, char a_list, char a_unit)
 
    yUNIT_mincond ("verify identifying rounding match");
    yUNIT_minval  ("call match"                         , yvar_string_fancy ("chupacabras 3.14159", "                  r", x_fancy),    0);
-   yUNIT_minstr  ("... check fancy"                    , x_fancy          , "chupacabras 3.1415" BOLD_CYN "9" BOLD_OFF);
+   yUNIT_minstr  ("... check fancy"                    , x_fancy          , "chupacabras 3.1415" BOLD_BRN "9" BOLD_OFF);
    yUNIT_mindnoc ();
 
    yUNIT_minprcs ();
@@ -302,22 +302,22 @@ yvar__unit_string_equal (char a_scrp, char a_list, char a_unit)
    yUNIT_mincond ("verify masked comparisons");
    yUNIT_minval ("equal strings, middle masked"       , yVAR_string      ("s_equal"   , "tes¬¬¬¬123"                              , "testing123"                              ),  999);
    yUNIT_minstr ("... check modded value"             , s_mod                   , "   ¬¬¬¬   "                              );
-   /*> yUNIT_minstr ("... check fancy expect"             , s_fexp                  , "tes" BOLD_MAG "¬¬¬¬" BOLD_OFF "123");   <*/
-   yUNIT_minstr ("... check fancy actual"             , s_fact                  , "tes" BOLD_MAG "¬¬¬¬" BOLD_OFF "123");
+   /*> yUNIT_minstr ("... check fancy expect"             , s_fexp                  , "tes" BOLD_PUR "¬¬¬¬" BOLD_OFF "123");   <*/
+   yUNIT_minstr ("... check fancy actual"             , s_fact                  , "tes" BOLD_PUR "¬¬¬¬" BOLD_OFF "123");
    yUNIT_mindnoc ();
 
    yUNIT_mincond ("verify masked comparisons");
    yUNIT_minval ("expect longer"                      , yVAR_string      ("s_equal"   , "tes¬¬¬¬123456789-"                       , "testing123"                              ), -999);
    yUNIT_minstr ("... check modded value"             , s_mod                   , "   ¬¬¬¬   <<<<<<<"                       );
-   /*> yUNIT_minstr ("... check fancy expect"             , s_fexp                  , "tes" BOLD_MAG "¬¬¬¬" BOLD_OFF "123" BOLD_RED "456789-" BOLD_OFF);   <*/
-   yUNIT_minstr ("... check fancy actual"             , s_fact                  , "tes" BOLD_MAG "¬¬¬¬" BOLD_OFF "123" BOLD_RED "<<<<<<<" BOLD_OFF);
+   /*> yUNIT_minstr ("... check fancy expect"             , s_fexp                  , "tes" BOLD_PUR "¬¬¬¬" BOLD_OFF "123" BOLD_RED "456789-" BOLD_OFF);   <*/
+   yUNIT_minstr ("... check fancy actual"             , s_fact                  , "tes" BOLD_PUR "¬¬¬¬" BOLD_OFF "123" BOLD_RED "<<<<<<<" BOLD_OFF);
    yUNIT_mindnoc ();
 
    yUNIT_mincond ("verify masked comparisons");
    yUNIT_minval ("actual longer"                      , yVAR_string      ("s_equal"   , "tes¬¬¬¬123"                              , "testing123abcd"                          ), -999);
    yUNIT_minstr ("... check modded value"             , s_mod                   , "   ¬¬¬¬   >>>>"                          );
-   /*> yUNIT_minstr ("... check fancy expect"             , s_fexp                  , "tes" BOLD_MAG "¬¬¬¬" BOLD_OFF "123" BOLD_RED "££££" BOLD_OFF);   <*/
-   yUNIT_minstr ("... check fancy actual"             , s_fact                  , "tes" BOLD_MAG "¬¬¬¬" BOLD_OFF "123" BOLD_RED "abcd" BOLD_OFF);
+   /*> yUNIT_minstr ("... check fancy expect"             , s_fexp                  , "tes" BOLD_PUR "¬¬¬¬" BOLD_OFF "123" BOLD_RED "££££" BOLD_OFF);   <*/
+   yUNIT_minstr ("... check fancy actual"             , s_fact                  , "tes" BOLD_PUR "¬¬¬¬" BOLD_OFF "123" BOLD_RED "abcd" BOLD_OFF);
    yUNIT_mindnoc ();
 
    yUNIT_minval ("actual longer, tail masked"         , yVAR_string      ("s_equal"   , "tes¬"                                    , "testing123abcd"                          ),  999);
@@ -326,8 +326,8 @@ yvar__unit_string_equal (char a_scrp, char a_list, char a_unit)
    yUNIT_minstr ("... check expect for use"           , u_exp                   , "tes¬¬¬¬¬¬¬¬¬¬¬");
    yUNIT_minstr ("... check actual for use"           , u_act                   , "tes¬¬¬¬¬¬¬¬¬¬¬");
    yUNIT_minstr ("... check modded value"             , s_mod                   , "   ¬¬¬¬¬¬¬¬¬¬¬"                       );
-   /*> yUNIT_minstr ("... check fancy expect"             , s_fexp                  , "tes" BOLD_MAG "¬¬¬¬¬¬¬¬¬¬¬" BOLD_OFF);   <*/
-   yUNIT_minstr ("... check fancy actual"             , s_fact                  , "tes" BOLD_MAG "¬¬¬¬¬¬¬¬¬¬¬" BOLD_OFF);
+   /*> yUNIT_minstr ("... check fancy expect"             , s_fexp                  , "tes" BOLD_PUR "¬¬¬¬¬¬¬¬¬¬¬" BOLD_OFF);   <*/
+   yUNIT_minstr ("... check fancy actual"             , s_fact                  , "tes" BOLD_PUR "¬¬¬¬¬¬¬¬¬¬¬" BOLD_OFF);
    yUNIT_mindnoc ();
 
    yUNIT_mincond ("verify trouble marking");
@@ -426,10 +426,10 @@ yvar__unit_string_round (char a_scrp, char a_list, char a_unit)
    yUNIT_minstr ("... check modded value"             , s_mod                   , "  x"        );
    yUNIT_minval ("multiple numbers, success"          , yVAR_round       ("u_round/7" , "pi=-3.12159, rads= 352, a 5"               , "pi=-3.12166, rads= 350, a 9"             ),  999);
    yUNIT_minstr ("... check modded value"             , s_mod                   , "         rr          r    r");
-   yUNIT_minstr ("... check fancy actual"             , s_fact                  , "pi=-3.121" BOLD_CYN "66" FORE_OFF ", rads= 35" BOLD_CYN "0" FORE_OFF ", a " BOLD_CYN "9" FORE_OFF);
+   yUNIT_minstr ("... check fancy actual"             , s_fact                  , "pi=-3.121" BOLD_BRN "66" FORE_OFF ", rads= 35" BOLD_BRN "0" FORE_OFF ", a " BOLD_BRN "9" FORE_OFF);
    yUNIT_minval ("multiple numbers, text trouble"     , yVAR_round       ("u_round/7" , "PI=-3.12159, radn= 352, a 5 ¬¬¬¬¬¬¬¬"     , "pi=-3.12166, rads= 350, a 9 heidi 10"     ), -999);
    yUNIT_minstr ("... check modded value"             , s_mod                   , "xx       rr     x    r    r ¬¬¬¬¬¬¬¬");
-   yUNIT_minstr ("... check fancy actual"             , s_fact                  , BOLD_RED "pi" FORE_OFF "=-3.121" BOLD_CYN "66" FORE_OFF ", rad" BOLD_RED "s" FORE_OFF "= 35" BOLD_CYN "0" FORE_OFF ", a " BOLD_CYN "9" FORE_OFF " " BOLD_MAG "¬¬¬¬¬¬¬¬" FORE_OFF);
+   yUNIT_minstr ("... check fancy actual"             , s_fact                  , BOLD_RED "pi" FORE_OFF "=-3.121" BOLD_BRN "66" FORE_OFF ", rad" BOLD_RED "s" FORE_OFF "= 35" BOLD_BRN "0" FORE_OFF ", a " BOLD_BRN "9" FORE_OFF " " BOLD_PUR "¬¬¬¬¬¬¬¬" FORE_OFF);
    yUNIT_mindnoc ();
 
    yUNIT_minprcs ();

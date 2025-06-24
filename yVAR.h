@@ -27,6 +27,7 @@ char        yVAR_debug              (char a_flag);
 
 /*===[[ yVAR_num.c ]]=========================================================*/
 /*········· ´······················ ´·········································*/
+char        yVAR_rc                 (char a_test [LEN_TERSE], char  a_expect, char  a_actual);
 char        yVAR_char               (char a_test [LEN_TERSE], uchar a_expect, uchar a_actual);
 char        yVAR_chars              (char a_test [LEN_TERSE], uchar a_actual);
 char        yVAR_integer            (char a_test [LEN_TERSE], llong a_expect, llong a_actual);

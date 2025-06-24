@@ -7,6 +7,51 @@ char      yVAR_actstr   [500];
 char      yVAR_modstr   [500];
 
 
+char
+yVAR_rc                 (char a_test [LEN_TERSE], char  a_expect, char  a_actual)
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =   -1;
+   /*---(defenses)-----------------------*/
+   --rce;  if (a_test     == NULL) return rce;
+   /*---(normal tests)-------------------*/
+   if        (strcmp(a_test, "z_equal")    == 0) {
+      rc = -('e');
+      if (a_actual == a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "z_not"    )      == 0) {
+      rc = -('n');
+      if (a_actual != a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "z_greater")  == 0) {
+      rc = -('g');
+      if (a_actual >  a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "z_gequal" )  == 0) {
+      rc = -('G');
+      if (a_actual >= a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "z_lesser" )   == 0) {
+      rc = -('l');
+      if (a_actual <  a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "z_lequal" )  == 0) {
+      rc = -('L');
+      if (a_actual <= a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "z_pass"   )  == 0) {
+      rc = -('p');
+      if (a_actual >= 0)           rc *= -1;
+   } else if (strcmp(a_test, "z_fail"   )  == 0) {
+      rc = -('f');
+      if (a_actual <  0)           rc *= -1;
+   } else if (strcmp(a_test, "z_any"    )  == 0) {
+      rc =   'a' ;
+   }
+   /*---(bad test)-----------------------*/
+   else {
+      rc = '¢';
+   }
+   /*---(complete)-----------------------*/
+   return rc;
+}
+
+
 /*
  * options are...
  *    1) i_equal        = : actual   == expected

@@ -219,10 +219,10 @@ yvar_string_fancy       (char a_act [LEN_RECD], char a_mod [LEN_RECD], char r_fa
                strlcat (r_fancy, BOLD_RED, LEN_RECD);
                break;
             case 'r' :
-               strlcat (r_fancy, BOLD_CYN, LEN_RECD);
+               strlcat (r_fancy, BOLD_BRN, LEN_RECD);
                break;
             case '¬' :
-               strlcat (r_fancy, BOLD_MAG, LEN_RECD);
+               strlcat (r_fancy, BOLD_PUR, LEN_RECD);
                break;
             }
          }
