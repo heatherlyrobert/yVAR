@@ -7,8 +7,8 @@ char      yVAR_actstr   [500];
 char      yVAR_modstr   [500];
 
 
-char
-yVAR_rc                 (char a_test [LEN_TERSE], char  a_expect, char  a_actual)
+char      /*--> very simplistic integer comparisions -------------------------*/
+yVAR_num                (char a_test [LEN_TERSE], int a_expect, int a_actual)
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
