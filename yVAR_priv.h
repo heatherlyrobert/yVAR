@@ -34,8 +34,8 @@
 
 #define     P_VERMAJOR  "1.--, production improvements"
 #define     P_VERMINOR  "1.1-, unit testing build out"
-#define     P_VERNUM    "1.1h"
-#define     P_VERTXT    "subtle changes to yVAR_num (old yVAR_rc)"
+#define     P_VERNUM    "1.1i"
+#define     P_VERTXT    "wrong length in yvar_string_prep, increased max to LEN_RECD"
 
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"

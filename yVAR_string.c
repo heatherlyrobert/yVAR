@@ -88,9 +88,9 @@ yvar_string_prep        (char a_test [LEN_TERSE], char a_expect [LEN_RECD], char
    strcpy (u_act , a_actual);
    /*---(lengths)------------------------*/
    s_alen = strlen (u_act);
-   --rce;  if (s_alen > 500)                     return rce;
+   --rce;  if (s_alen >= LEN_RECD - 1)           return rce;
    s_elen = strlen (u_exp);
-   --rce;  if (s_elen > 500)                     return rce;
+   --rce;  if (s_elen >= LEN_RECD - 1)           return rce;
    /*---(extend masking)-----------------*/
    if (s_elen < s_alen && u_exp [s_elen - 1] == '¬') {
       for (i = s_elen; i <= s_alen; ++i) {
