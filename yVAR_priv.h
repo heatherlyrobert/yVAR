@@ -34,8 +34,8 @@
 
 #define     P_VERMAJOR  "1.--, production improvements"
 #define     P_VERMINOR  "1.1-, unit testing build out"
-#define     P_VERNUM    "1.1i"
-#define     P_VERTXT    "wrong length in yvar_string_prep, increased max to LEN_RECD"
+#define     P_VERNUM    "1.1j"
+#define     P_VERTXT    "added ullong tests to support ySTR format conversions"
 
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -154,12 +154,6 @@
 
 
 
-#include    <ySTR_solo.h>
-#include    <yUNIT_solo.h>
-
-
-
-
 #define    _GNU_SOURCE          /* to allow asprintf()                        */
 #include <stdio.h>        /* printf(), snprintf()                             */
 #include <stdlib.h>
@@ -169,6 +163,12 @@
 
 
 #include    "yVAR.h"
+
+
+#include    <ySTR_solo.h>
+#include    <yUNIT_solo.h>
+
+
 
 
 /*> #define     LEN_LABEL        20                                                   <* 

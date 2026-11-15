@@ -9,10 +9,12 @@
 extern    char      yVAR_expstr   [500];
 extern    char      yVAR_actstr   [500];
 extern    char      yVAR_modstr   [500];
-typedef   unsigned char  uchar;
-typedef   const char     cchar;
-typedef   long long      llong;
-typedef   long double    ldouble;
+
+typedef   unsigned char          uchar;
+typedef   const char             cchar;
+typedef   long long              llong;
+typedef   unsigned long long     ullong;
+typedef   long double            ldouble;
 
 /*===[[ FUNCTION PROTOTYPES ]]================================================*/
 
@@ -31,6 +33,7 @@ char        yVAR_num                (char a_test [LEN_TERSE], int a_expect, int 
 char        yVAR_char               (char a_test [LEN_TERSE], uchar a_expect, uchar a_actual);
 char        yVAR_chars              (char a_test [LEN_TERSE], uchar a_actual);
 char        yVAR_integer            (char a_test [LEN_TERSE], llong a_expect, llong a_actual);
+char        yVAR_ullong             (char a_test [LEN_TERSE], ullong a_expect, ullong a_actual);
 char        yVAR_ints               (char a_test [LEN_TERSE], llong a_actual);
 char        yVAR_pointer            (char a_test [LEN_TERSE], void *a_expect, void *a_actual);
 char        yVAR_ptrs               (char a_test [LEN_TERSE], void *a_actual);

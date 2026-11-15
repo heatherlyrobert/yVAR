@@ -268,6 +268,50 @@ yVAR_integer            (char a_test [LEN_TERSE], llong a_expect, llong a_actual
 
 char yVAR_ints    (char a_test [LEN_TERSE], llong a_actual) { return yVAR_integer (a_test, 0, a_actual); }
 
+char
+yVAR_ullong             (char a_test [LEN_TERSE], ullong a_expect, ullong a_actual)
+{
+   /*---(design notes)--------------------------------------------------------#
+    * use longs to have maximum flexibility for char, short, int, and long
+    * can not use long long as atoll is a C99 thing only
+    */
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   char        rc          =   -0;
+   char        x_act       [LEN_LABEL] = "";
+   char        x_exp       [LEN_LABEL] = "";
+   float       a           =  0.0;
+   char        n           =    0;
+   /*---(defenses)-----------------------*/
+   --rce;  if (a_test     == NULL) return rce;
+   /*---(normal tests)-------------------*/
+   if        (strcmp(a_test, "l_equal")    == 0) {
+      rc = -('e');
+      if (a_actual == a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "l_not")      == 0) {
+      rc = -('n');
+      if (a_actual != a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "l_greater")  == 0) {
+      rc = -('g');
+      if (a_actual >  a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "l_gequal" )  == 0) {
+      rc = -('G');
+      if (a_actual >= a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "l_lesser")   == 0) {
+      rc = -('l');
+      if (a_actual <  a_expect)    rc *= -1;
+   } else if (strcmp(a_test, "l_lequal" )  == 0) {
+      rc = -('L');
+      if (a_actual <= a_expect)    rc *= -1;
+   }
+   /*---(bad test)-----------------------*/
+   else {
+      rc = '¢';
+   }
+   /*---(complete)-----------------------*/
+   return rc;
+}
+
 char       /*----: standard pointer testing for yUNIT ------------------------*/
 yVAR_pointer       (char a_test [LEN_TERSE], void *a_expect, void *a_actual)
 {

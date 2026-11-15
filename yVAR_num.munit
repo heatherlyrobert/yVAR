@@ -885,6 +885,63 @@ yunit__num_int_pct      (char a_scrp, char a_list, char a_unit)
 }
 
 char
+yunit__num_ullong       (char a_scrp, char a_list, char a_unit)
+{
+   yUNIT_minscrpy ("yVAR" , "yVAR_ullong"   , "(NUM) verify ullong comparisions (yVAR_ullong)");
+   if (a_list == '!')    { yUNIT_minprcs (); return 0; }
+   if (a_unit != 0 && a_scrp != a_unit)  return 0;
+   if (a_list == 'y')                    return 0;
+
+   yUNIT_mincond ("verify l_equal");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_ullong  ("l_equal"  ,                       3,                       3),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_ullong  ("l_equal"  ,                       3,                       2), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_ullong  ("l_equal"  ,                       3,                       4), -999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_ullong  ("l_equal"  , 18446744073709551615ULL, 18446744073709551615ULL),  999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_ullong  ("l_equal"  , 18446744073709551615ULL,              1234567890), -999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_ullong  ("l_equal"  ,              1234567890, 18446744073709551615ULL), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify l_greater");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_ullong  ("l_greater",                       3,                       3), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_ullong  ("l_greater",                       3,                       2), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_ullong  ("l_greater",                       3,                       4),  999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_ullong  ("l_greater", 18446744073709551615ULL, 18446744073709551615ULL), -999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_ullong  ("l_greater", 18446744073709551615ULL,              1234567890), -999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_ullong  ("l_greater",              1234567890, 18446744073709551615ULL),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify l_gequal");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_ullong  ("l_gequal" ,                       3,                       3),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_ullong  ("l_gequal" ,                       3,                       2), -999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_ullong  ("l_gequal" ,                       3,                       4),  999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_ullong  ("l_gequal" , 18446744073709551615ULL, 18446744073709551615ULL),  999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_ullong  ("l_gequal" , 18446744073709551615ULL,              1234567890), -999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_ullong  ("l_gequal" ,              1234567890, 18446744073709551615ULL),  999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify l_lesser");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_ullong  ("l_lesser" ,                       3,                       3), -999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_ullong  ("l_lesser" ,                       3,                       2),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_ullong  ("l_lesser" ,                       3,                       4), -999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_ullong  ("l_lesser" , 18446744073709551615ULL, 18446744073709551615ULL), -999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_ullong  ("l_lesser" , 18446744073709551615ULL,              1234567890),  999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_ullong  ("l_lesser" ,              1234567890, 18446744073709551615ULL), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_mincond ("verify l_lequal");
+   yUNIT_minval  ("... call (a == e)"         , yVAR_ullong  ("l_lequal" ,                       3,                       3),  999);
+   yUNIT_minval  ("... call (a >  e)"         , yVAR_ullong  ("l_lequal" ,                       3,                       2),  999);
+   yUNIT_minval  ("... call (a <  e)"         , yVAR_ullong  ("l_lequal" ,                       3,                       4), -999);
+   yUNIT_minval  ("... call (a == e) huge"    , yVAR_ullong  ("l_lequal" , 18446744073709551615ULL, 18446744073709551615ULL),  999);
+   yUNIT_minval  ("... call (a >  e) huge"    , yVAR_ullong  ("l_lequal" , 18446744073709551615ULL,              1234567890),  999);
+   yUNIT_minval  ("... call (a <  e) huge"    , yVAR_ullong  ("l_lequal" ,              1234567890, 18446744073709551615ULL), -999);
+   yUNIT_mindnoc ();
+
+   yUNIT_minprcs ();
+   return 0;
+}
+
+char
 yunit__num_pointer      (char a_scrp, char a_list, char a_unit)
 {
    yUNIT_minscrpy ("yVAR" , "yVAR_num"      , "(NUM) verify pointer compparisions (yVAR_pointer)");
@@ -1188,22 +1245,10 @@ main                    (int a_argc, char *a_argv [])
 {
    /*---(locals)-----------+-----+-----+-*/
    int         x_unit      =    0;
-   int         n           =    0;
    char        x_list      =    0;
-   /*---(arguments)----------------------*/
-   printf ("## %s\n", P_ONELINE);
-   printf ("## pre-yUNIT unit testing : %s\n", a_argv [0]);
-   if (a_argc >= 2) {
-      if (strcmp (a_argv [1], "--list") == 0)       x_list = 'y';
-      else if (strcmp (a_argv [1], "--inst") == 0)  x_list = '!';
-      else                                          x_unit = atoi (a_argv [1]);
-   }
-   if (x_unit  >  0 )         printf ("## selected single script (%2d)\n", x_unit);
-   else                       printf ("## selected all scripts\n");
-   if (x_list == 'y')         printf ("## list script(s) only\n");
-   else if (x_list == '!')    printf ("## generate initial wave file\n");
-   else                       printf ("## execute conditions and steps\n");
-   printf ("\n");
+   int         n           =    0;
+   /*---(startup)------------------------*/
+   yUNIT_minunit (a_argc, a_argv, "yUNIT_num", P_ONELINE, &x_unit, &x_list);
    /*---(scripts)------------------------*/
    yunit__num_num            (++n, x_list, x_unit);
    yunit__num_char_big       (++n, x_list, x_unit);
@@ -1213,6 +1258,7 @@ main                    (int a_argc, char *a_argv [])
    yunit__num_int_round      (++n, x_list, x_unit);
    yunit__num_int_sig        (++n, x_list, x_unit);
    yunit__num_int_pct        (++n, x_list, x_unit);
+   yunit__num_ullong         (++n, x_list, x_unit);
    yunit__num_pointer        (++n, x_list, x_unit);
    yunit__num_real_big       (++n, x_list, x_unit);
    yunit__num_real_round     (++n, x_list, x_unit);
