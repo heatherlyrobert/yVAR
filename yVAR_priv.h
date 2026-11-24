@@ -34,8 +34,8 @@
 
 #define     P_VERMAJOR  "1.--, production improvements"
 #define     P_VERMINOR  "1.1-, unit testing build out"
-#define     P_VERNUM    "1.1k"
-#define     P_VERTXT    "updated munit's to new yUNIT standard.  all munits passed"
+#define     P_VERNUM    "1.1l"
+#define     P_VERTXT    "changed real value tests to sci-notation then yVAR_string"
 
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"

@@ -368,6 +368,22 @@ char yVAR_ptrs    (char a_test [LEN_TERSE], void *a_actual) { return yVAR_pointe
 char
 yVAR_real               (char a_test [LEN_TERSE], ldouble a_expect, ldouble a_actual)
 {
+   char        x_exp       [LEN_TITLE] = "";
+   char        x_act       [LEN_TITLE] = "";
+   char        x_test      [LEN_TERSE] = "";
+   printf ("\n");
+   snprintf (x_exp , LEN_TITLE, "%16.14e", (double) a_expect);
+   printf ("x_exp  å%sæ\n", x_exp);
+   snprintf (x_act , LEN_TITLE, "%16.14e", (double) a_actual);
+   printf ("x_act  å%sæ\n", x_act);
+   sprintf (x_test, "s%s", a_test + 1);
+   printf ("x_test å%sæ\n", x_test);
+   return yVAR_string (x_test, x_exp, x_act);
+}
+
+char
+yVAR_real_OLD           (char a_test [LEN_TERSE], ldouble a_expect, ldouble a_actual)
+{
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
    char        rc          =    0;
